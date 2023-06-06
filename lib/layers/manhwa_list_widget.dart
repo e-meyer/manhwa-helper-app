@@ -67,6 +67,9 @@ class ManhwaListWidget extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -92,9 +95,9 @@ class ManhwaListWidget extends StatelessWidget {
                                       title: Text(
                                         chapter,
                                         style: GoogleFonts.overpass(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
+                                            fontSize: 14,
+                                            color: Color(0xFFBEBEBE),
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   );
