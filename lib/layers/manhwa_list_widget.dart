@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ManhwaListWidget extends StatelessWidget {
@@ -30,65 +32,80 @@ class ManhwaListWidget extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: manhwaData.length,
+              itemCount: 4,
               itemBuilder: (context, manhwaIndex) {
                 final title = manhwaData[manhwaIndex]['title'];
+                final coverLink = manhwaData[manhwaIndex]['cover_link'];
                 final chapters = manhwaData[manhwaIndex]['chapters'];
                 final chapterLinks = manhwaData[manhwaIndex]['chapters_links'];
 
-                return Row(
-                  children: [
-                    Image.network(
-                      "https://www.asurascans.com/wp-content/uploads/2023/02/tIEELUSJN.webp-t.w640-vert-copyCUnetauto_scaleLevel3width-1000.jpg",
-                      width: MediaQuery.of(context).size.width * 0.25,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: chapters.length,
-                            itemBuilder: (context, chapterIndex) {
-                              final chapter = chapters[chapterIndex];
-                              final chapterLink = chapterLinks[chapterIndex];
-                              return InkWell(
-                                onTap: () {
-                                  _launchUrl(Uri.parse(chapterLink));
-                                },
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 0.0,
-                                    vertical: 0.0,
-                                  ),
-                                  visualDensity: VisualDensity(
-                                    horizontal: 0,
-                                    vertical: -4,
-                                  ),
-                                  title: Text(
-                                    chapter,
-                                    style: TextStyle(color: Colors.white),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                  child: Row(
+                    children: [
+                      Image.network(
+                        coverLink,
+                        fit: BoxFit.fitHeight,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        height: 150,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Text(
+                                  title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.overpass(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              );
-                            },
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: chapters.length,
+                                itemBuilder: (context, chapterIndex) {
+                                  final chapter = chapters[chapterIndex];
+                                  final chapterLink =
+                                      chapterLinks[chapterIndex];
+                                  return InkWell(
+                                    onTap: () {
+                                      _launchUrl(Uri.parse(chapterLink));
+                                    },
+                                    child: ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 0.0,
+                                        vertical: 0.0,
+                                      ),
+                                      visualDensity: VisualDensity(
+                                        horizontal: 0,
+                                        vertical: -4,
+                                      ),
+                                      title: Text(
+                                        chapter,
+                                        style: GoogleFonts.overpass(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
               separatorBuilder: (context, index) {
