@@ -9,16 +9,16 @@ class ManhwaListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        final website = data[index]['website'];
-        final manhwaData = data[index]['manhwa_data'];
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          final website = data[index]['website'];
+          final manhwaData = data[index]['manhwa_data'];
 
-        return SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -59,7 +59,7 @@ class ManhwaListWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(0.0),
+                                  padding: const EdgeInsets.only(bottom: 12.0),
                                   child: Text(
                                     title,
                                     overflow: TextOverflow.ellipsis,
@@ -70,11 +70,10 @@ class ManhwaListWidget extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: chapters.length,
-                                  itemBuilder: (context, chapterIndex) {
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(chapters.length,
+                                      (chapterIndex) {
                                     final chapter = chapters[chapterIndex];
                                     final chapterLink =
                                         chapterLinks[chapterIndex];
@@ -101,7 +100,7 @@ class ManhwaListWidget extends StatelessWidget {
                                         ),
                                       ),
                                     );
-                                  },
+                                  }),
                                 ),
                               ],
                             ),
@@ -118,9 +117,9 @@ class ManhwaListWidget extends StatelessWidget {
                 },
               ),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
