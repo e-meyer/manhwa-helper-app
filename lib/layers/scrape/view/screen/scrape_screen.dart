@@ -301,6 +301,14 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
                   0.36, // Specify a height for the InfiniteCarousel
               child: InfiniteCarousel(),
             ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 1,
+              color: Color(0xFF464646),
+              margin: EdgeInsets.symmetric(
+                vertical: 8.0,
+              ),
+            ),
             ManhwaListWidget(data: manhwaData),
           ],
         ),
