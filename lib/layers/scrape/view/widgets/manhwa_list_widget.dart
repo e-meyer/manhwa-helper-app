@@ -5,7 +5,10 @@ import 'package:url_launcher/url_launcher.dart';
 class ManhwaListWidget extends StatelessWidget {
   final List<Map<String, dynamic>> data;
 
-  const ManhwaListWidget(this.data);
+  const ManhwaListWidget({
+    super.key,
+    required this.data,
+  });
 
   @override
   Widget build(BuildContext context) {

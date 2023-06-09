@@ -4,8 +4,10 @@ import 'package:manhwa_alert/layers/scrape/models/carousel_model.dart';
 import 'carousel_item_builder_widget.dart';
 
 class InfiniteCarousel extends StatefulWidget {
+  const InfiniteCarousel({super.key});
+
   @override
-  _InfiniteCarouselState createState() => _InfiniteCarouselState();
+  State<InfiniteCarousel> createState() => _InfiniteCarouselState();
 }
 
 class _InfiniteCarouselState extends State<InfiniteCarousel> {

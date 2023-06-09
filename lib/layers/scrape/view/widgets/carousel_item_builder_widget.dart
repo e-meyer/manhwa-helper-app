@@ -9,6 +9,7 @@ class CarouselItemWidget extends StatelessWidget {
   final bool isSelected;
 
   const CarouselItemWidget({
+    super.key,
     required this.item,
     required this.itemIndex,
     required this.isSelected,

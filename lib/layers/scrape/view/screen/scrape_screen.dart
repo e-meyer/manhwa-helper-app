@@ -301,7 +301,7 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
                   0.36, // Specify a height for the InfiniteCarousel
               child: InfiniteCarousel(),
             ),
-            ManhwaListWidget(manhwaData),
+            ManhwaListWidget(data: manhwaData),
           ],
         ),
       ),
