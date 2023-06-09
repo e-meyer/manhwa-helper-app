@@ -298,11 +298,10 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height *
-                  0.4, // Specify a height for the InfiniteCarousel
+                  0.36, // Specify a height for the InfiniteCarousel
               child: InfiniteCarousel(),
             ),
             ManhwaListWidget(manhwaData),
-            // ManhwaListWidget(manhwaData),
           ],
         ),
       ),
