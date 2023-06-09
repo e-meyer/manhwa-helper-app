@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:manhwa_alert/layers/manhwa_list_widget.dart';
+import 'package:manhwa_alert/layers/scrape/view/widgets/infinite_carousel.dart';
+import 'package:manhwa_alert/layers/scrape/view/widgets/manhwa_list_widget.dart';
 
 class ScrapeScreen extends StatefulWidget {
   const ScrapeScreen({super.key});
@@ -22,6 +24,20 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
   //   }
   //   return [];
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values); // to re-show bars
+  }
 
   List<Map<String, dynamic>> manhwaData = [
     {
@@ -265,6 +281,7 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF222222),
       appBar: AppBar(
+        shadowColor: Colors.transparent,
         backgroundColor: Color(0xFF222222),
         title: Text(
           'Manhwas',
@@ -275,7 +292,19 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
           ),
         ),
       ),
-      body: ManhwaListWidget(manhwaData),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height *
+                  0.36, // Specify a height for the InfiniteCarousel
+              child: InfiniteCarousel(),
+            ),
+            ManhwaListWidget(data: manhwaData),
+          ],
+        ),
+      ),
     );
   }
 }
