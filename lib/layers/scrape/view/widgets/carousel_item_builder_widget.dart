@@ -30,26 +30,26 @@ class CarouselItemWidget extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.33,
+              height: MediaQuery.of(context).size.height * 0.35,
               child: Image.network(
                 item.image,
                 width: 500,
                 fit: BoxFit.fitHeight,
               ),
             ),
-            (isSelected)
-                ? Positioned(
-                    bottom: 0,
-                    child: Text(
-                      item.subtitle,
-                      style: GoogleFonts.overpass(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                : Container(),
+            // (isSelected)
+            //     ? Positioned(
+            //         bottom: 0,
+            //         child: Text(
+            //           item.subtitle,
+            //           style: GoogleFonts.overpass(
+            //             color: Colors.white,
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       )
+            //     : Container(),
           ],
         ),
       ),
