@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:manhwa_alert/layers/scrape/view/widgets/infinite_carousel.dart';
@@ -23,6 +24,20 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
   //   }
   //   return [];
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values); // to re-show bars
+  }
 
   List<Map<String, dynamic>> manhwaData = [
     {
