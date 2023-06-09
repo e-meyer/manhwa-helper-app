@@ -1,6 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:manhwa_alert/layers/scrape/models/carousel_model.dart';
-
 import 'carousel_item_builder_widget.dart';
 
 class InfiniteCarousel extends StatefulWidget {
@@ -10,6 +10,7 @@ class InfiniteCarousel extends StatefulWidget {
 
 class _InfiniteCarouselState extends State<InfiniteCarousel> {
   late PageController _pageController;
+  Timer? _timer;
   int _currentPage = 0;
   final List<CarouselModel> _carouselItems = [
     CarouselModel(
@@ -47,6 +48,26 @@ class _InfiniteCarouselState extends State<InfiniteCarousel> {
       initialPage: _currentPage,
       viewportFraction: 0.5,
     );
+
+    _startAutoplay();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoplay() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
   }
 
   @override
