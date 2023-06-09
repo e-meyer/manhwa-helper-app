@@ -17,14 +17,13 @@ class CarouselItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double opacity = isSelected ? 1.0 : 0.4;
-    final double height = MediaQuery.of(context).size.height * 0.4;
-    // final double scaleFactor = isSelected ? 1.0 : 0.9;
+    final double scaleFactor = isSelected ? 1.0 : 0.95;
 
     return AnimatedScale(
       duration: const Duration(
         milliseconds: 200,
       ),
-      scale: 1.0,
+      scale: scaleFactor,
       child: Opacity(
         opacity: opacity,
         child: Stack(
@@ -32,13 +31,10 @@ class CarouselItemWidget extends StatelessWidget {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.33,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  item.image,
-                  width: 500,
-                  fit: BoxFit.fitHeight,
-                ),
+              child: Image.network(
+                item.image,
+                width: 500,
+                fit: BoxFit.fitHeight,
               ),
             ),
             (isSelected)
