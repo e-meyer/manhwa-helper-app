@@ -56,57 +56,83 @@ class ManhwaListWidget extends StatelessWidget {
                           height: 150,
                         ),
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 12.0),
-                                  child: Text(
-                                    title,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.overpass(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Opacity(
+                                  opacity: 0.03,
+                                  child: Image.asset(
+                                    "assets/scanlators_logos/${website.toLowerCase()}.png",
+                                    height: 140,
+                                    // width
+                                    fit: BoxFit.fitHeight,
                                   ),
                                 ),
-                                Column(
+                              ),
+                              // Center(
+                              //   child: Image.asset(
+                              //     "assets/scanlators_logos/asura.png",
+                              //     height: 140,
+                              //     // width
+                              //     fit: BoxFit.fitHeight,
+                              //   ),
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(chapters.length,
-                                      (chapterIndex) {
-                                    final chapter = chapters[chapterIndex];
-                                    final chapterLink =
-                                        chapterLinks[chapterIndex];
-                                    return InkWell(
-                                      onTap: () {
-                                        _launchUrl(Uri.parse(chapterLink));
-                                      },
-                                      child: ListTile(
-                                        dense: true,
-                                        contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 0.0,
-                                          vertical: 0.0,
-                                        ),
-                                        visualDensity: VisualDensity(
-                                          horizontal: 0,
-                                          vertical: -4,
-                                        ),
-                                        title: Text(
-                                          chapter,
-                                          style: GoogleFonts.overpass(
-                                            fontSize: 14,
-                                            color: Colors.white,
-                                          ),
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12.0),
+                                      child: Text(
+                                        title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.overpass(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: List.generate(chapters.length,
+                                          (chapterIndex) {
+                                        final chapter = chapters[chapterIndex];
+                                        final chapterLink =
+                                            chapterLinks[chapterIndex];
+                                        return InkWell(
+                                          onTap: () {
+                                            _launchUrl(Uri.parse(chapterLink));
+                                          },
+                                          child: ListTile(
+                                            dense: true,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                              horizontal: 0.0,
+                                              vertical: 0.0,
+                                            ),
+                                            visualDensity: VisualDensity(
+                                              horizontal: 0,
+                                              vertical: -4,
+                                            ),
+                                            title: Text(
+                                              chapter,
+                                              style: GoogleFonts.overpass(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
