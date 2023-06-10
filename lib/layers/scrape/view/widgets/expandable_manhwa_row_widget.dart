@@ -23,51 +23,66 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AnimatedCrossFade(
-          firstChild: Column(
-            children: [
-              SizedBox(
-                height: 150,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0),
+            child: Text(
+              widget.website,
+              style: GoogleFonts.overpass(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          AnimatedCrossFade(
+            firstChild: Column(
+              children: [
+                SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 4,
+                    itemBuilder: (context, manhwaIndex) {
+                      final coverLink =
+                          widget.manhwaData[manhwaIndex]['cover_link'];
+                      return Image.network(
+                        coverLink,
+                        fit: BoxFit.fitHeight,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        height: 150,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            secondChild: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListView.separated(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: 4,
                   itemBuilder: (context, manhwaIndex) {
+                    final title = widget.manhwaData[manhwaIndex]['title'];
                     final coverLink =
                         widget.manhwaData[manhwaIndex]['cover_link'];
-                    return Image.network(
-                      coverLink,
-                      fit: BoxFit.fitHeight,
-                      width: MediaQuery.of(context).size.width * 0.30,
-                      height: 150,
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          secondChild: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 4,
-                itemBuilder: (context, manhwaIndex) {
-                  final title = widget.manhwaData[manhwaIndex]['title'];
-                  final coverLink =
-                      widget.manhwaData[manhwaIndex]['cover_link'];
-                  final chapters = widget.manhwaData[manhwaIndex]['chapters'];
-                  final chapterLinks =
-                      widget.manhwaData[manhwaIndex]['chapters_links'];
+                    final chapters = widget.manhwaData[manhwaIndex]['chapters'];
+                    final chapterLinks =
+                        widget.manhwaData[manhwaIndex]['chapters_links'];
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                    child: Row(
+                    return Row(
                       children: [
                         Image.network(
                           coverLink,
@@ -147,55 +162,55 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                           ),
                         ),
                       ],
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(
-                    height: 20,
-                  );
-                },
-              ),
-            ],
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      height: 20,
+                    );
+                  },
+                ),
+              ],
+            ),
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(
+              milliseconds: 300,
+            ),
           ),
-          crossFadeState: _isExpanded
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: const Duration(
-            milliseconds: 300,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+            ),
+            onPressed: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  _isExpanded
+                      ? 'assets/icons/arrow-up.svg'
+                      : 'assets/icons/arrow-down.svg',
+                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Details',
+                  style: GoogleFonts.overpass(fontSize: 16),
+                ),
+              ],
+            ),
           ),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shadowColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-          ),
-          onPressed: () {
-            setState(() {
-              _isExpanded = !_isExpanded;
-            });
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                _isExpanded
-                    ? 'assets/icons/arrow-up.svg'
-                    : 'assets/icons/arrow-down.svg',
-                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Details',
-                style: GoogleFonts.overpass(fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

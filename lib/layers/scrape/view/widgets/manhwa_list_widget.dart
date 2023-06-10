@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/scrape/view/widgets/expandable_manhwa_row_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ManhwaListWidget extends StatefulWidget {
   final List<Map<String, dynamic>> data;
@@ -16,13 +14,11 @@ class ManhwaListWidget extends StatefulWidget {
 }
 
 class _ManhwaListWidgetState extends State<ManhwaListWidget> {
-  bool _isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
-      child: ListView.separated(
+      child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.data.length,
         physics: NeverScrollableScrollPhysics(),
@@ -31,11 +27,6 @@ class _ManhwaListWidgetState extends State<ManhwaListWidget> {
           final manhwaData = widget.data[index]['manhwa_data'];
           return ExpandableManhwaRowWidget(
               website: website, manhwaData: manhwaData);
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            height: 20,
-          );
         },
       ),
     );
