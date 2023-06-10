@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -165,12 +166,34 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
           ),
         ),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          ),
           onPressed: () {
             setState(() {
               _isExpanded = !_isExpanded;
             });
           },
-          child: Text(_isExpanded ? 'Collapse' : 'Expand'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                _isExpanded
+                    ? 'assets/icons/arrow-up.svg'
+                    : 'assets/icons/arrow-down.svg',
+                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Details',
+                style: GoogleFonts.overpass(fontSize: 16),
+              ),
+            ],
+          ),
         ),
       ],
     );
