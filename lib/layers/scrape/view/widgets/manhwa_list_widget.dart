@@ -33,35 +33,11 @@ class _ManhwaListWidgetState extends State<ManhwaListWidget> {
               website: website, manhwaData: manhwaData);
         },
         separatorBuilder: (context, index) {
-          return SizedBox(
+          return const SizedBox(
             height: 20,
           );
         },
       ),
     );
   }
-
-  Widget _buildRowOfCovers() {
-    return ListView.builder(
-        itemCount: widget.data.length,
-        itemBuilder: (context, index) {
-          // final website = value['website'];
-          final manhwaData = widget.data[index]['manhwa_data'];
-
-          // final title = manhwaData['title'];
-          final coverLink = manhwaData['cover_link'];
-
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.0),
-            child: Image.network(
-              coverLink,
-              fit: BoxFit.fitHeight,
-              width: MediaQuery.of(context).size.width * 0.30,
-              height: 150,
-            ),
-          );
-        });
-  }
-
-  
 }
