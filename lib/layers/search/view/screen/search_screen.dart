@@ -27,7 +27,12 @@ class SearchScreen extends StatelessWidget {
 
                 final scanlators = snapshot.data!.docs;
 
-                return ListView.builder(
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                  ),
                   itemCount: scanlators.length,
                   itemBuilder: (context, index) {
                     final scanlator = scanlators[index];
