@@ -15,7 +15,6 @@ class ScanlatorSelectionScreen extends StatelessWidget {
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Select the scanlator',
@@ -64,8 +63,6 @@ class ScanlatorSelectionScreen extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            // color: Color(int.parse(
-                            //     '0xFF${scanlatorData['card_bg_color']}')),
                           ),
                           child: Center(
                             child: SingleChildScrollView(
