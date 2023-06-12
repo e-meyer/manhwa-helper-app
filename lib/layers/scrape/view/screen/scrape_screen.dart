@@ -25,19 +25,13 @@ class _ScrapeScreenState extends State<ScrapeScreen> {
   //   return [];
   // }
 
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
 
-  @override
-  void dispose() {
-    super.dispose();
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values); // to re-show bars
-  }
+  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+  //       overlays: SystemUiOverlay.values); // to re-show bars
+  // }
 
   List<Map<String, dynamic>> manhwaData = [
     {

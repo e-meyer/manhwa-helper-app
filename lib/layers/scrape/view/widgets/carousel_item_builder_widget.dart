@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../models/carousel_model.dart';
 
 class CarouselItemWidget extends StatelessWidget {
@@ -38,19 +36,6 @@ class CarouselItemWidget extends StatelessWidget {
                 fit: BoxFit.fitHeight,
               ),
             ),
-            // (isSelected)
-            //     ? Positioned(
-            //         bottom: 0,
-            //         child: Text(
-            //           item.subtitle,
-            //           style: GoogleFonts.overpass(
-            //             color: Colors.white,
-            //             fontSize: 16,
-            //             fontWeight: FontWeight.w600,
-            //           ),
-            //         ),
-            //       )
-            //     : Container(),
           ],
         ),
       ),

@@ -39,6 +39,9 @@ dependencies:
   url_launcher: ^6.1.11
   google_fonts: ^5.0.0
   firebase_core: ^2.13.1
+  flutter_svg: ^2.0.6
+  custom_navigation_bar: ^0.8.2
+  cloud_firestore: ^4.8.0
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +68,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/scanlators_logos/
+     - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
