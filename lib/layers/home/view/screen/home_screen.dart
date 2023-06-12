@@ -1,19 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:manhwa_alert/layers/scrape/view/widgets/infinite_carousel.dart';
-import 'package:manhwa_alert/layers/scrape/view/widgets/manhwa_list_widget.dart';
+import 'package:manhwa_alert/layers/home/view/widgets/infinite_carousel.dart';
+import 'package:manhwa_alert/layers/home/view/widgets/manhwa_list_widget.dart';
 
-class ScrapeScreen extends StatefulWidget {
-  const ScrapeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<ScrapeScreen> createState() => _ScrapeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _ScrapeScreenState extends State<ScrapeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   // Future<List<Map<String, dynamic>>> fetchData() async {
   //   final response =
   //       await http.get(Uri.parse('http://10.0.2.2:5000/thread_scrape'));

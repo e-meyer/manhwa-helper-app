@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manhwa_alert/layers/scrape/view/widgets/expandable_manhwa_row_widget.dart';
+import 'package:manhwa_alert/layers/home/view/widgets/expandable_manhwa_row_widget.dart';
 
 class ManhwaListWidget extends StatefulWidget {
   final List<Map<String, dynamic>> data;

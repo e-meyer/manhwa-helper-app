@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:manhwa_alert/layers/scrape/models/carousel_model.dart';
+import 'package:manhwa_alert/layers/home/models/carousel_model.dart';
 import 'carousel_item_builder_widget.dart';
 
 class InfiniteCarousel extends StatefulWidget {
