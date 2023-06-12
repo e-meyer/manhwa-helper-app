@@ -9,24 +9,26 @@ class ScanlatorSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Select the scanlator',
+          style: GoogleFonts.overpass(
+            fontSize: 22,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+      ),
       backgroundColor: Color(0xFF222222),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              Text(
-                'Select the scanlator',
-                style: GoogleFonts.overpass(
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('scanlators')

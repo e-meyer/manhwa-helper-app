@@ -11,7 +11,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ),
+  );
 
   runApp(MyApp());
 }
