@@ -90,7 +90,7 @@ class _ManhwaSearchResultListBuilderState
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.9),
                     Colors.transparent,
                   ],
                 ),

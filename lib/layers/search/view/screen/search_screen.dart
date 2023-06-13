@@ -8,8 +8,6 @@ import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_search_result_list_builder.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../widgets/search_screen/manga_item.dart';
-
 class SearchScreen extends StatefulWidget {
   final ScanlatorModel scanlator;
 
