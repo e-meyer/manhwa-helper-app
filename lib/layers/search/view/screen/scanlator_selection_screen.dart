@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/screen/search_screen.dart';
 
 class ScanlatorSelectionScreen extends StatelessWidget {
@@ -57,10 +58,10 @@ class ScanlatorSelectionScreen extends StatelessWidget {
 
                       return InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, 'search', arguments: {
-                            'name': scanlatorData['name'],
-                            'logo_url': scanlatorData['logo_url'],
-                          });
+                          final scanlatorModel =
+                              ScanlatorModel.fromMap(scanlatorData);
+                          Navigator.pushNamed(context, 'search',
+                              arguments: scanlatorModel);
                         },
                         child: Container(
                           decoration: BoxDecoration(
