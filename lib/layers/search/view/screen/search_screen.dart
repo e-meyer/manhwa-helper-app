@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as htmlParser;
+import 'package:shimmer/shimmer.dart';
 
 class SearchScreen extends StatefulWidget {
   final String scanlatorName;
@@ -23,11 +24,12 @@ class _SearchScreenState extends State<SearchScreen> {
   Timer? _typingTimer;
   String _inputText = '';
   List<Map<String, String>> _webtoons = [];
+  bool isImgLoaded = false;
 
   void onTextChanged(String input) {
     _typingTimer?.cancel();
 
-    _typingTimer = Timer(const Duration(milliseconds: 500), () {
+    _typingTimer = Timer(const Duration(milliseconds: 300), () {
       if (_inputText.isEmpty) {
         setState(() {
           _webtoons = [];
@@ -94,7 +96,9 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               TextField(
                 onChanged: (text) {
+                  isImgLoaded = false;
                   setState(() {
+                    isImgLoaded = false;
                     _inputText = text;
                   });
                   onTextChanged(text);
@@ -132,56 +136,88 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisSpacing: 20.0,
                 shrinkWrap: true,
                 childAspectRatio: (1 / 1.45),
-                children: List.generate(
-                  _webtoons.length,
-                  (index) {
-                    final webtoon = _webtoons[index];
-                    return Stack(
-                      children: [
-                        Image.network(
-                          webtoon['cover']!,
-                          // height: 150,
-                          height: 300,
-                          fit: BoxFit.fitHeight,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                                Color.fromARGB(230, 0, 0, 0),
-                                Color(0x00000000),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 4.0,
-                            ),
-                            child: Text(
-                              webtoon['title']!,
-                              style: GoogleFonts.overpass(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
+                children: (_webtoons.isNotEmpty || _inputText == '')
+                    ? List.generate(
+                        _webtoons.length,
+                        (index) {
+                          final webtoon = _webtoons[index];
+                          return Stack(
+                            children: [
+                              Image.network(
+                                webtoon['cover']!,
+                                // height: 150,
+                                height: 300,
+                                fit: BoxFit.fitHeight,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    isImgLoaded = true;
+                                    return child;
+                                  }
+
+                                  return Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      color: Colors.white,
+                                      // Set desired width and height for shimmer placeholders
+                                    ),
+                                  );
+                                },
                               ),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
+                              isImgLoaded
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Color.fromARGB(230, 0, 0, 0),
+                                            Color(0x00000000),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                    horizontal: 4.0,
+                                  ),
+                                  child: Text(
+                                    webtoon['title']!,
+                                    style: GoogleFonts.overpass(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    : List.generate(
+                        6,
+                        (index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              color: Colors.white,
+                              // Set desired width and height for shimmer placeholders
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                          );
+                        },
+                      ),
               ),
             ],
           ),
