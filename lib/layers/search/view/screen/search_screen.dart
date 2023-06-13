@@ -4,16 +4,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as htmlParser;
+import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
+import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_search_result_list_builder.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../widgets/search_screen/manga_item.dart';
+
 class SearchScreen extends StatefulWidget {
-  final String scanlatorName;
-  final String scanlatorLogoUrl;
+  final ScanlatorModel scanlator;
 
   const SearchScreen({
     Key? key,
-    required this.scanlatorName,
-    required this.scanlatorLogoUrl,
+    required this.scanlator,
   }) : super(key: key);
 
   @override
@@ -24,9 +26,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Timer? _typingTimer;
   String _inputText = '';
   List<Map<String, String>> _webtoons = [];
-  bool isImgLoaded = false;
 
   void onTextChanged(String input) {
+    _webtoons = [];
     _typingTimer?.cancel();
 
     _typingTimer = Timer(const Duration(milliseconds: 300), () {
@@ -77,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
-          'Searching in ${widget.scanlatorName}',
+          'Searching in ${widget.scanlator.name}',
           style: GoogleFonts.overpass(
             fontWeight: FontWeight.bold,
             fontSize: 24,
@@ -92,13 +94,11 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
                 onChanged: (text) {
-                  isImgLoaded = false;
                   setState(() {
-                    isImgLoaded = false;
                     _inputText = text;
                   });
                   onTextChanged(text);
@@ -129,6 +129,27 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 cursorColor: Color(0xFFFF6812),
               ),
+              // Container(
+              //   height: MediaQuery.of(context).size.height,
+              //   child: GridView.count(
+              //     physics: NeverScrollableScrollPhysics(),
+              //     crossAxisCount: 2,
+              //     crossAxisSpacing: 20.0,
+              //     mainAxisSpacing: 20.0,
+              //     shrinkWrap: true,
+              //     childAspectRatio: (1 / 1.45),
+              //     children: List.generate(
+              //       _webtoons.length,
+              //       (index) {
+              //         final manga = _webtoons[index];
+
+              //         return MangaItem(
+              //           webtoon: manga,
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
               GridView.count(
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
@@ -141,67 +162,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         _webtoons.length,
                         (index) {
                           final webtoon = _webtoons[index];
-                          return Stack(
-                            children: [
-                              Image.network(
-                                webtoon['cover']!,
-                                // height: 150,
-                                height: 300,
-                                fit: BoxFit.fitHeight,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    isImgLoaded = true;
-                                    return child;
-                                  }
-
-                                  return Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Container(
-                                      color: Colors.white,
-                                      // Set desired width and height for shimmer placeholders
-                                    ),
-                                  );
-                                },
-                              ),
-                              isImgLoaded
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.bottomCenter,
-                                          end: Alignment.topCenter,
-                                          colors: [
-                                            Color.fromARGB(230, 0, 0, 0),
-                                            Color(0x00000000),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0,
-                                    horizontal: 4.0,
-                                  ),
-                                  child: Text(
-                                    webtoon['title']!,
-                                    style: GoogleFonts.overpass(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                    ),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          return ManhwaSearchResultListBuilder(
+                            webtoon: webtoon,
                           );
                         },
                       )
@@ -209,11 +171,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         6,
                         (index) {
                           return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
+                            baseColor: Color(0xFF292929),
+                            highlightColor: Color(0xFF333333),
                             child: Container(
-                              color: Colors.white,
-                              // Set desired width and height for shimmer placeholders
+                              color: Color(0xFF292929),
                             ),
                           );
                         },
@@ -226,53 +187,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-
-
-
-// import 'package:flutter/material.dart';
-
-// class SearchScreen extends StatelessWidget {
-//   final String scanlatorName;
-//   final String scanlatorLogoUrl;
-
-//   const SearchScreen({
-//     super.key,
-//     required this.scanlatorName,
-//     required this.scanlatorLogoUrl,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Search Screen'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             // Image.network(
-//             //   scanlatorLogoUrl,
-//             //   height: 150,
-//             //   width: 150,
-//             // ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             Text(
-//               'AIDNFIDAHNFGIADNHGOIDA',
-//               style: TextStyle(
-//                 fontSize: 18,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             Text('Add search functionality here'),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
