@@ -90,7 +90,7 @@ class _ManhwaSearchResultListBuilderState
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.9),
+                    Colors.black.withOpacity(0.8),
                     Colors.transparent,
                   ],
                 ),
@@ -106,8 +106,8 @@ class _ManhwaSearchResultListBuilderState
             right: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 4.0,
+                vertical: 2.0,
+                horizontal: 2.0,
               ),
               child: Text(
                 widget.webtoon['title']!,
