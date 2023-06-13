@@ -43,6 +43,7 @@ dependencies:
   custom_navigation_bar: ^0.8.2
   cloud_firestore: ^4.8.0
   html: ^0.15.4
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
