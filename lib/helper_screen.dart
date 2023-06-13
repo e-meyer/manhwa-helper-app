@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:manhwa_alert/layers/home/view/screen/home_screen.dart';
+import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/screen/scanlator_selection_screen.dart';
 import 'package:manhwa_alert/layers/search/view/screen/search_screen.dart';
 
@@ -87,11 +88,10 @@ class _HelperScreenState extends State<HelperScreen> {
         final args = settings.arguments;
 
         if (settings.name == 'search') {
-          if (args is Map) {
+          if (args is ScanlatorModel) {
             return MaterialPageRoute(
               builder: (_) => SearchScreen(
-                scanlatorName: args['name'],
-                scanlatorLogoUrl: args['logo_url'],
+                scanlator: args,
               ),
             );
           }
