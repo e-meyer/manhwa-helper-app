@@ -98,30 +98,31 @@ class _ManhwaSearchResultListBuilderState
             ),
           ),
         ),
-        Visibility(
-          visible: !isLoading,
-          child: Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 2.0,
-                horizontal: 2.0,
+        // Visibility(
+        //   visible: !isLoading,
+        //   child:
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 2.0,
+              horizontal: 2.0,
+            ),
+            child: Text(
+              widget.webtoon['title']!,
+              style: GoogleFonts.overpass(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
-              child: Text(
-                widget.webtoon['title']!,
-                style: GoogleFonts.overpass(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
           ),
+          // ),
         )
       ],
     );
