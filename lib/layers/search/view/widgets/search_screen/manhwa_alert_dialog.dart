@@ -44,8 +44,8 @@ class ManhwaAlertDialog extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              color: Color(0xFF222222),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
                 webtoon['title']!,
                 style: GoogleFonts.overpass(
@@ -53,6 +53,20 @@ class ManhwaAlertDialog extends StatelessWidget {
                   fontSize: 16,
                   color: Colors.white,
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              '${webtoon['chapterNumber']!} chapters',
+              style: GoogleFonts.overpass(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                color: Colors.grey,
               ),
             ),
           ],
