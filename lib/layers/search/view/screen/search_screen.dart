@@ -148,6 +148,9 @@ class _SearchScreenState extends State<SearchScreen> {
               //     ),
               //   ),
               // ),
+              SizedBox(
+                height: 20,
+              ),
               GridView.count(
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
