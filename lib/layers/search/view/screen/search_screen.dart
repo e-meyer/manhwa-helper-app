@@ -55,12 +55,19 @@ class _SearchScreenState extends State<SearchScreen> {
 
       final covers = document.querySelectorAll('div.limit img');
       final titles = document.querySelectorAll('div.bigor div.tt');
+      final chapters = document.querySelectorAll('div.epxs');
 
       final webtoons = <Map<String, String>>[];
       for (int i = 0; i < covers.length; i++) {
         final coverUrl = covers[i].attributes['src'];
         final title = titles[i].text;
-        webtoons.add({'cover': coverUrl!, 'title': title});
+        var chapterNumber = chapters[i].text;
+        chapterNumber = chapterNumber.split(' ')[1];
+        webtoons.add({
+          'cover': coverUrl!,
+          'title': title,
+          'chapterNumber': chapterNumber,
+        });
       }
 
       return webtoons;
