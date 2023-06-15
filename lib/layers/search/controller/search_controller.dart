@@ -1,7 +1,9 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// class SearchController extends ChangeNotifier {
+class SearchController extends ChangeNotifier {
 
-//   final 
+  List<Map<String, String>> _webtoons = [];
 
-// }
+  
+
+}
