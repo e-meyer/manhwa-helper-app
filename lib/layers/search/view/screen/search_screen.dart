@@ -37,7 +37,9 @@ class _SearchScreenState extends State<SearchScreen> {
         return;
       }
 
-      final website = 'https://asurascans.com/?s=$_inputText';
+      final website =
+          '${widget.scanlator.baseUrl}${widget.scanlator.searchQuery}$_inputText';
+
       scrapeWebsite(website).then((webtoons) {
         setState(() {
           _webtoons = webtoons;
@@ -61,12 +63,15 @@ class _SearchScreenState extends State<SearchScreen> {
       for (int i = 0; i < covers.length; i++) {
         final coverUrl = covers[i].attributes['src'];
         final title = titles[i].text;
-        var chapterNumber = chapters[i].text;
-        chapterNumber = chapterNumber.split(' ')[1];
+        String? chapterNumber;
+        if (chapters.isNotEmpty) {
+          final text = chapters[i].text;
+          chapterNumber = text.split(' ')[1];
+        }
         webtoons.add({
           'cover': coverUrl!,
           'title': title,
-          'chapterNumber': chapterNumber,
+          'chapterNumber': chapterNumber ?? '0',
         });
       }
 
