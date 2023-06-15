@@ -33,7 +33,9 @@ class _HelperScreenState extends State<HelperScreen> {
     return Scaffold(
       body: buildNavigator(),
       bottomNavigationBar: CustomNavigationBar(
-        scaleFactor: 0.01,
+        scaleCurve: Curves.decelerate,
+        // iconSize: 24,
+        scaleFactor: 0.05,
         strokeColor: Colors.transparent,
         backgroundColor: Color(0xFF262626),
         currentIndex: _currentIndex,
@@ -47,33 +49,77 @@ class _HelperScreenState extends State<HelperScreen> {
           CustomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/home.svg',
-              colorFilter: _currentIndex == 0
-                  ? ColorFilter.mode(Color(0xFFFFFFFF), BlendMode.srcIn)
-                  : ColorFilter.mode(Color(0xFF676767), BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                Color(0xFF676767),
+                BlendMode.srcIn,
+              ),
+              height: 28,
+            ),
+            selectedIcon: AnimatedOpacity(
+              opacity: _currentIndex == 0 ? 1.0 : 0.0,
+              duration: Duration(milliseconds: 200),
+              child: SvgPicture.asset(
+                'assets/icons/home-solid.svg',
+                colorFilter: ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
+                height: 28,
+              ),
             ),
           ),
           CustomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/search.svg',
-              colorFilter: _currentIndex == 1
-                  ? ColorFilter.mode(Color(0xFFFFFFFF), BlendMode.srcIn)
-                  : ColorFilter.mode(Color(0xFF676767), BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                Color(0xFF676767),
+                BlendMode.srcIn,
+              ),
+              height: 28,
+            ),
+            selectedIcon: SvgPicture.asset(
+              'assets/icons/search-solid.svg',
+              colorFilter: ColorFilter.mode(
+                Color(0xFFFFFFFF),
+                BlendMode.srcIn,
+              ),
+              height: 28,
             ),
           ),
           CustomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/notifications_bell.svg',
-              colorFilter: _currentIndex == 2
-                  ? ColorFilter.mode(Color(0xFFFFFFFF), BlendMode.srcIn)
-                  : ColorFilter.mode(Color(0xFF676767), BlendMode.srcIn),
+              'assets/icons/notifications-bell.svg',
+              colorFilter: ColorFilter.mode(
+                Color(0xFF676767),
+                BlendMode.srcIn,
+              ),
+              height: 28,
+            ),
+            selectedIcon: SvgPicture.asset(
+              'assets/icons/notifications-bell-solid.svg',
+              colorFilter: ColorFilter.mode(
+                Color(0xFFFFFFFF),
+                BlendMode.srcIn,
+              ),
+              height: 28,
             ),
           ),
           CustomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/settings_engine.svg',
-              colorFilter: _currentIndex == 3
-                  ? ColorFilter.mode(Color(0xFFFFFFFF), BlendMode.srcIn)
-                  : ColorFilter.mode(Color(0xFF676767), BlendMode.srcIn),
+              'assets/icons/bookmark.svg',
+              colorFilter: ColorFilter.mode(
+                Color(0xFF676767),
+                BlendMode.srcIn,
+              ),
+              height: 28,
+            ),
+            selectedIcon: SvgPicture.asset(
+              'assets/icons/bookmark-solid.svg',
+              colorFilter: ColorFilter.mode(
+                Color(0xFFFFFFFF),
+                BlendMode.srcIn,
+              ),
+              height: 28,
             ),
           ),
         ],
