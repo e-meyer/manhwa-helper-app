@@ -1,4 +1,4 @@
-# Manhwa Alert
+### Manhwa Alert
 
 An app that alerts readers of new chapters of their favorite Manhwas.
 Basically, the backend just scrape some websites every x minutes to check if a new chapter of a manhwa was released. Then it gets the list of releases from a predetermined set of Scanlators that I like the most like Asura, Luminous, Flame, Reaper, etc.
