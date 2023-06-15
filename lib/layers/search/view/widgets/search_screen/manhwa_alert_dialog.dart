@@ -18,12 +18,13 @@ class ManhwaAlertDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
-        height: MediaQuery.of(context).size.height * 0.65,
+        // height: MediaQuery.of(context).size.height * 0.65,
         decoration: BoxDecoration(
           color: Color(0xFF222222),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               decoration: BoxDecoration(
@@ -45,7 +46,7 @@ class ManhwaAlertDialog extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
               child: Text(
                 webtoon['title']!,
                 style: GoogleFonts.overpass(
@@ -58,17 +59,18 @@ class ManhwaAlertDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              '${webtoon['chapterNumber']!} chapters',
-              style: GoogleFonts.overpass(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                color: Colors.grey,
+            if (int.parse(webtoon['chapterNumber']!) > 0)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
+                child: Text(
+                  '${webtoon['chapterNumber']!} chapters',
+                  style: GoogleFonts.overpass(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
               ),
-            ),
           ],
         ),
       ),
