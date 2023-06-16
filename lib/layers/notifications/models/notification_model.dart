@@ -76,14 +76,6 @@ List<NotificationModel> notifications = [
     isRead: false,
   ),
   NotificationModel(
-    title: 'Meeting Reminder',
-    trailingImageLink:
-        "https://www.asurascans.com/wp-content/uploads/2021/07/solomaxlevelnewbie.jpg",
-    date: DateTime.now().subtract(Duration(days: 1, hours: 1)),
-    subtitle: 'Chapter 8',
-    isRead: false,
-  ),
-  NotificationModel(
     title: 'Notification 7',
     trailingImageLink:
         "https://www.asurascans.com/wp-content/uploads/2021/11/00-cover.jpg",
