@@ -20,7 +20,12 @@ class ManhwaAlertDialog extends StatelessWidget {
   }
 
   void _unsubscribeFromTopic(String manhwaTitle) {
-    final String topic = manhwaTitle.trim().split(' ').join('_').toLowerCase();
+    final String topic = manhwaTitle
+        .trim()
+        .split(' ')
+        .join('_')
+        .toLowerCase()
+        .replaceAll('\'', '');
     print(topic);
     fcm.unsubscribeFromTopic(topic);
   }
