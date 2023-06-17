@@ -7,7 +7,7 @@ import 'package:manhwa_alert/layers/notifications/view/screen/notifications_scre
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/screen/scanlator_selection_screen.dart';
 import 'package:manhwa_alert/layers/search/view/screen/search_screen.dart';
-import 'package:manhwa_alert/service_locator.dart';
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'notification_service.dart';

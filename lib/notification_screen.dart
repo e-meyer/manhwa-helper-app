@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:manhwa_alert/service_locator.dart';
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'notification_service.dart';

@@ -1,7 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'notification_service.dart';
+import '../../notification_service.dart';
 
 final GetIt serviceLocator = GetIt.instance;
 
@@ -17,4 +18,6 @@ Future<void> setupLocator() async {
       ),
     );
   }
+  serviceLocator.registerLazySingleton<FirebaseMessaging>(
+      () => FirebaseMessaging.instance);
 }
