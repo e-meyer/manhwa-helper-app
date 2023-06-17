@@ -1,13 +1,29 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/notification_service.dart';
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 
 class ManhwaAlertDialog extends StatelessWidget {
   final Map<String, String> webtoon;
+  final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
 
-  const ManhwaAlertDialog({
+  ManhwaAlertDialog({
     super.key,
     required this.webtoon,
   });
+
+  void _subscribeToTopic(String manhwaTitle) {
+    final String topic = manhwaTitle.trim().split(' ').join('_').toLowerCase();
+    print(topic);
+    fcm.subscribeToTopic(topic);
+  }
+
+  void _unsubscribeFromTopic(String manhwaTitle) {
+    final String topic = manhwaTitle.trim().split(' ').join('_').toLowerCase();
+    print(topic);
+    fcm.unsubscribeFromTopic(topic);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +87,28 @@ class ManhwaAlertDialog extends StatelessWidget {
                   ),
                 ),
               ),
+            ElevatedButton(
+              onPressed: () => _subscribeToTopic(webtoon['title']!),
+              child: Text(
+                'Subscribe',
+                style: GoogleFonts.overpass(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => _unsubscribeFromTopic(webtoon['title']!),
+              child: Text(
+                'Subscribe',
+                style: GoogleFonts.overpass(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
