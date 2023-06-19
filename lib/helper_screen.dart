@@ -21,7 +21,7 @@ class _HelperScreenState extends State<HelperScreen>
     with WidgetsBindingObserver {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final NotificationService service = serviceLocator.get<NotificationService>();
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
     0: GlobalKey<NavigatorState>(),
@@ -64,7 +64,6 @@ class _HelperScreenState extends State<HelperScreen>
       print('Received a message while in the foreground:');
       print('Message data: ${message.data}');
       setState(() {
-        service.incrementNotificationCount();
         service.saveNotification(message.data);
       });
     });
