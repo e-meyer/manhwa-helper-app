@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -11,20 +12,51 @@ class NotificationsScreen extends StatefulWidget {
   State<NotificationsScreen> createState() => NotificationsScreenState();
 }
 
-class NotificationsScreenState extends State<NotificationsScreen> {
+class NotificationsScreenState extends State<NotificationsScreen>
+    with WidgetsBindingObserver {
   final NotificationService service = serviceLocator.get<NotificationService>();
   final DateTime currentTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
+    service.notifications.addListener(_updateNotifications);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    service.notifications.removeListener(_updateNotifications);
+    super.dispose();
+  }
+
+  void _updateNotifications() {
+    setState(() {});
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      await sp.reload();
+      setState(() {
+        service.getLocalNotifications();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<NotificationModel> notifications = getNotifications();
-
-    final List<NotificationModel> newNotifications = notifications
+    final List<NotificationModel> newNotifications = service.notifications.value
         .where((notification) =>
             currentTime.difference(notification.notificationTimestamp).inDays <=
             1)
         .toList();
 
-    final List<NotificationModel> previousNotifications = notifications
+    final List<NotificationModel> previousNotifications = service
+        .notifications.value
         .where((notification) =>
             currentTime.difference(notification.notificationTimestamp).inDays >
             1)
@@ -44,15 +76,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
         actions: [
           ElevatedButton(
             onPressed: () async {
-              final list = await service.getLocalNotifications();
-              for (var item in list) {
-                print(item.manhwaTitle +
-                    item.chapterNumber +
-                    item.chapterUrl +
-                    item.coverUrl +
-                    item.notificationTimestamp.toString() +
-                    item.isRead.toString());
-              }
+              print(service.notifications.value.length);
             },
             child: Icon(
               Icons.settings,
@@ -63,11 +87,16 @@ class NotificationsScreenState extends State<NotificationsScreen> {
       backgroundColor: Color(0xFF222222),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            _buildSection('New', newNotifications),
-            _buildSection('Previous', previousNotifications),
-          ],
+        child: ValueListenableBuilder<List<NotificationModel>>(
+          valueListenable: service.notifications,
+          builder: (context, value, child) {
+            return Column(
+              children: [
+                _buildSection('New', newNotifications),
+                _buildSection('Previous', previousNotifications),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -119,85 +148,91 @@ class NotificationsScreenState extends State<NotificationsScreen> {
             final formattedTimeDifference =
                 _formatTimeDifference(timeDifference);
 
-            return Container(
-              color: backgroundColor,
-              padding: (sectionTitle == 'New' && !isRead)
-                  ? EdgeInsets.fromLTRB(0, 20, 20, 10)
-                  : EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (sectionTitle == 'New' && !isRead)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 7.0),
-                        child: Center(
-                          child: Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF6812),
-                              shape: BoxShape.circle,
+            return InkWell(
+              onTap: () {
+                service.markNotificationAsRead(notification);
+                print(notification.chapterUrl);
+              },
+              child: Container(
+                color: backgroundColor,
+                padding: (sectionTitle == 'New' && !isRead)
+                    ? EdgeInsets.fromLTRB(0, 14, 20, 14)
+                    : EdgeInsets.fromLTRB(20, 14, 20, 14),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (sectionTitle == 'New' && !isRead)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                          child: Center(
+                            child: Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFF6812),
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ),
                         ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          notification.coverUrl,
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        notification.coverUrl,
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                    SizedBox(width: 14.0),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            // color: Colors.red,
-                            height: 40,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                notification.manhwaTitle,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.overpass(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                      SizedBox(width: 14.0),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              // color: Colors.red,
+                              height: 40,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  notification.manhwaTitle,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.overpass(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 3,
                                 ),
-                                maxLines: 3,
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                notification.chapterNumber,
-                                style: GoogleFonts.overpass(
-                                  color: Color(0xFFBEBEBE),
-                                  fontWeight: FontWeight.bold,
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  notification.chapterNumber,
+                                  style: GoogleFonts.overpass(
+                                    color: Color(0xFFBEBEBE),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                formattedTimeDifference,
-                                style: GoogleFonts.overpass(
-                                  color: Color(0xFFFF6812),
-                                  fontWeight: FontWeight.w600,
+                                Text(
+                                  formattedTimeDifference,
+                                  style: GoogleFonts.overpass(
+                                    color: Color(0xFFFF6812),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
@@ -219,8 +254,12 @@ class NotificationsScreenState extends State<NotificationsScreen> {
       return '${timeDifference.inDays} ${timeDifference.inDays > 1 ? 'days' : 'day'} ago';
     } else if (timeDifference.inHours > 0) {
       return '${timeDifference.inHours} ${timeDifference.inHours > 1 ? 'hours' : 'hour'} ago';
-    } else {
+    } else if (timeDifference.inMinutes > 0) {
       return '${timeDifference.inMinutes} ${timeDifference.inMinutes > 1 ? 'minutes' : 'minute'} ago';
+    } else if (timeDifference.inSeconds > 0) {
+      return '${timeDifference.inSeconds} ${timeDifference.inSeconds > 1 ? 'seconds' : 'second'} ago';
+    } else {
+      return 'just now';
     }
   }
 }
