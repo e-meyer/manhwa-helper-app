@@ -14,7 +14,15 @@ class ManhwaAlertDialog extends StatelessWidget {
   });
 
   void _subscribeToTopic(String manhwaTitle) {
-    final String topic = manhwaTitle.trim().split(' ').join('_').toLowerCase();
+    final String topic = manhwaTitle
+        .trim()
+        .replaceAll('`', '')
+        .replaceAll('’', '')
+        .replaceAll(',', '')
+        .replaceAll('\'', '')
+        .split(' ')
+        .join('_')
+        .toLowerCase();
     print(topic);
     fcm.subscribeToTopic(topic);
   }
@@ -22,10 +30,13 @@ class ManhwaAlertDialog extends StatelessWidget {
   void _unsubscribeFromTopic(String manhwaTitle) {
     final String topic = manhwaTitle
         .trim()
+        .replaceAll('`', '')
+        .replaceAll('’', '')
+        .replaceAll(',', '')
+        .replaceAll('\'', '')
         .split(' ')
         .join('_')
-        .toLowerCase()
-        .replaceAll('\'', '');
+        .toLowerCase();
     print(topic);
     fcm.unsubscribeFromTopic(topic);
   }
