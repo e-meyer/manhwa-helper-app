@@ -65,6 +65,7 @@ class _HelperScreenState extends State<HelperScreen>
       print('Message data: ${message.data}');
       setState(() {
         service.incrementNotificationCount();
+        service.saveNotification(message.data);
       });
     });
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
+import 'package:manhwa_alert/notification_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -10,6 +12,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class NotificationsScreenState extends State<NotificationsScreen> {
+  final NotificationService service = serviceLocator.get<NotificationService>();
   final DateTime currentTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -17,12 +20,14 @@ class NotificationsScreenState extends State<NotificationsScreen> {
 
     final List<NotificationModel> newNotifications = notifications
         .where((notification) =>
-            currentTime.difference(notification.date).inDays <= 1)
+            currentTime.difference(notification.notificationTimestamp).inDays <=
+            1)
         .toList();
 
     final List<NotificationModel> previousNotifications = notifications
         .where((notification) =>
-            currentTime.difference(notification.date).inDays > 1)
+            currentTime.difference(notification.notificationTimestamp).inDays >
+            1)
         .toList();
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +41,24 @@ class NotificationsScreenState extends State<NotificationsScreen> {
             color: Colors.white,
           ),
         ),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              final list = await service.getLocalNotifications();
+              for (var item in list) {
+                print(item.manhwaTitle +
+                    item.chapterNumber +
+                    item.chapterUrl +
+                    item.coverUrl +
+                    item.notificationTimestamp.toString() +
+                    item.isRead.toString());
+              }
+            },
+            child: Icon(
+              Icons.settings,
+            ),
+          ),
+        ],
       ),
       backgroundColor: Color(0xFF222222),
       body: SingleChildScrollView(
@@ -54,11 +77,18 @@ class NotificationsScreenState extends State<NotificationsScreen> {
       String sectionTitle, List<NotificationModel> notifications) {
     final filteredNotifications = notifications
         .where((notification) => sectionTitle == 'New'
-            ? currentTime.difference(notification.date).inDays <= 1
-            : currentTime.difference(notification.date).inDays > 1)
+            ? currentTime
+                    .difference(notification.notificationTimestamp)
+                    .inDays <=
+                1
+            : currentTime
+                    .difference(notification.notificationTimestamp)
+                    .inDays >
+                1)
         .toList();
 
-    filteredNotifications.sort((a, b) => b.date.compareTo(a.date));
+    filteredNotifications.sort(
+        (a, b) => b.notificationTimestamp.compareTo(a.notificationTimestamp));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +114,8 @@ class NotificationsScreenState extends State<NotificationsScreen> {
             final Color backgroundColor =
                 isRead ? Colors.transparent : Color(0xFF282828);
 
-            final timeDifference = currentTime.difference(notification.date);
+            final timeDifference =
+                currentTime.difference(notification.notificationTimestamp);
             final formattedTimeDifference =
                 _formatTimeDifference(timeDifference);
 
@@ -114,7 +145,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        notification.trailingImageLink,
+                        notification.coverUrl,
                         height: 80,
                         width: 80,
                         fit: BoxFit.fitWidth,
@@ -132,7 +163,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                notification.title,
+                                notification.manhwaTitle,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.overpass(
                                   fontSize: 16,
@@ -148,7 +179,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                notification.subtitle,
+                                notification.chapterNumber,
                                 style: GoogleFonts.overpass(
                                   color: Color(0xFFBEBEBE),
                                   fontWeight: FontWeight.bold,
