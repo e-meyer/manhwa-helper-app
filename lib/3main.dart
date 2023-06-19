@@ -7,7 +7,7 @@ import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
-import 'notification_screen.dart';
+import 'ignore/notifications/example_notification_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
