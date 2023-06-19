@@ -5,10 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends ChangeNotifier {
   int _newNotificationCount = 0;
+  final ValueNotifier<List<NotificationModel>> notifications =
+      ValueNotifier([]);
 
   final SharedPreferences _sharedPreferences;
 
-  NotificationService(this._sharedPreferences);
+  NotificationService(this._sharedPreferences) {
+    getLocalNotifications();
+  }
 
   int get newNotificationCount => _newNotificationCount;
 
@@ -47,21 +51,22 @@ class NotificationService extends ChangeNotifier {
     incrementNotificationCount();
   }
 
-  Future<List<NotificationModel>> getLocalNotifications() async {
-    List<NotificationModel> notifications = [];
+  void getLocalNotifications() {
     final List<String> initialList =
-        await _sharedPreferences.getStringList('notifications') ?? [];
+        _sharedPreferences.getStringList('notifications') ?? [];
+    final List<NotificationModel> updatedNotifications = [];
 
     for (String notificationString in initialList) {
       List<String> notificationParts = notificationString.split('|');
       String manhwaTitle = notificationParts[0];
       String chapterNumber = notificationParts[1];
-      String chapterUrl = notificationParts[2];
-      String coverUrl = notificationParts[3];
+      String coverUrl = notificationParts[2];
+      String chapterUrl = notificationParts[3];
+
       DateTime notificationTimestamp = DateTime.parse(notificationParts[4]);
       bool isRead = notificationParts[5] == 'unread' ? false : true;
 
-      notifications.add(
+      updatedNotifications.add(
         NotificationModel(
           manhwaTitle: manhwaTitle,
           coverUrl: coverUrl,
@@ -72,30 +77,50 @@ class NotificationService extends ChangeNotifier {
         ),
       );
     }
-    return notifications;
+    notifications.value = updatedNotifications;
   }
 
   Future<void> saveNotification(Map<String, dynamic> message) async {
-    String manhawTitle = message['manhwa_title'];
+    String manhwaTitle = message['manhwa_title'];
     String chapterNumber = message['chapter_number'];
-    String coverUrl = message['chapter_url'];
-    String chapterUrl = message['cover_url'];
+    String coverUrl = message['cover_url'];
+    String chapterUrl = message['chapter_url'];
     String notificationTimestamp = message['notification_timestamp'];
 
-    List<String> notifications =
+    List<String> currentLocalNotifications =
         _sharedPreferences.getStringList('notifications') ?? [];
-    notifications.add(
-      '$manhawTitle|$chapterNumber|$coverUrl|$chapterUrl|$notificationTimestamp|unread',
+    currentLocalNotifications.add(
+      '$manhwaTitle|$chapterNumber|$coverUrl|$chapterUrl|$notificationTimestamp|unread',
     );
-    await _sharedPreferences.setStringList('notifications', notifications);
+    await _sharedPreferences.setStringList(
+        'notifications', currentLocalNotifications);
 
-    // DateTime dateTime = DateTime.parse(dateStr);
+    final newNotification = NotificationModel(
+      manhwaTitle: manhwaTitle,
+      coverUrl: coverUrl,
+      chapterUrl: chapterUrl,
+      notificationTimestamp: DateTime.parse(notificationTimestamp),
+      chapterNumber: chapterNumber,
+      isRead: false,
+    );
 
-    // String formattedDate = '${dateTime.year}-${dateTime.month}-${dateTime.day}';
-    // String formattedTime =
-    //     '${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+    List<NotificationModel> updatedNotifications =
+        List.from(notifications.value);
+    updatedNotifications.add(newNotification);
+    notifications.value = updatedNotifications;
+  }
 
-    // print('Formatted Date: $formattedDate');
-    // print('Formatted Time: $formattedTime');
+  void markNotificationAsRead(NotificationModel notification) {
+    final List<NotificationModel> updatedNotifications =
+        List.from(notifications.value);
+    for (var item in updatedNotifications) {
+      if (item.chapterUrl == notification.chapterUrl) {
+        item.isRead = true;
+      }
+    }
+    for (var item in updatedNotifications) {
+      print(item.isRead);
+    }
+    notifications.value = updatedNotifications;
   }
 }
