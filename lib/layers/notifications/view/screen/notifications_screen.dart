@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math' as math;
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -41,9 +43,12 @@ class NotificationsScreenState extends State<NotificationsScreen>
     if (state == AppLifecycleState.resumed) {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.reload();
-      setState(() {
-        service.getLocalNotifications();
-      });
+      service.loadLocalNotifications();
+      // SharedPreferences sp = await SharedPreferences.getInstance();
+      // await sp.reload();
+      // setState(() {
+      //   service.loadLocalNotifications();
+      // });
     }
   }
 
@@ -76,7 +81,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
         actions: [
           ElevatedButton(
             onPressed: () async {
-              print(service.notifications.value.length);
+              service.clearAllNotifications();
             },
             child: Icon(
               Icons.settings,
@@ -122,17 +127,20 @@ class NotificationsScreenState extends State<NotificationsScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(
-            sectionTitle,
-            style: GoogleFonts.overpass(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        filteredNotifications.isNotEmpty
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Text(
+                  sectionTitle,
+                  style: GoogleFonts.overpass(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : Container(),
         ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -183,6 +191,38 @@ class NotificationsScreenState extends State<NotificationsScreen>
                           height: 80,
                           width: 80,
                           fit: BoxFit.fitWidth,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 20.0,
+                                ),
+                                child: twoRotatingArc(
+                                  size: 40,
+                                  color: Color(0xFFFF6812),
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'assets/icons/image-placeholder.svg',
+                                  height: 40,
+                                  colorFilter: ColorFilter.mode(
+                                    Color(0xFF676767),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                       SizedBox(width: 14.0),
@@ -262,4 +302,287 @@ class NotificationsScreenState extends State<NotificationsScreen>
       return 'just now';
     }
   }
+
+  static Widget twoRotatingArc({
+    required Color color,
+    required double size,
+    Key? key,
+  }) {
+    return TwoRotatingArc(
+      color: color,
+      size: size,
+      key: key,
+    );
+  }
+}
+
+class TwoRotatingArc extends StatefulWidget {
+  final double size;
+  final Color color;
+  const TwoRotatingArc({
+    Key? key,
+    required this.color,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  _TwoRotatingArcState createState() => _TwoRotatingArcState();
+}
+
+class _TwoRotatingArcState extends State<TwoRotatingArc>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  final Cubic firstCurve = Curves.easeInQuart;
+  final Cubic secondCurve = Curves.easeOutQuart;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double size = widget.size;
+    final double strokeWidth = size / 10;
+    final Color color = widget.color;
+
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (_, __) => Stack(
+        children: <Widget>[
+          Visibility(
+            visible: _animationController.value <= 0.5,
+            child: Transform.rotate(
+              angle: Tween<double>(
+                begin: 0.0,
+                end: 3 * math.pi / 4,
+              )
+                  .animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Interval(
+                        0.0,
+                        0.5,
+                        curve: firstCurve,
+                      ),
+                    ),
+                  )
+                  .value,
+              child: Arc.draw(
+                color: color,
+                size: size,
+                strokeWidth: strokeWidth,
+                startAngle: -math.pi / 2,
+                // endAngle: math.pi / (size * size),
+                endAngle: Tween<double>(
+                  begin: math.pi / (size * size),
+                  end: -math.pi / 2,
+                )
+                    .animate(
+                      CurvedAnimation(
+                        parent: _animationController,
+                        curve: Interval(
+                          0.0,
+                          0.5,
+                          curve: firstCurve,
+                        ),
+                      ),
+                    )
+                    .value,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: _animationController.value >= 0.5,
+            child: Transform.rotate(
+              angle: Tween<double>(
+                begin: math.pi / 4,
+                end: math.pi,
+              )
+                  .animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Interval(
+                        0.5,
+                        1.0,
+                        curve: secondCurve,
+                      ),
+                    ),
+                  )
+                  .value,
+              child: Arc.draw(
+                color: color,
+                size: size,
+                strokeWidth: strokeWidth,
+                startAngle: -math.pi / 2,
+                // endAngle: math.pi / (size * size),
+                endAngle: Tween<double>(
+                  begin: math.pi / 2,
+                  end: math.pi / (size * size),
+                )
+                    .animate(
+                      CurvedAnimation(
+                        parent: _animationController,
+                        curve: Interval(
+                          0.5,
+                          1.0,
+                          curve: secondCurve,
+                        ),
+                      ),
+                    )
+                    .value,
+              ),
+            ),
+          ),
+
+          ///
+          ///second one
+          ///
+          ///
+          Visibility(
+            visible: _animationController.value <= 0.5,
+            child: Transform.rotate(
+              angle: Tween<double>(begin: -math.pi, end: -math.pi / 4)
+                  .animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Interval(0.0, 0.5, curve: firstCurve),
+                    ),
+                  )
+                  .value,
+              child: Arc.draw(
+                color: color,
+                size: size,
+                strokeWidth: strokeWidth,
+                startAngle: -math.pi / 2,
+                // endAngle: math.pi / (size * size),
+                endAngle: Tween<double>(
+                  begin: math.pi / (size * size),
+                  end: -math.pi / 2,
+                )
+                    .animate(
+                      CurvedAnimation(
+                        parent: _animationController,
+                        curve: Interval(
+                          0.0,
+                          0.5,
+                          curve: firstCurve,
+                        ),
+                      ),
+                    )
+                    .value,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: _animationController.value >= 0.5,
+            child: Transform.rotate(
+              angle: Tween<double>(
+                begin: -3 * math.pi / 4,
+                end: 0.0,
+              )
+                  .animate(
+                    CurvedAnimation(
+                      parent: _animationController,
+                      curve: Interval(
+                        0.5,
+                        1.0,
+                        curve: secondCurve,
+                      ),
+                    ),
+                  )
+                  .value,
+              child: Arc.draw(
+                color: color,
+                size: size,
+                strokeWidth: strokeWidth,
+                startAngle: -math.pi / 2,
+                // endAngle: math.pi / (size * size),
+                endAngle: Tween<double>(
+                  begin: math.pi / 2,
+                  end: math.pi / (size * size),
+                )
+                    .animate(
+                      CurvedAnimation(
+                        parent: _animationController,
+                        curve: Interval(
+                          0.5,
+                          1.0,
+                          curve: secondCurve,
+                        ),
+                      ),
+                    )
+                    .value,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+}
+
+class Arc extends CustomPainter {
+  final Color _color;
+  final double _strokeWidth;
+  final double _sweepAngle;
+  final double _startAngle;
+
+  Arc._(
+    this._color,
+    this._strokeWidth,
+    this._startAngle,
+    this._sweepAngle,
+  );
+
+  static Widget draw({
+    required Color color,
+    required double size,
+    required double strokeWidth,
+    required double startAngle,
+    required double endAngle,
+  }) =>
+      SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: Arc._(
+            color,
+            strokeWidth,
+            startAngle,
+            endAngle,
+          ),
+        ),
+      );
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Rect rect = Rect.fromCircle(
+      center: Offset(size.width / 2, size.height / 2),
+      radius: size.height / 2,
+    );
+
+    const bool useCenter = false;
+    final Paint paint = Paint()
+      ..color = _color
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = _strokeWidth;
+
+    canvas.drawArc(rect, _startAngle, _sweepAngle, useCenter, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
