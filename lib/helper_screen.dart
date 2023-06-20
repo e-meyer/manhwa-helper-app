@@ -43,9 +43,7 @@ class _HelperScreenState extends State<HelperScreen>
     if (state == AppLifecycleState.resumed) {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.reload();
-      print(sp.getInt('newNotificationCount').toString());
-      print("testeeee  " + service.newNotificationCount.toString());
-      service.loadNotificationCount().then((value) => setState(() {}));
+      // service.loadNotificationCount().then((value) => setState(() {}));
     }
   }
 
@@ -54,9 +52,9 @@ class _HelperScreenState extends State<HelperScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsFlutterBinding.ensureInitialized();
-    service.loadNotificationCount().then((value) => setState(() {
-          print("service ${service.newNotificationCount}");
-        }));
+    // service.loadNotificationCount().then((value) => setState(() {
+    //       print("service ${service.newNotificationCount}");
+    //     }));
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 
