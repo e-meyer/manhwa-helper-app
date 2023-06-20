@@ -4,7 +4,7 @@ import 'package:manhwa_alert/layers/notifications/models/notification_model.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends ChangeNotifier {
-  int _newNotificationCount = 0;
+  final ValueNotifier<int> unseenNotificationCount = ValueNotifier(0);
   final ValueNotifier<List<NotificationModel>> notifications =
       ValueNotifier([]);
 
@@ -14,34 +14,32 @@ class NotificationService extends ChangeNotifier {
     loadLocalNotifications();
   }
 
-  int get newNotificationCount => _newNotificationCount;
-
   Future<void> saveNotificationCount() async {
     await _sharedPreferences.setInt(
-        'newNotificationCount', _newNotificationCount);
+        'newNotificationCount', unseenNotificationCount.value);
   }
 
   void loadNotificationCount() {
-    _newNotificationCount =
-        _sharedPreferences.getInt('newNotificationCount') ?? 0;
+    unseenNotificationCount.value =
+        _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
     notifyListeners();
   }
 
   void incrementNotificationCount() {
-    _newNotificationCount++;
+    unseenNotificationCount.value++;
     saveNotificationCount();
     notifyListeners();
   }
 
   void resetNotificationCount() {
-    _newNotificationCount = 0;
+    unseenNotificationCount.value = 0;
     saveNotificationCount();
     notifyListeners();
   }
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    final value = _sharedPreferences.getInt('newNotificationCount') ?? 0;
-    await _sharedPreferences.setInt('newNotificationCount', value + 1);
+    final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
+    await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
     await saveNotification(message.data);
     await _sharedPreferences.reload();
     loadNotificationCount();
@@ -104,7 +102,6 @@ class NotificationService extends ChangeNotifier {
     List<NotificationModel> updatedNotifications =
         List.from(notifications.value);
     updatedNotifications.add(newNotification);
-    incrementNotificationCount();
     notifications.value = updatedNotifications;
   }
 

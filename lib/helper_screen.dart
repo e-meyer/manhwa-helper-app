@@ -43,9 +43,11 @@ class _HelperScreenState extends State<HelperScreen>
     if (state == AppLifecycleState.resumed) {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.reload();
-      setState(() {
-        service.loadNotificationCount();
-      });
+      if (_currentIndex != 2) {
+        setState(() {
+          service.loadNotificationCount();
+        });
+      }
     }
   }
 
@@ -63,8 +65,11 @@ class _HelperScreenState extends State<HelperScreen>
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Received a message while in the foreground:');
       print('Message data: ${message.data}');
+      service.saveNotification(message.data);
       setState(() {
-        service.saveNotification(message.data);
+        if (_currentIndex != 2) {
+          service.incrementNotificationCount();
+        }
       });
     });
 
@@ -149,30 +154,35 @@ class _HelperScreenState extends State<HelperScreen>
             ),
           ),
           CustomNavigationBarItem(
-            icon: Stack(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/notifications-bell.svg',
-                  colorFilter: ColorFilter.mode(
-                    Color(0xFF676767),
-                    BlendMode.srcIn,
-                  ),
-                  height: 28,
-                ),
-                if (service.newNotificationCount > 0)
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(5),
+            icon: ValueListenableBuilder(
+              valueListenable: service.unseenNotificationCount,
+              builder: (context, value, child) {
+                return Stack(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/notifications-bell.svg',
+                      colorFilter: ColorFilter.mode(
+                        Color(0xFF676767),
+                        BlendMode.srcIn,
                       ),
+                      height: 28,
                     ),
-                  ),
-              ],
+                    if (value > 0)
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
             selectedIcon: SvgPicture.asset(
               'assets/icons/notifications-bell-solid.svg',
