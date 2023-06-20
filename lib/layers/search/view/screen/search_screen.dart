@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
         String? chapterNumber;
         if (chapters.isNotEmpty) {
           final text = chapters[i].text;
-          chapterNumber = text.split(' ')[1];
+          chapterNumber = text.split(' ')[1].replaceAll('-', '');
         }
         webtoons.add({
           'cover': coverUrl!,

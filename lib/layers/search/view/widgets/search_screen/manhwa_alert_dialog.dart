@@ -20,6 +20,7 @@ class ManhwaAlertDialog extends StatelessWidget {
         .replaceAll('’', '')
         .replaceAll(',', '')
         .replaceAll('\'', '')
+        .replaceAll('!', '')
         .split(' ')
         .join('_')
         .toLowerCase();
@@ -34,6 +35,7 @@ class ManhwaAlertDialog extends StatelessWidget {
         .replaceAll('’', '')
         .replaceAll(',', '')
         .replaceAll('\'', '')
+        .replaceAll('!', '')
         .split(' ')
         .join('_')
         .toLowerCase();
