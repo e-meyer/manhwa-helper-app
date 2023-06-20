@@ -43,7 +43,9 @@ class _HelperScreenState extends State<HelperScreen>
     if (state == AppLifecycleState.resumed) {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.reload();
-      // service.loadNotificationCount().then((value) => setState(() {}));
+      setState(() {
+        service.loadNotificationCount();
+      });
     }
   }
 
