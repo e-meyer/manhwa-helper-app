@@ -22,19 +22,14 @@ class NotificationService extends ChangeNotifier {
   void loadNotificationCount() {
     unseenNotificationCount.value =
         _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
-
-    notifyListeners();
   }
 
   void incrementNotificationCount() {
     unseenNotificationCount.value++;
-    notifyListeners();
   }
 
   void resetNotificationCount() {
     unseenNotificationCount.value = 0;
-    saveNotificationCount();
-    notifyListeners();
   }
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

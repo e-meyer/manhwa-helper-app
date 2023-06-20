@@ -21,7 +21,7 @@ class _HelperScreenState extends State<HelperScreen>
     with WidgetsBindingObserver {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final NotificationService service = serviceLocator.get<NotificationService>();
-  int _currentIndex = 2;
+  int _currentIndex = 1;
 
   Map<int, GlobalKey<NavigatorState>> navigatorKeys = {
     0: GlobalKey<NavigatorState>(),
@@ -56,7 +56,7 @@ class _HelperScreenState extends State<HelperScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsFlutterBinding.ensureInitialized();
-    service.loadNotificationCount();
+    // service.loadNotificationCount();
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 
@@ -109,6 +109,7 @@ class _HelperScreenState extends State<HelperScreen>
           });
           if (_currentIndex == 2) {
             service.resetNotificationCount();
+            service.saveNotificationCount();
           }
         },
         items: [
