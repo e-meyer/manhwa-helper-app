@@ -139,27 +139,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 cursorColor: Color(0xFFFF6812),
               ),
-              // Container(
-              //   height: MediaQuery.of(context).size.height,
-              //   child: GridView.count(
-              //     physics: NeverScrollableScrollPhysics(),
-              //     crossAxisCount: 2,
-              //     crossAxisSpacing: 20.0,
-              //     mainAxisSpacing: 20.0,
-              //     shrinkWrap: true,
-              //     childAspectRatio: (1 / 1.45),
-              //     children: List.generate(
-              //       _webtoons.length,
-              //       (index) {
-              //         final manga = _webtoons[index];
-
-              //         return MangaItem(
-              //           webtoon: manga,
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: 20,
               ),
