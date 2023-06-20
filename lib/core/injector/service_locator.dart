@@ -18,6 +18,8 @@ Future<void> setupLocator() async {
       ),
     );
   }
-  serviceLocator.registerLazySingleton<FirebaseMessaging>(
-      () => FirebaseMessaging.instance);
+  if (!serviceLocator.isRegistered<FirebaseMessaging>()) {
+    serviceLocator.registerLazySingleton<FirebaseMessaging>(
+        () => FirebaseMessaging.instance);
+  }
 }
