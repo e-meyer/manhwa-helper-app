@@ -11,7 +11,7 @@ class NotificationService extends ChangeNotifier {
   final SharedPreferences _sharedPreferences;
 
   NotificationService(this._sharedPreferences) {
-    getLocalNotifications();
+    loadLocalNotifications();
   }
 
   int get newNotificationCount => _newNotificationCount;
@@ -21,7 +21,7 @@ class NotificationService extends ChangeNotifier {
         'newNotificationCount', _newNotificationCount);
   }
 
-  Future<void> loadNotificationCount() async {
+  void loadNotificationCount() {
     _newNotificationCount =
         _sharedPreferences.getInt('newNotificationCount') ?? 0;
     notifyListeners();
@@ -39,19 +39,16 @@ class NotificationService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initializeFirebaseMessaging() async {
-    await loadNotificationCount();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      incrementNotificationCount();
-    });
-  }
-
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    await loadNotificationCount();
-    incrementNotificationCount();
+    final value = _sharedPreferences.getInt('newNotificationCount') ?? 0;
+    await _sharedPreferences.setInt('newNotificationCount', value + 1);
+    await saveNotification(message.data);
+    await _sharedPreferences.reload();
+    loadNotificationCount();
+    loadLocalNotifications();
   }
 
-  void getLocalNotifications() {
+  void loadLocalNotifications() {
     final List<String> initialList =
         _sharedPreferences.getStringList('notifications') ?? [];
     final List<NotificationModel> updatedNotifications = [];
@@ -107,10 +104,11 @@ class NotificationService extends ChangeNotifier {
     List<NotificationModel> updatedNotifications =
         List.from(notifications.value);
     updatedNotifications.add(newNotification);
+    incrementNotificationCount();
     notifications.value = updatedNotifications;
   }
 
-  void markNotificationAsRead(NotificationModel notification) {
+  void markNotificationAsRead(NotificationModel notification) async {
     final List<NotificationModel> updatedNotifications =
         List.from(notifications.value);
     for (var item in updatedNotifications) {
@@ -118,9 +116,30 @@ class NotificationService extends ChangeNotifier {
         item.isRead = true;
       }
     }
-    for (var item in updatedNotifications) {
-      print(item.isRead);
+
+    SharedPreferences _sharedPreferences =
+        await SharedPreferences.getInstance();
+    List<String> currentLocalNotifications =
+        _sharedPreferences.getStringList('notifications') ?? [];
+
+    int notificationIndex = currentLocalNotifications
+        .indexWhere((element) => element.contains(notification.chapterUrl));
+    if (notificationIndex != -1) {
+      List<String> notificationData =
+          currentLocalNotifications[notificationIndex].split('|');
+      notificationData[5] = 'read'; // Update the isRead value
+      currentLocalNotifications[notificationIndex] =
+          notificationData.join('|'); // Rejoin the notification data
+      await _sharedPreferences.setStringList('notifications',
+          currentLocalNotifications); // Save the updated list back to SharedPreferences
     }
     notifications.value = updatedNotifications;
+  }
+
+  Future<void> clearAllNotifications() async {
+    SharedPreferences _sharedPreferences =
+        await SharedPreferences.getInstance();
+    await _sharedPreferences.remove('notifications');
+    notifications.value = [];
   }
 }

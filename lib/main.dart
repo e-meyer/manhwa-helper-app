@@ -31,13 +31,13 @@ void main() async {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 
-  SharedPreferences sp = await SharedPreferences.getInstance();
+  // SharedPreferences sp = await SharedPreferences.getInstance();
 
-  final value = sp.getInt('newNotificationCount') ?? 0;
-  await sp.setInt('newNotificationCount', value + 1);
+  // final value = sp.getInt('newNotificationCount') ?? 0;
+  // await sp.setInt('newNotificationCount', value + 1);
   await setupLocator();
   NotificationService service = serviceLocator.get<NotificationService>();
-  await service.saveNotification(message.data);
+  await service.firebaseMessagingBackgroundHandler(message);
 }
 
 class MyApp extends StatelessWidget {
