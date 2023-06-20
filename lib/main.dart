@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:manhwa_alert/helper_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'notification_service.dart';
 
@@ -31,10 +30,6 @@ void main() async {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 
-  // SharedPreferences sp = await SharedPreferences.getInstance();
-
-  // final value = sp.getInt('newNotificationCount') ?? 0;
-  // await sp.setInt('newNotificationCount', value + 1);
   await setupLocator();
   NotificationService service = serviceLocator.get<NotificationService>();
   await service.firebaseMessagingBackgroundHandler(message);

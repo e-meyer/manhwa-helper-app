@@ -16,18 +16,18 @@ class NotificationService extends ChangeNotifier {
 
   Future<void> saveNotificationCount() async {
     await _sharedPreferences.setInt(
-        'newNotificationCount', unseenNotificationCount.value);
+        'unseenNotificationCount', unseenNotificationCount.value);
   }
 
   void loadNotificationCount() {
     unseenNotificationCount.value =
         _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
+
     notifyListeners();
   }
 
   void incrementNotificationCount() {
     unseenNotificationCount.value++;
-    saveNotificationCount();
     notifyListeners();
   }
 

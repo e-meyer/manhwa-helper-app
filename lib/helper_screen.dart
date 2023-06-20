@@ -56,9 +56,7 @@ class _HelperScreenState extends State<HelperScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsFlutterBinding.ensureInitialized();
-    // service.loadNotificationCount().then((value) => setState(() {
-    //       print("service ${service.newNotificationCount}");
-    //     }));
+    service.loadNotificationCount();
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 
@@ -71,6 +69,7 @@ class _HelperScreenState extends State<HelperScreen>
           service.incrementNotificationCount();
         }
       });
+      service.saveNotificationCount();
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
