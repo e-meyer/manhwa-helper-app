@@ -47,6 +47,7 @@ dependencies:
   get_it: ^7.6.0
   firebase_messaging: ^14.6.3
   shared_preferences: ^2.1.2
+  tutorial_coach_mark: ^1.2.9
 
 dev_dependencies:
   flutter_test:
