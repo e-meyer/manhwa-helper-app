@@ -56,7 +56,7 @@ class _HelperScreenState extends State<HelperScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsFlutterBinding.ensureInitialized();
-    // service.loadNotificationCount();
+    service.loadNotificationCount();
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 

@@ -25,8 +25,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
 
   @override
   void initState() {
-    createTutorial();
-    Future.delayed(Duration.zero, showTutorial);
+    // createTutorial();
+    // Future.delayed(Duration.zero, showTutorial);
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     service.notifications.addListener(_updateNotifications);
