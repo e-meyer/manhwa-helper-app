@@ -108,9 +108,6 @@ class NotificationService extends ChangeNotifier {
         item.isRead = true;
       }
     }
-
-    SharedPreferences _sharedPreferences =
-        await SharedPreferences.getInstance();
     List<String> currentLocalNotifications =
         _sharedPreferences.getStringList('notifications') ?? [];
 
@@ -129,8 +126,6 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<void> clearAllNotifications() async {
-    SharedPreferences _sharedPreferences =
-        await SharedPreferences.getInstance();
     await _sharedPreferences.remove('notifications');
     notifications.value = [];
   }
