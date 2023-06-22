@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/screen/search_screen.dart';
+import 'package:manhwa_alert/layers/search/view/widgets/scanlator_selection_screen/custom_scanlator_item.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import '../../../common/widgets/arc/two_rotating_arc.dart';
 
 class ScanlatorSelectionScreen extends StatelessWidget {
   const ScanlatorSelectionScreen({super.key});
@@ -41,7 +45,15 @@ class ScanlatorSelectionScreen extends StatelessWidget {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50.0),
+                      child: Center(
+                        child: TwoRotatingArc(
+                          size: 40,
+                          color: Color(0xFFFF6812),
+                        ),
+                      ),
+                    );
                   }
 
                   final scanlators = snapshot.data!.docs;
@@ -57,49 +69,8 @@ class ScanlatorSelectionScreen extends StatelessWidget {
                       final scanlatorData =
                           scanlator.data() as Map<String, dynamic>;
 
-                      return InkWell(
-                        onTap: () {
-                          final scanlator =
-                              ScanlatorModel.fromMap(scanlatorData);
-                          PersistentNavBarNavigator
-                              .pushNewScreenWithRouteSettings(
-                            context,
-                            settings: RouteSettings(name: '/search'),
-                            screen: SearchScreen(scanlator: scanlator),
-                            withNavBar: true,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Image.network(
-                                    scanlatorData['logo_url'],
-                                    height: 150,
-                                    width: 150,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    scanlatorData['name'],
-                                    style: GoogleFonts.overpass(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                      return CustomScanlatorItem(
+                        scanlatorData: scanlatorData,
                       );
                     }),
                   );
