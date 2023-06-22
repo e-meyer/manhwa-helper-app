@@ -24,7 +24,7 @@ class _HelperScreenState extends State<HelperScreen>
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final NotificationService service = serviceLocator.get<NotificationService>();
   final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+      PersistentTabController(initialIndex: 1);
 
   final List<Widget> _screens = const [
     HomeScreen(),
