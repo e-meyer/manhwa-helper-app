@@ -88,6 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        centerTitle: true,
         title: Text(
           'Searching in ${widget.scanlator.name}',
           style: GoogleFonts.overpass(
