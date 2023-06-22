@@ -99,7 +99,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                 child: Opacity(
                                   opacity: 0.03,
                                   child: Image.asset(
-                                    "assets/scanlators_logos/${widget.website.toLowerCase()}.png",
+                                    "assets/scanlators/${widget.website.toLowerCase()}.png",
                                     height: 140,
                                     fit: BoxFit.fitHeight,
                                   ),
