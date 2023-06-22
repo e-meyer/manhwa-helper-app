@@ -93,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
           'Searching in ${widget.scanlator.name}',
           style: GoogleFonts.overpass(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 18,
           ),
         ),
         // centerTitle: true,
@@ -117,6 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: InputDecoration(
                   isDense: true,
                   filled: true,
+                  contentPadding: EdgeInsets.all(0),
                   fillColor: Color(0xFF292929),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),

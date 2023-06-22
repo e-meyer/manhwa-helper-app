@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
@@ -23,8 +26,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
 
   @override
   void initState() {
-    // createTutorial();
-    // Future.delayed(Duration.zero, showTutorial);
+    createTutorial();
+    Future.delayed(Duration.zero, showTutorial);
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     service.notifications.addListener(_updateNotifications);
@@ -49,8 +52,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
     List<TargetFocus> targets = [];
     targets.add(
       TargetFocus(
-        shape: ShapeLightFocus.RRect,
-        radius: 16,
+        // radius: 16,
         identify: "keyButton",
         keyTarget: keyButton,
         alignSkip: Alignment.bottomRight,
@@ -67,20 +69,45 @@ class NotificationsScreenState extends State<NotificationsScreen>
                     style: GoogleFonts.overpass(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 20.0,
+                      fontSize: 24,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar tortor eget maximus iaculis.",
+                      "Notifications are sent and stored directly to your phone.",
                       style: GoogleFonts.overpass(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "If you lost connection and want to retrieve notifications from that period of time, you may want to use this button. ",
+                      style: GoogleFonts.overpass(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 10.0),
+                  //   child: Text(
+                  //     "Only the last notification sent from that period will be recieved. The remaining ones will only show if you press the button.",
+                  //     style: GoogleFonts.overpass(
+                  //       color: Colors.white,
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.w600,
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -100,10 +127,10 @@ class NotificationsScreenState extends State<NotificationsScreen>
         color: Colors.white,
         fontSize: 16,
       ),
-      textSkip: "Next",
+      textSkip: "Ok",
       paddingFocus: 14,
-      opacityShadow: 0.8,
-      // imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
       onFinish: () {
         print("finish");
       },
@@ -156,24 +183,49 @@ class NotificationsScreenState extends State<NotificationsScreen>
         .toList();
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
         shadowColor: Colors.transparent,
         backgroundColor: Color(0xFF222222),
-        title: Text(
-          'Updates',
-          style: GoogleFonts.overpass(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Text(
+            'Updates',
+            style: GoogleFonts.overpass(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Colors.white,
+            ),
           ),
         ),
         actions: [
-          ElevatedButton(
-            key: keyButton,
-            onPressed: () async {
-              service.clearAllNotifications();
-            },
-            child: Icon(
-              Icons.settings,
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: InkWell(
+              key: keyButton,
+              onTap: () {},
+              child: SvgPicture.asset(
+                'assets/icons/sync.svg',
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: InkWell(
+              onTap: () {
+                service.clearAllNotifications();
+              },
+              child: SvgPicture.asset(
+                'assets/icons/settings.svg',
+                height: 28,
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ),
         ],
