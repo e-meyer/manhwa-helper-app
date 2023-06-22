@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/layers/notifications/view/widgets/notification_section_builder.dart';
-import 'package:manhwa_alert/notification_service.dart';
+import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 

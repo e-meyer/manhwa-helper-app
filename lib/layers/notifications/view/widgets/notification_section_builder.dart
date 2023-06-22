@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
-import 'package:manhwa_alert/notification_service.dart';
+import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 
 import '../../../common/widgets/arc/two_rotating_arc.dart';
 

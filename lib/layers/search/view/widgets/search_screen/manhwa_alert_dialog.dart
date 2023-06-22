@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:manhwa_alert/notification_service.dart';
+import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 
 class ManhwaAlertDialog extends StatelessWidget {

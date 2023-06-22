@@ -1,11 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:manhwa_alert/helper_screen.dart';
+import 'package:manhwa_alert/layers/helper_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
-import 'firebase_options.dart';
-import 'notification_service.dart';
+import 'core/firebase/firebase_options.dart';
+import 'layers/notifications/controller/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

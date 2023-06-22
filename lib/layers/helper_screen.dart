@@ -10,7 +10,7 @@ import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'notification_service.dart';
+import 'notifications/controller/notification_service.dart';
 
 class HelperScreen extends StatefulWidget {
   const HelperScreen({super.key});
