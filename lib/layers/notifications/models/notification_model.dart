@@ -36,7 +36,7 @@ class NotificationModel {
       chapterUrl: map['chapter_url'] as String,
       notificationTimestamp:
           DateTime.parse(map['notification_timestamp'] as String),
-      isRead: false,
+      isRead: map['isRead'] != null ? map['isRead'] as bool : false,
     );
   }
 

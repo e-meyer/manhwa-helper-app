@@ -133,6 +133,11 @@ class ManhwaAlertDialog extends StatelessWidget {
               child: Text(
                 service.subscribedTopics.value.keys.contains(webtoon['title']!
                         .trim()
+                        .replaceAll('`', '')
+                        .replaceAll('’', '')
+                        .replaceAll(',', '')
+                        .replaceAll('\'', '')
+                        .replaceAll('!', '')
                         .split(' ')
                         .join('_')
                         .toLowerCase())

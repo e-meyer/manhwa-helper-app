@@ -172,6 +172,17 @@ class NotificationService extends ChangeNotifier {
     return timestamp;
   }
 
+  Future<void> markAsRead(String chapterUrl) async {
+    int targetIndex = notifications.value
+        .indexWhere((notification) => notification.chapterUrl == chapterUrl);
+
+    if (targetIndex != -1) {
+      notifications.value[targetIndex].isRead = true;
+      notifications.notifyListeners();
+      await saveNotificationsToCache();
+    }
+  }
+
   String loadLatestNotificationTimestamp() {
     return _sharedPreferences.getString('latest_notification_timestamp') ?? '';
   }
