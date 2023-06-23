@@ -99,7 +99,14 @@ class NotificationService extends ChangeNotifier {
     }
   }
 
-  addNewListener(key) {
+  Future<void> removeAListener(String key) async {
+    await listeners[key]!.cancel();
+  }
+
+  void addTopicSnapshotListener(key) {
+    if (listeners.containsKey(key)) {
+      return;
+    }
     listeners[key] = _db
         .collection("notifications")
         .doc(key)
@@ -179,7 +186,6 @@ class NotificationService extends ChangeNotifier {
     if (targetIndex != -1) {
       notifications.value[targetIndex].isRead = true;
       notifications.notifyListeners();
-      await saveNotificationsToCache();
     }
   }
 
@@ -199,7 +205,6 @@ class NotificationService extends ChangeNotifier {
     });
 
     subscribedTopics.value = localTopics;
-    print(subscribedTopics.value);
   }
 
   Future<void> clearAllNotifications() async {
@@ -219,14 +224,7 @@ class NotificationService extends ChangeNotifier {
     latestNotificationTimestamp = '';
   }
 
-  Future<void> subscribeToPlayer() async {
-    FirebaseMessaging.instance
-        .subscribeToTopic('player_who_returned_10000_years_later');
-    await saveSubscribedTopicLocal('player_who_returned_10000_years_later');
-    addNewListener('player_who_returned_10000_years_later');
-  }
-
-  Future<String> saveSubscribedTopicLocal(String topic) async {
+  Future<void> saveSubscribedTopicLocal(String topic) async {
     final String formattedTopic = 'topic_$topic';
     final String timestamp = DateTime.now().toIso8601String();
     if (!_sharedPreferences.containsKey(formattedTopic)) {
@@ -234,7 +232,6 @@ class NotificationService extends ChangeNotifier {
           formattedTopic, DateTime.now().toIso8601String());
       subscribedTopics.value[topic] = timestamp;
     }
-    return timestamp;
   }
 
   Future<void> removeSubscribedTopicLocal(String topic) async {

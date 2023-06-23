@@ -17,23 +17,23 @@ class ManhwaAlertDialog extends StatelessWidget {
     required this.webtoon,
   });
 
-  Future<String> saveSubscribedTopicLocal(String topic) async {
-    final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
-    final String formattedTopic = 'topic_$topic';
-    final String timestamp = DateTime.now().toIso8601String();
-    if (!sp.containsKey(formattedTopic)) {
-      await sp.setString(formattedTopic, DateTime.now().toIso8601String());
-      service.subscribedTopics.value[topic] = timestamp;
-    }
-    return timestamp;
-  }
+  // Future<String> saveSubscribedTopicLocal(String topic) async {
+  //   final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
+  //   final String formattedTopic = 'topic_$topic';
+  //   final String timestamp = DateTime.now().toIso8601String();
+  //   if (!sp.containsKey(formattedTopic)) {
+  //     await sp.setString(formattedTopic, DateTime.now().toIso8601String());
+  //     service.subscribedTopics.value[topic] = timestamp;
+  //   }
+  //   return timestamp;
+  // }
 
-  Future<void> removeSubscribedTopicLocal(String topic) async {
-    final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
-    final String formattedTopic = 'topic_$topic';
-    await sp.remove(formattedTopic);
-    service.subscribedTopics.value.remove(topic);
-  }
+  // Future<void> removeSubscribedTopicLocal(String topic) async {
+  //   final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
+  //   final String formattedTopic = 'topic_$topic';
+  //   await sp.remove(formattedTopic);
+  //   service.subscribedTopics.value.remove(topic);
+  // }
 
   void _subscribeToTopic(String manhwaTitle) async {
     final String topic = manhwaTitle
@@ -47,8 +47,8 @@ class ManhwaAlertDialog extends StatelessWidget {
         .join('_')
         .toLowerCase();
     fcm.subscribeToTopic(topic);
-    await saveSubscribedTopicLocal(topic);
-    service.addNewListener(topic);
+    await service.saveSubscribedTopicLocal(topic);
+    service.addTopicSnapshotListener(topic);
   }
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
@@ -63,7 +63,8 @@ class ManhwaAlertDialog extends StatelessWidget {
         .join('_')
         .toLowerCase();
     fcm.unsubscribeFromTopic(topic);
-    await removeSubscribedTopicLocal(topic);
+    await service.removeSubscribedTopicLocal(topic);
+    service.removeAListener(topic);
   }
 
   @override
@@ -131,18 +132,19 @@ class ManhwaAlertDialog extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _subscribeToTopic(webtoon['title']!),
               child: Text(
-                service.subscribedTopics.value.keys.contains(webtoon['title']!
-                        .trim()
-                        .replaceAll('`', '')
-                        .replaceAll('’', '')
-                        .replaceAll(',', '')
-                        .replaceAll('\'', '')
-                        .replaceAll('!', '')
-                        .split(' ')
-                        .join('_')
-                        .toLowerCase())
-                    ? 'Unsubscribe'
-                    : 'Subscribe',
+                'Subscribe',
+                // service.subscribedTopics.value.keys.contains(webtoon['title']!
+                //         .trim()
+                //         .replaceAll('`', '')
+                //         .replaceAll('’', '')
+                //         .replaceAll(',', '')
+                //         .replaceAll('\'', '')
+                //         .replaceAll('!', '')
+                //         .split(' ')
+                //         .join('_')
+                //         .toLowerCase())
+                //     ? 'Unsubscribe'
+                //     : 'Subscribe',
                 style: GoogleFonts.overpass(
                   color: Colors.white,
                   fontSize: 20,

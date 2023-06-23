@@ -70,10 +70,9 @@ class NotificationSectionBuilder extends StatelessWidget {
                 _formatTimeDifference(timeDifference);
 
             return InkWell(
-              onTap: () {
-                // service.markNotificationAsRead(notification);
-                print(service.markAsRead(notification.chapterUrl));
-                print(notification.chapterUrl);
+              onTap: () async {
+                service.markAsRead(notification.manhwaTitle);
+                await service.saveNotificationsToCache();
               },
               child: Container(
                 color: backgroundColor,
