@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/home/view/screen/home_screen.dart';
 import 'package:manhwa_alert/layers/notifications/view/screen/notifications_screen.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
@@ -151,6 +152,17 @@ class _HelperScreenState extends State<HelperScreen>
                               color: Colors.orange,
                               borderRadius: BorderRadius.circular(5),
                             ),
+                            // child: Center(
+                            //   child: Text(
+                            //     service.unseenNotificationCount.value
+                            //         .toString(),
+                            //     style: GoogleFonts.overpass(
+                            //       color: Colors.white,
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.w800,
+                            //     ),
+                            //   ),
+                            // ),
                           ),
                         ),
                     ],
@@ -234,9 +246,10 @@ class _HelperScreenState extends State<HelperScreen>
         ),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
-          curve: Curves.easeInOutCubic,
+          curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
+        padding: NavBarPadding.all(0),
         navBarStyle: NavBarStyle.style12,
       ),
     );

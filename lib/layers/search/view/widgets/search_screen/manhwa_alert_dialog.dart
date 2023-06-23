@@ -131,7 +131,13 @@ class ManhwaAlertDialog extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _subscribeToTopic(webtoon['title']!),
               child: Text(
-                'Subscribe',
+                service.subscribedTopics.value.keys.contains(webtoon['title']!
+                        .trim()
+                        .split(' ')
+                        .join('_')
+                        .toLowerCase())
+                    ? 'Unsubscribe'
+                    : 'Subscribe',
                 style: GoogleFonts.overpass(
                   color: Colors.white,
                   fontSize: 20,
