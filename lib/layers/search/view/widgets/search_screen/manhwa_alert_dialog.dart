@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ManhwaAlertDialog extends StatelessWidget {
   final Map<String, String> webtoon;
@@ -13,22 +14,23 @@ class ManhwaAlertDialog extends StatelessWidget {
     required this.webtoon,
   });
 
-  void _subscribeToTopic(String manhwaTitle) {
-    final String topic = manhwaTitle
-        .trim()
-        .replaceAll('`', '')
-        .replaceAll('’', '')
-        .replaceAll(',', '')
-        .replaceAll('\'', '')
-        .replaceAll('!', '')
-        .split(' ')
-        .join('_')
-        .toLowerCase();
-    print(topic);
-    fcm.subscribeToTopic(topic);
+  Future<void> saveSubscribedTopicLocal(String topic) async {
+    final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
+    final String formattedTopic = 'topic_$topic';
+    if (!sp.containsKey(formattedTopic)) {
+      await sp.setString(formattedTopic, DateTime.now().toIso8601String());
+    }
   }
 
-  void _unsubscribeFromTopic(String manhwaTitle) {
+  Future<void> removeSubscribedTopicLocal(String topic) async {
+    final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
+    final String formattedTopic = 'topic_$topic';
+    if (sp.containsKey(formattedTopic)) {
+      await sp.remove(formattedTopic);
+    }
+  }
+
+  void _subscribeToTopic(String manhwaTitle) async {
     final String topic = manhwaTitle
         .trim()
         .replaceAll('`', '')
@@ -39,8 +41,23 @@ class ManhwaAlertDialog extends StatelessWidget {
         .split(' ')
         .join('_')
         .toLowerCase();
-    print(topic);
+    fcm.subscribeToTopic(topic);
+    await saveSubscribedTopicLocal(topic);
+  }
+
+  void _unsubscribeFromTopic(String manhwaTitle) async {
+    final String topic = manhwaTitle
+        .trim()
+        .replaceAll('`', '')
+        .replaceAll('’', '')
+        .replaceAll(',', '')
+        .replaceAll('\'', '')
+        .replaceAll('!', '')
+        .split(' ')
+        .join('_')
+        .toLowerCase();
     fcm.unsubscribeFromTopic(topic);
+    await removeSubscribedTopicLocal(topic);
   }
 
   @override

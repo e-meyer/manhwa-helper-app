@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,5 +22,9 @@ Future<void> setupLocator() async {
   if (!serviceLocator.isRegistered<FirebaseMessaging>()) {
     serviceLocator.registerLazySingleton<FirebaseMessaging>(
         () => FirebaseMessaging.instance);
+  }
+  if (!serviceLocator.isRegistered<FirebaseFirestore>()) {
+    serviceLocator.registerLazySingleton<FirebaseFirestore>(
+        () => FirebaseFirestore.instance);
   }
 }

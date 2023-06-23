@@ -30,13 +30,13 @@ class NotificationModel {
 
   factory NotificationModel.fromMap(Map<String, dynamic> map) {
     return NotificationModel(
-      manhwaTitle: map['manhwaTitle'] as String,
-      chapterNumber: map['chapterNumber'] as String,
-      coverUrl: map['coverUrl'] as String,
-      chapterUrl: map['chapterUrl'] as String,
-      notificationTimestamp: DateTime.fromMillisecondsSinceEpoch(
-          map['notificationTimestamp'] as int),
-      isRead: map['isRead'] as bool,
+      manhwaTitle: map['manhwa_title'] as String,
+      chapterNumber: map['chapter_number'] as String,
+      coverUrl: map['cover_url'] as String,
+      chapterUrl: map['chapter_url'] as String,
+      notificationTimestamp:
+          DateTime.parse(map['notification_timestamp'] as String),
+      isRead: false,
     );
   }
 

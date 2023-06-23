@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
@@ -32,6 +34,42 @@ class NotificationService extends ChangeNotifier {
     unseenNotificationCount.value = 0;
   }
 
+  void addNotifications(List<NotificationModel> newNotifications) {
+    List<NotificationModel> notificationsHolder = notifications.value;
+    notificationsHolder.addAll(newNotifications);
+    notifications.value = notificationsHolder;
+  }
+
+  Future<void> saveNotificationsToCache(
+      List<Map<String, dynamic>> notifications) async {
+    final String cacheKey = 'cached_notifications';
+    final String latestTimestampKey = 'latest_notification_timestamp';
+
+    List<String> cachedNotifications = notifications
+        .map<String>((notification) => json.encode(notification))
+        .toList();
+    await _sharedPreferences.setStringList(cacheKey, cachedNotifications);
+  }
+
+  List<Map<String, dynamic>> loadCachedNotifications() {
+    final String cacheKey = 'cached_notifications';
+    List<String> cachedNotifications =
+        _sharedPreferences.getStringList(cacheKey) ?? [];
+    return cachedNotifications
+        .map<Map<String, dynamic>>(
+            (notification) => json.decode(notification) as Map<String, dynamic>)
+        .toList();
+  }
+
+  Future<void> saveLatestNotificationTimestamp() async {
+    await _sharedPreferences.setString(
+        'latest_notification_timestamp', DateTime.now().toIso8601String());
+  }
+
+  String? loadLatestNotificationTimestamp() {
+    return _sharedPreferences.getString('latest_notification_timestamp') ?? '';
+  }
+
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
     await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
@@ -39,6 +77,20 @@ class NotificationService extends ChangeNotifier {
     await _sharedPreferences.reload();
     loadNotificationCount();
     loadLocalNotifications();
+  }
+
+  Map<String, String> getLocalSubscribedTopics() {
+    final Map<String, String> localTopics = {};
+
+    _sharedPreferences.getKeys().forEach((key) {
+      if (key.startsWith('topic_')) {
+        String topic = key.substring('topic_'.length);
+        String timestamp = _sharedPreferences.getString(key)!;
+        localTopics[topic] = timestamp;
+      }
+    });
+
+    return localTopics;
   }
 
   void loadLocalNotifications() {

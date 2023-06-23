@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/screen/search_screen.dart';
 import 'package:manhwa_alert/layers/search/view/widgets/scanlator_selection_screen/custom_scanlator_item.dart';
@@ -10,7 +11,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../../../common/widgets/arc/two_rotating_arc.dart';
 
 class ScanlatorSelectionScreen extends StatelessWidget {
-  const ScanlatorSelectionScreen({super.key});
+  ScanlatorSelectionScreen({super.key});
+  final FirebaseFirestore _db = serviceLocator.get<FirebaseFirestore>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +38,7 @@ class ScanlatorSelectionScreen extends StatelessWidget {
           child: Column(
             children: [
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('scanlators')
-                    .snapshots(),
+                stream: _db.collection('scanlators').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Error retrieving data');
