@@ -71,7 +71,7 @@ class NotificationSectionBuilder extends StatelessWidget {
 
             return InkWell(
               onTap: () {
-                service.markNotificationAsRead(notification);
+                // service.markNotificationAsRead(notification);
                 print(notification.chapterUrl);
               },
               child: Container(

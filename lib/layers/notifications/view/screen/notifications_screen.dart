@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -23,61 +24,84 @@ class NotificationsScreenState extends State<NotificationsScreen>
     with WidgetsBindingObserver {
   final NotificationService service = serviceLocator.get<NotificationService>();
   final FirebaseFirestore _db = serviceLocator.get<FirebaseFirestore>();
-  List<Map<String, dynamic>> _notifications = [];
   int pageSize = 10;
   DocumentSnapshot? lastDocument;
   final DateTime currentTime = DateTime.now();
+  String _latestNotificationTimestamp = '';
 
   @override
   void initState() {
+    service.loadCachedNotifications();
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
-    _notifications = service.loadCachedNotifications();
+    service.notifications.addListener(_updateNotifications);
+    service.getLocalSubscribedTopics();
     getSnapshotData();
     listenForNewNotifications();
   }
 
+  void _updateNotifications() {
+    setState(() {});
+  }
+
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _listener;
+
   void listenForNewNotifications() {
-    final Map<String, String> localTopics = service.getLocalSubscribedTopics();
+    final Map<String, String> localTopics = service.subscribedTopics.value;
 
     for (final key in localTopics.keys) {
       String value = localTopics[key]!;
-      String? latestNotificationTimestamp =
-          service.loadLatestNotificationTimestamp();
 
-      _db
+      // Cancel the previous listener if it exists
+      if (_listener != null) {
+        _listener!.cancel();
+      }
+
+      // Set up a new listener with the updated query
+      _listener = _db
           .collection("notifications")
           .doc(key)
           .collection("notifications")
           .where('notification_timestamp',
-              isGreaterThan: (latestNotificationTimestamp != '' &&
-                      latestNotificationTimestamp != null)
-                  ? latestNotificationTimestamp
-                  : value)
-          .orderBy('notification_timestamp', descending: true)
+              isGreaterThan: _latestNotificationTimestamp)
           .snapshots()
           .listen((querySnapshot) async {
         List<NotificationModel> newNotifications = [];
 
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
-          print('${docSnapshot.id} => ${docSnapshot.data()}');
+          print(
+              'listenForNewNotifications: ${docSnapshot.id} => ${docSnapshot.data()}');
         }
-
         service.addNotifications(newNotifications);
+        await service.saveNotificationsToCache();
+        if (newNotifications.isNotEmpty) {
+          DateTime highestDate = newNotifications
+              .reduce((curr, next) =>
+                  curr.notificationTimestamp.isAfter(next.notificationTimestamp)
+                      ? curr
+                      : next)
+              .notificationTimestamp;
 
-        await service.saveNotificationsToCache(_notifications);
-        await service.saveLatestNotificationTimestamp();
+          print("Highest date in the list: $highestDate");
+          _latestNotificationTimestamp = highestDate.toIso8601String();
+          await service
+              .saveLatestNotificationTimestamp(_latestNotificationTimestamp);
+
+          // Call listenForNewNotifications() again to set up a new listener with the updated query
+          listenForNewNotifications();
+        } else {
+          await service
+              .saveLatestNotificationTimestamp(_latestNotificationTimestamp);
+        }
       });
     }
   }
 
   Future<void> getSnapshotData() async {
-    final Map<String, String> localTopics = service.getLocalSubscribedTopics();
+    final Map<String, String> localTopics = service.subscribedTopics.value;
+    print('snapshot : ' + localTopics.toString());
     List<NotificationModel> newNotifications = [];
-
-    String? latestNotificationTimestamp =
-        service.loadLatestNotificationTimestamp();
 
     for (final key in localTopics.keys) {
       String value = localTopics[key]!;
@@ -86,10 +110,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
           .doc(key)
           .collection("notifications")
           .where('notification_timestamp',
-              isGreaterThan: (latestNotificationTimestamp != '' &&
-                      latestNotificationTimestamp != null)
-                  ? latestNotificationTimestamp
-                  : value) // Add this line
+              isGreaterThan: _latestNotificationTimestamp)
           .orderBy('notification_timestamp', descending: true)
           .limit(pageSize);
 
@@ -104,20 +125,29 @@ class NotificationsScreenState extends State<NotificationsScreen>
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(
               docSnapshot.data() as Map<String, dynamic>));
-          print('${docSnapshot.id} => ${docSnapshot.data()}');
+          print('getSnapshotData: ${docSnapshot.id} => ${docSnapshot.data()}');
         }
       }
     }
     service.addNotifications(newNotifications);
+    await service.saveNotificationsToCache();
+    if (newNotifications.isNotEmpty) {
+      DateTime highestDate = newNotifications
+          .reduce((curr, next) =>
+              curr.notificationTimestamp.isAfter(next.notificationTimestamp)
+                  ? curr
+                  : next)
+          .notificationTimestamp;
 
-    await service.saveNotificationsToCache(_notifications);
-    await service.saveLatestNotificationTimestamp();
-  }
+      print("Highest date in the list: $highestDate");
+      _latestNotificationTimestamp = highestDate.toIso8601String();
+      _latestNotificationTimestamp = await service
+          .saveLatestNotificationTimestamp(_latestNotificationTimestamp);
+      return;
+    }
 
-  void refreshNotifications(List<Map<String, dynamic>> newNotifications) {
-    setState(() {
-      _notifications.addAll(newNotifications);
-    });
+    _latestNotificationTimestamp = await service
+        .saveLatestNotificationTimestamp(_latestNotificationTimestamp);
   }
 
   @override
@@ -125,25 +155,47 @@ class NotificationsScreenState extends State<NotificationsScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child: InkWell(
+              onTap: () {
+                print(_latestNotificationTimestamp);
+              },
+              child: Icon(Icons.settings),
+            ),
+          )
+        ],
       ),
-      // body: SingleChildScrollView(
-      //   physics: BouncingScrollPhysics(),
-      //   child: ValueListenableBuilder<List<NotificationModel>>(
-      //     valueListenable: service.notifications,
-      //     builder: (context, value, child) {
-      //       return Container();
-      //     },
-      //   ),
+
+      body: SingleChildScrollView(
+        child: ValueListenableBuilder<List<NotificationModel>>(
+          valueListenable: service.notifications,
+          builder: (context, value, child) {
+            return ListView.builder(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: value.length,
+              itemBuilder: (context, index) {
+                final notification = value[index];
+                return ListTile(
+                  title: Text(
+                      '${notification.manhwaTitle} - ${notification.chapterNumber}'),
+                );
+              },
+            );
+          },
+        ),
+      ),
+      // body: ListView.builder(
+      //   itemCount: _notifications.length,
+      //   itemBuilder: (BuildContext context, int index) {
+      //     return ListTile(
+      //       title: Text(_notifications[index]['manhwa_title']),
+      //       subtitle: Text(_notifications[index]['notification_timestamp']),
+      //     );
+      //   },
       // ),
-      body: ListView.builder(
-        itemCount: _notifications.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(_notifications[index]['manhwa_title']),
-            subtitle: Text(_notifications[index]['notification_timestamp']),
-          );
-        },
-      ),
     );
   }
   // @override

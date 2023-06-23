@@ -9,11 +9,12 @@ class NotificationService extends ChangeNotifier {
   final ValueNotifier<int> unseenNotificationCount = ValueNotifier(0);
   final ValueNotifier<List<NotificationModel>> notifications =
       ValueNotifier([]);
+  final ValueNotifier<Map<String, String>> subscribedTopics = ValueNotifier({});
 
   final SharedPreferences _sharedPreferences;
 
   NotificationService(this._sharedPreferences) {
-    loadLocalNotifications();
+    loadCachedNotifications();
   }
 
   Future<void> saveNotificationCount() async {
@@ -40,46 +41,47 @@ class NotificationService extends ChangeNotifier {
     notifications.value = notificationsHolder;
   }
 
-  Future<void> saveNotificationsToCache(
-      List<Map<String, dynamic>> notifications) async {
-    final String cacheKey = 'cached_notifications';
-    final String latestTimestampKey = 'latest_notification_timestamp';
-
-    List<String> cachedNotifications = notifications
-        .map<String>((notification) => json.encode(notification))
+  Future<void> saveNotificationsToCache() async {
+    List<String> cachedNotifications = notifications.value
+        .map<String>((notification) => json.encode(notification.toMap()))
         .toList();
-    await _sharedPreferences.setStringList(cacheKey, cachedNotifications);
+
+    await _sharedPreferences.setStringList(
+      'cached_notifications',
+      cachedNotifications,
+    );
   }
 
-  List<Map<String, dynamic>> loadCachedNotifications() {
-    final String cacheKey = 'cached_notifications';
+  void loadCachedNotifications() {
     List<String> cachedNotifications =
-        _sharedPreferences.getStringList(cacheKey) ?? [];
-    return cachedNotifications
-        .map<Map<String, dynamic>>(
-            (notification) => json.decode(notification) as Map<String, dynamic>)
-        .toList();
+        _sharedPreferences.getStringList('cached_notifications') ?? [];
+    final List<NotificationModel> notificationsHolder = [];
+    cachedNotifications.map((notification) {
+      final Map<String, dynamic> notificationMap = json.decode(notification);
+      notificationsHolder.add(NotificationModel.fromMap(notificationMap));
+    });
+    notifications.value = notificationsHolder;
   }
 
-  Future<void> saveLatestNotificationTimestamp() async {
+  Future<String> saveLatestNotificationTimestamp(timestamp) async {
+    final String timestamp = DateTime.now().toIso8601String();
     await _sharedPreferences.setString(
-        'latest_notification_timestamp', DateTime.now().toIso8601String());
+        'latest_notification_timestamp', timestamp);
+    return timestamp;
   }
 
-  String? loadLatestNotificationTimestamp() {
+  String loadLatestNotificationTimestamp() {
     return _sharedPreferences.getString('latest_notification_timestamp') ?? '';
   }
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
     await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
-    await saveNotification(message.data);
     await _sharedPreferences.reload();
     loadNotificationCount();
-    loadLocalNotifications();
   }
 
-  Map<String, String> getLocalSubscribedTopics() {
+  void getLocalSubscribedTopics() {
     final Map<String, String> localTopics = {};
 
     _sharedPreferences.getKeys().forEach((key) {
@@ -90,95 +92,7 @@ class NotificationService extends ChangeNotifier {
       }
     });
 
-    return localTopics;
-  }
-
-  void loadLocalNotifications() {
-    final List<String> initialList =
-        _sharedPreferences.getStringList('notifications') ?? [];
-    final List<NotificationModel> updatedNotifications = [];
-
-    for (String notificationString in initialList) {
-      List<String> notificationParts = notificationString.split('|');
-      String manhwaTitle = notificationParts[0];
-      String chapterNumber = notificationParts[1];
-      String coverUrl = notificationParts[2];
-      String chapterUrl = notificationParts[3];
-
-      DateTime notificationTimestamp = DateTime.parse(notificationParts[4]);
-      bool isRead = notificationParts[5] == 'unread' ? false : true;
-
-      updatedNotifications.add(
-        NotificationModel(
-          manhwaTitle: manhwaTitle,
-          coverUrl: coverUrl,
-          chapterUrl: chapterUrl,
-          notificationTimestamp: notificationTimestamp,
-          chapterNumber: chapterNumber,
-          isRead: isRead,
-        ),
-      );
-    }
-    notifications.value = updatedNotifications;
-  }
-
-  Future<void> saveNotification(Map<String, dynamic> message) async {
-    String manhwaTitle = message['manhwa_title'];
-    String chapterNumber = message['chapter_number'];
-    String coverUrl = message['cover_url'];
-    String chapterUrl = message['chapter_url'];
-    String notificationTimestamp = message['notification_timestamp'];
-
-    List<String> currentLocalNotifications =
-        _sharedPreferences.getStringList('notifications') ?? [];
-    currentLocalNotifications.add(
-      '$manhwaTitle|$chapterNumber|$coverUrl|$chapterUrl|$notificationTimestamp|unread',
-    );
-    await _sharedPreferences.setStringList(
-        'notifications', currentLocalNotifications);
-
-    final newNotification = NotificationModel(
-      manhwaTitle: manhwaTitle,
-      coverUrl: coverUrl,
-      chapterUrl: chapterUrl,
-      notificationTimestamp: DateTime.parse(notificationTimestamp),
-      chapterNumber: chapterNumber,
-      isRead: false,
-    );
-
-    List<NotificationModel> updatedNotifications =
-        List.from(notifications.value);
-    updatedNotifications.add(newNotification);
-    notifications.value = updatedNotifications;
-  }
-
-  void markNotificationAsRead(NotificationModel notification) async {
-    final List<NotificationModel> updatedNotifications =
-        List.from(notifications.value);
-    for (var item in updatedNotifications) {
-      if (item.chapterUrl == notification.chapterUrl) {
-        item.isRead = true;
-      }
-    }
-    List<String> currentLocalNotifications =
-        _sharedPreferences.getStringList('notifications') ?? [];
-
-    int notificationIndex = currentLocalNotifications
-        .indexWhere((element) => element.contains(notification.chapterUrl));
-    if (notificationIndex != -1) {
-      List<String> notificationData =
-          currentLocalNotifications[notificationIndex].split('|');
-      notificationData[5] = 'read'; // Update the isRead value
-      currentLocalNotifications[notificationIndex] =
-          notificationData.join('|'); // Rejoin the notification data
-      await _sharedPreferences.setStringList('notifications',
-          currentLocalNotifications); // Save the updated list back to SharedPreferences
-    }
-    notifications.value = updatedNotifications;
-  }
-
-  Future<void> clearAllNotifications() async {
-    await _sharedPreferences.remove('notifications');
-    notifications.value = [];
+    subscribedTopics.value = localTopics;
+    print(subscribedTopics.value);
   }
 }

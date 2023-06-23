@@ -19,11 +19,11 @@ class NotificationModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'manhwaTitle': manhwaTitle,
-      'chapterNumber': chapterNumber,
-      'coverUrl': coverUrl,
-      'chapterUrl': chapterUrl,
-      'notificationTimestamp': notificationTimestamp.millisecondsSinceEpoch,
+      'manhwa_title': manhwaTitle,
+      'chapter_number': chapterNumber,
+      'cover_url': coverUrl,
+      'chapter_url': chapterUrl,
+      'notification_timestamp': notificationTimestamp.millisecondsSinceEpoch,
       'isRead': isRead,
     };
   }

@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ManhwaAlertDialog extends StatelessWidget {
   final Map<String, String> webtoon;
   final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
+  final NotificationService service = serviceLocator.get<NotificationService>();
 
   ManhwaAlertDialog({
     super.key,
@@ -17,17 +18,19 @@ class ManhwaAlertDialog extends StatelessWidget {
   Future<void> saveSubscribedTopicLocal(String topic) async {
     final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
     final String formattedTopic = 'topic_$topic';
+    final String timestamp = DateTime.now().toIso8601String();
     if (!sp.containsKey(formattedTopic)) {
       await sp.setString(formattedTopic, DateTime.now().toIso8601String());
+      service.subscribedTopics.value[topic] = timestamp;
     }
+    print(service.subscribedTopics.value.length);
   }
 
   Future<void> removeSubscribedTopicLocal(String topic) async {
     final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
     final String formattedTopic = 'topic_$topic';
-    if (sp.containsKey(formattedTopic)) {
-      await sp.remove(formattedTopic);
-    }
+    await sp.remove(formattedTopic);
+    service.subscribedTopics.value.remove(topic);
   }
 
   void _subscribeToTopic(String manhwaTitle) async {
@@ -136,7 +139,7 @@ class ManhwaAlertDialog extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _unsubscribeFromTopic(webtoon['title']!),
               child: Text(
-                'Subscribe',
+                'Unsubscribe',
                 style: GoogleFonts.overpass(
                   color: Colors.white,
                   fontSize: 20,
