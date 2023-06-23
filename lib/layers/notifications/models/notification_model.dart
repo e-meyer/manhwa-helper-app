@@ -23,7 +23,7 @@ class NotificationModel {
       'chapter_number': chapterNumber,
       'cover_url': coverUrl,
       'chapter_url': chapterUrl,
-      'notification_timestamp': notificationTimestamp.millisecondsSinceEpoch,
+      'notification_timestamp': notificationTimestamp.toIso8601String(),
       'isRead': isRead,
     };
   }

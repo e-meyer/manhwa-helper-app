@@ -12,19 +12,20 @@ Future<void> setupLocator() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     serviceLocator.registerSingleton<SharedPreferences>(sharedPreferences);
   }
+  if (!serviceLocator.isRegistered<FirebaseMessaging>()) {
+    serviceLocator
+        .registerSingleton<FirebaseMessaging>(FirebaseMessaging.instance);
+  }
+  if (!serviceLocator.isRegistered<FirebaseFirestore>()) {
+    serviceLocator
+        .registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  }
   if (!serviceLocator.isRegistered<NotificationService>()) {
     serviceLocator.registerSingleton<NotificationService>(
       NotificationService(
         serviceLocator(),
+        serviceLocator(),
       ),
     );
-  }
-  if (!serviceLocator.isRegistered<FirebaseMessaging>()) {
-    serviceLocator.registerLazySingleton<FirebaseMessaging>(
-        () => FirebaseMessaging.instance);
-  }
-  if (!serviceLocator.isRegistered<FirebaseFirestore>()) {
-    serviceLocator.registerLazySingleton<FirebaseFirestore>(
-        () => FirebaseFirestore.instance);
   }
 }

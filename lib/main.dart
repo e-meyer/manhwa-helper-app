@@ -9,10 +9,10 @@ import 'layers/notifications/controller/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await setupLocator();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await setupLocator();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -32,7 +32,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   await setupLocator();
   NotificationService service = serviceLocator.get<NotificationService>();
-  await service.firebaseMessagingBackgroundHandler(message);
+  // await service.firebaseMessagingBackgroundHandler(message);
 }
 
 class MyApp extends StatelessWidget {

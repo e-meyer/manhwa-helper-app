@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,13 +10,14 @@ class ManhwaAlertDialog extends StatelessWidget {
   final Map<String, String> webtoon;
   final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
   final NotificationService service = serviceLocator.get<NotificationService>();
+  final FirebaseFirestore _db = serviceLocator.get<FirebaseFirestore>();
 
   ManhwaAlertDialog({
     super.key,
     required this.webtoon,
   });
 
-  Future<void> saveSubscribedTopicLocal(String topic) async {
+  Future<String> saveSubscribedTopicLocal(String topic) async {
     final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
     final String formattedTopic = 'topic_$topic';
     final String timestamp = DateTime.now().toIso8601String();
@@ -23,7 +25,7 @@ class ManhwaAlertDialog extends StatelessWidget {
       await sp.setString(formattedTopic, DateTime.now().toIso8601String());
       service.subscribedTopics.value[topic] = timestamp;
     }
-    print(service.subscribedTopics.value.length);
+    return timestamp;
   }
 
   Future<void> removeSubscribedTopicLocal(String topic) async {
@@ -46,6 +48,7 @@ class ManhwaAlertDialog extends StatelessWidget {
         .toLowerCase();
     fcm.subscribeToTopic(topic);
     await saveSubscribedTopicLocal(topic);
+    service.addNewListener(topic);
   }
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
