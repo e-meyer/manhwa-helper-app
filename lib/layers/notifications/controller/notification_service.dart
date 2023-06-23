@@ -24,59 +24,6 @@ class NotificationService extends ChangeNotifier {
     latestNotificationTimestamp = loadLatestNotificationTimestamp();
   }
 
-  Future<void> getSnapshotData() async {
-    final Map<String, String> localTopics = subscribedTopics.value;
-    print(latestNotificationTimestamp == '');
-    print('snapshot : ' + localTopics.toString());
-    List<NotificationModel> newNotifications = [];
-
-    for (final key in localTopics.keys) {
-      String value = localTopics[key]!;
-      Query query = _db
-          .collection("notifications")
-          .doc(key)
-          .collection("notifications")
-          .where('notification_timestamp',
-              isGreaterThan: latestNotificationTimestamp)
-          .orderBy('notification_timestamp', descending: true)
-          .limit(10);
-
-      if (lastDocument != null) {
-        query = query.startAfter([lastDocument!['notification_timestamp']]);
-      }
-
-      QuerySnapshot querySnapshot = await query.get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        lastDocument = querySnapshot.docs.last;
-        for (var docSnapshot in querySnapshot.docs) {
-          newNotifications.add(NotificationModel.fromMap(
-              docSnapshot.data() as Map<String, dynamic>));
-          print('getSnapshotData: ${docSnapshot.id} => ${docSnapshot.data()}');
-        }
-      }
-    }
-    addNotifications(newNotifications);
-    await saveNotificationsToCache();
-    if (newNotifications.isNotEmpty) {
-      DateTime highestDate = newNotifications
-          .reduce((curr, next) =>
-              curr.notificationTimestamp.isAfter(next.notificationTimestamp)
-                  ? curr
-                  : next)
-          .notificationTimestamp;
-
-      print("Highest date in the list: $highestDate");
-      latestNotificationTimestamp = highestDate.toIso8601String();
-      latestNotificationTimestamp =
-          await saveLatestNotificationTimestamp(latestNotificationTimestamp);
-      return;
-    }
-
-    latestNotificationTimestamp =
-        await saveLatestNotificationTimestamp(latestNotificationTimestamp);
-  }
-
   void listenForNewNotifications() {
     final Map<String, String> localTopics = subscribedTopics.value;
 
@@ -231,6 +178,7 @@ class NotificationService extends ChangeNotifier {
       listeners[key]!.cancel();
     });
     notifications.value = [];
+    latestNotificationTimestamp = '';
   }
 
   Future<void> subscribeToPlayer() async {

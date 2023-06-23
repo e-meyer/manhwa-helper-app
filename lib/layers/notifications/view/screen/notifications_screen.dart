@@ -32,7 +32,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
     WidgetsFlutterBinding.ensureInitialized();
     service.notifications.addListener(_updateNotifications);
     service.getLocalSubscribedTopics();
-    service.getSnapshotData();
+    // service.getSnapshotData();
     service.listenForNewNotifications();
   }
 
@@ -42,144 +42,100 @@ class NotificationsScreenState extends State<NotificationsScreen>
 
   @override
   Widget build(BuildContext context) {
+    final List<NotificationModel> newNotifications = service.notifications.value
+        .where((notification) =>
+            currentTime.difference(notification.notificationTimestamp).inDays <=
+            1)
+        .toList();
+
+    final List<NotificationModel> previousNotifications = service
+        .notifications.value
+        .where((notification) =>
+            currentTime.difference(notification.notificationTimestamp).inDays >
+            1)
+        .toList();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        titleSpacing: 0,
+        shadowColor: Colors.transparent,
+        backgroundColor: Color(0xFF222222),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Column(
+            children: [
+              Text(
+                '${service.latestNotificationTimestamp}',
+                style: GoogleFonts.overpass(
+                  fontWeight: FontWeight.bold,
+                  // fontSize: 24,
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '${service.subscribedTopics.value['player_who_returned_10000_years_later']}',
+                style: GoogleFonts.overpass(
+                  fontWeight: FontWeight.bold,
+                  // fontSize: 24,
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: InkWell(
               onTap: () async {
-                print(service.latestNotificationTimestamp);
-                print(service.listeners);
                 await service.subscribeToPlayer();
               },
-              child: Icon(Icons.settings),
+              child: SvgPicture.asset(
+                'assets/icons/sync.svg',
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
               onTap: () async {
                 await service.clearAllNotifications();
               },
-              child: Icon(Icons.login),
+              child: SvgPicture.asset(
+                'assets/icons/settings.svg',
+                height: 28,
+                colorFilter: ColorFilter.mode(
+                  Colors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
-
+      backgroundColor: Color(0xFF222222),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: ValueListenableBuilder<List<NotificationModel>>(
           valueListenable: service.notifications,
           builder: (context, value, child) {
-            return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: value.length,
-              itemBuilder: (context, index) {
-                final notification = value[index];
-                return ListTile(
-                  title: Text('${notification.manhwaTitle}'),
-                  subtitle:
-                      Text('${notification.notificationTimestamp.minute}'),
-                );
-              },
+            return Column(
+              children: [
+                NotificationSectionBuilder(
+                    sectionTitle: 'New', notifications: newNotifications),
+                NotificationSectionBuilder(
+                    sectionTitle: 'Previous',
+                    notifications: previousNotifications),
+              ],
             );
           },
         ),
       ),
-      // body: ListView.builder(
-      //   itemCount: _notifications.length,
-      //   itemBuilder: (BuildContext context, int index) {
-      //     return ListTile(
-      //       title: Text(_notifications[index]['manhwa_title']),
-      //       subtitle: Text(_notifications[index]['notification_timestamp']),
-      //     );
-      //   },
-      // ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   final List<NotificationModel> newNotifications = service.notifications.value
-  //       .where((notification) =>
-  //           currentTime.difference(notification.notificationTimestamp).inDays <=
-  //           1)
-  //       .toList();
-
-  //   final List<NotificationModel> previousNotifications = service
-  //       .notifications.value
-  //       .where((notification) =>
-  //           currentTime.difference(notification.notificationTimestamp).inDays >
-  //           1)
-  //       .toList();
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       titleSpacing: 0,
-  //       shadowColor: Colors.transparent,
-  //       backgroundColor: Color(0xFF222222),
-  //       title: Padding(
-  //         padding: const EdgeInsets.only(left: 14),
-  //         child: Text(
-  //           'Updates',
-  //           style: GoogleFonts.overpass(
-  //             fontWeight: FontWeight.bold,
-  //             fontSize: 24,
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //       ),
-  //       actions: [
-  //         Padding(
-  //           padding: const EdgeInsets.only(right: 20.0),
-  //           child: InkWell(
-  //             onTap: () {},
-  //             child: SvgPicture.asset(
-  //               'assets/icons/sync.svg',
-  //               colorFilter: ColorFilter.mode(
-  //                 Colors.white,
-  //                 BlendMode.srcIn,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.only(right: 14.0),
-  //           child: InkWell(
-  //             onTap: () {
-  //               service.clearAllNotifications();
-  //             },
-  //             child: SvgPicture.asset(
-  //               'assets/icons/settings.svg',
-  //               height: 28,
-  //               colorFilter: ColorFilter.mode(
-  //                 Colors.white,
-  //                 BlendMode.srcIn,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     backgroundColor: Color(0xFF222222),
-  //     body: SingleChildScrollView(
-  //       physics: BouncingScrollPhysics(),
-  //       child: ValueListenableBuilder<List<NotificationModel>>(
-  //         valueListenable: service.notifications,
-  //         builder: (context, value, child) {
-  //           return Column(
-  //             children: [
-  //               NotificationSectionBuilder(
-  //                   sectionTitle: 'New', notifications: newNotifications),
-  //               NotificationSectionBuilder(
-  //                   sectionTitle: 'Previous',
-  //                   notifications: previousNotifications),
-  //             ],
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 }
