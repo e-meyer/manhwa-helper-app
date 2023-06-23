@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/home/view/widgets/infinite_carousel.dart';
 import 'package:manhwa_alert/layers/home/view/widgets/manhwa_list_widget.dart';
+import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -381,6 +383,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   ];
 
+  final NotificationService service = serviceLocator.get<NotificationService>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -388,13 +392,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Color(0xFF222222),
-        title: Text(
-          'Manhwas',
-          style: GoogleFonts.overpass(
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
-            color: Colors.white,
-          ),
+        title: ValueListenableBuilder(
+          valueListenable: service.unseenNotificationCount,
+          builder: (context, value, child) {
+            return Text(
+              'Manhwas ${service.unseenNotificationCount.value}',
+              style: GoogleFonts.overpass(
+                fontWeight: FontWeight.bold,
+                fontSize: 26,
+                color: Colors.white,
+              ),
+            );
+          },
         ),
       ),
       body: SingleChildScrollView(

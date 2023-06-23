@@ -29,10 +29,12 @@ void main() async {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await setupLocator();
   NotificationService service = serviceLocator.get<NotificationService>();
-  // await service.firebaseMessagingBackgroundHandler(message);
+  await service.firebaseMessagingBackgroundHandler(message);
 }
 
 class MyApp extends StatelessWidget {

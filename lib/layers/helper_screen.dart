@@ -39,7 +39,7 @@ class _HelperScreenState extends State<HelperScreen>
     if (state == AppLifecycleState.resumed) {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.reload();
-      // service.loadNotificationCount();
+      service.loadNotificationCount();
     }
   }
 
@@ -48,15 +48,15 @@ class _HelperScreenState extends State<HelperScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     WidgetsFlutterBinding.ensureInitialized();
-    // service.loadNotificationCount();
+    service.loadNotificationCount();
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // setState(() {
-      //   service.incrementNotificationCount();
-      // });
-      // service.saveNotificationCount();
+      setState(() {
+        service.incrementNotificationCount();
+      });
+      service.saveNotificationCount();
     });
 
     _fcm.getInitialMessage().then((RemoteMessage? message) {
@@ -127,23 +127,68 @@ class _HelperScreenState extends State<HelperScreen>
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            inactiveIcon: SvgPicture.asset(
+            inactiveIcon: Center(
+              child: ValueListenableBuilder(
+                valueListenable: service.unseenNotificationCount,
+                builder: (context, value, child) {
+                  return Stack(
+                    children: [
+                      SvgPicture.asset(
                         'assets/icons/notifications-bell.svg',
                         colorFilter: const ColorFilter.mode(
                           Color(0xFF676767),
                           BlendMode.srcIn,
                         ),
-                      
-                      
+                      ),
+                      if (value > 0)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
-            icon: SvgPicture.asset(
+            icon: Center(
+              child: ValueListenableBuilder(
+                valueListenable: service.unseenNotificationCount,
+                builder: (context, value, child) {
+                  return Stack(
+                    children: [
+                      SvgPicture.asset(
                         'assets/icons/notifications-bell-solid.svg',
                         colorFilter: const ColorFilter.mode(
                           Color(0xFFFFFFFF),
                           BlendMode.srcIn,
                         ),
                       ),
-                 
+                      if (value > 0)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ),
             activeColorPrimary: Colors.white,
             inactiveColorPrimary: Colors.grey,
           ),
@@ -168,8 +213,8 @@ class _HelperScreenState extends State<HelperScreen>
         ],
         onItemSelected: (value) {
           if (value == 2) {
-            // service.resetNotificationCount();
-            // service.saveNotificationCount();
+            service.resetNotificationCount();
+            service.saveNotificationCount();
           }
         },
         confineInSafeArea: true,
@@ -189,7 +234,7 @@ class _HelperScreenState extends State<HelperScreen>
         ),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
-          curve: Curves.ease,
+          curve: Curves.easeInOutCubic,
           duration: Duration(milliseconds: 200),
         ),
         navBarStyle: NavBarStyle.style12,

@@ -8,6 +8,7 @@ import 'package:manhwa_alert/layers/notifications/models/notification_model.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends ChangeNotifier {
+  final ValueNotifier<int> unseenNotificationCount = ValueNotifier(0);
   final ValueNotifier<List<NotificationModel>> notifications =
       ValueNotifier([]);
   final ValueNotifier<Map<String, String>> subscribedTopics = ValueNotifier({});
@@ -22,6 +23,32 @@ class NotificationService extends ChangeNotifier {
   NotificationService(this._sharedPreferences, this._db) {
     loadCachedNotifications();
     latestNotificationTimestamp = loadLatestNotificationTimestamp();
+  }
+
+  Future<void> saveNotificationCount() async {
+    await _sharedPreferences.setInt(
+        'unseenNotificationCount', unseenNotificationCount.value);
+  }
+
+  void loadNotificationCount() {
+    unseenNotificationCount.value =
+        _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
+  }
+
+  void incrementNotificationCount() {
+    unseenNotificationCount.value++;
+  }
+
+  void resetNotificationCount() {
+    unseenNotificationCount.value = 0;
+  }
+
+  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
+    await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
+    await _sharedPreferences.reload();
+    print(_sharedPreferences.getInt('unseenNotificationCount'));
+    loadNotificationCount();
   }
 
   void listenForNewNotifications() {
