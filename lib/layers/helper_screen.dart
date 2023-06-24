@@ -22,7 +22,7 @@ class HelperScreen extends StatefulWidget {
 
 class _HelperScreenState extends State<HelperScreen>
     with WidgetsBindingObserver {
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseMessaging _fcm = serviceLocator.get<FirebaseMessaging>();
   final NotificationService service = serviceLocator.get<NotificationService>();
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
@@ -35,8 +35,7 @@ class _HelperScreenState extends State<HelperScreen>
   ];
 
   requestPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    NotificationSettings settings = await messaging.requestPermission(
+    NotificationSettings settings = await _fcm.requestPermission(
       alert: true,
       announcement: false,
       badge: true,

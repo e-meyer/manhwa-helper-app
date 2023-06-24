@@ -49,7 +49,12 @@ class NotificationService extends ChangeNotifier {
     await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
     await _sharedPreferences.reload();
     print(_sharedPreferences.getInt('unseenNotificationCount'));
+    List<NotificationModel> list = [];
+    NotificationModel item = NotificationModel.fromMap(message.data);
+    list.add(item);
+    addNotifications(list);
     loadNotificationCount();
+    await saveNotificationsToCache();
   }
 
   void listenForNewNotifications() {
@@ -140,8 +145,10 @@ class NotificationService extends ChangeNotifier {
             .notificationTimestamp;
 
         latestNotificationTimestamp.value = highestDate.toIso8601String();
+
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);
         notifyListeners();
+
         listenForNewNotifications();
       } else {
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);

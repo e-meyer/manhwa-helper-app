@@ -1,33 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ManhwaAlertDialog extends StatelessWidget {
+class ManhwaAlertDialog extends StatefulWidget {
   final Map<String, String> webtoon;
-  final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
-  final NotificationService service = serviceLocator.get<NotificationService>();
 
-  ManhwaAlertDialog({
+  const ManhwaAlertDialog({
     super.key,
     required this.webtoon,
   });
 
+  @override
+  State<ManhwaAlertDialog> createState() => _ManhwaAlertDialogState();
+}
+
+class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
+  final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
+  final StreamController<bool> _buttonController = StreamController<bool>();
+  final NotificationService service = serviceLocator.get<NotificationService>();
+
   void _subscribeToTopic(String manhwaTitle) async {
+    _buttonController.add(true);
     final String topic = cleanTopic(manhwaTitle);
     fcm.subscribeToTopic(topic);
     await service.saveSubscribedTopicLocal(topic);
     service.addTopicSnapshotListener(topic);
+    setState(() {});
+    _buttonController.add(true);
   }
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
+    _buttonController.add(false);
     final String topic = cleanTopic(manhwaTitle);
     fcm.unsubscribeFromTopic(topic);
     await service.removeSubscribedTopicLocal(topic);
     await service.removeAListener(topic);
+    setState(() {});
+    _buttonController.add(true);
+  }
+
+  @override
+  void dispose() {
+    _buttonController.close();
+    super.dispose();
   }
 
   @override
@@ -39,7 +57,6 @@ class ManhwaAlertDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
-        // height: MediaQuery.of(context).size.height * 0.65,
         decoration: BoxDecoration(
           color: Color(0xFF222222),
           borderRadius: BorderRadius.circular(20),
@@ -48,18 +65,18 @@ class ManhwaAlertDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(20),
                 ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
                 child: Image.network(
-                  webtoon['cover']!,
+                  widget.webtoon['cover']!,
                   height: 400,
                   width: MediaQuery.of(context).size.width * 0.8,
                   fit: BoxFit.cover,
@@ -69,7 +86,7 @@ class ManhwaAlertDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
               child: Text(
-                webtoon['title']!,
+                widget.webtoon['title']!,
                 style: GoogleFonts.overpass(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -80,11 +97,11 @@ class ManhwaAlertDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            if (int.parse(webtoon['chapterNumber']!) > 0)
+            if (int.parse(widget.webtoon['chapterNumber']!) > 0)
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
-                  '${webtoon['chapterNumber']!} chapters',
+                  '${widget.webtoon['chapterNumber']!} chapters',
                   style: GoogleFonts.overpass(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
@@ -96,25 +113,33 @@ class ManhwaAlertDialog extends StatelessWidget {
               valueListenable: service.subscribedTopics,
               builder: (BuildContext context, dynamic value, Widget? child) {
                 bool isUserSubscribed = service.subscribedTopics.value.keys
-                    .contains(cleanTopic(webtoon['title']!));
-                return ElevatedButton(
-                  onPressed: () {
-                    print(isUserSubscribed);
-
-                    if (isUserSubscribed) {
-                      _unsubscribeFromTopic(webtoon['title']!);
-                    } else {
-                      _subscribeToTopic(webtoon['title']!);
-                    }
+                    .contains(cleanTopic(widget.webtoon['title']!));
+                return StreamBuilder<bool>(
+                  stream: _buttonController.stream,
+                  initialData: true,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                    bool isButtonEnabled = snapshot.data!;
+                    return ElevatedButton(
+                      onPressed: isButtonEnabled
+                          ? () {
+                              if (isUserSubscribed) {
+                                _unsubscribeFromTopic(widget.webtoon['title']!);
+                              } else {
+                                _subscribeToTopic(widget.webtoon['title']!);
+                              }
+                            }
+                          : null,
+                      child: Text(
+                        isUserSubscribed ? 'Unsubscribe' : 'Subscribe',
+                        style: GoogleFonts.overpass(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
                   },
-                  child: Text(
-                    isUserSubscribed ? 'Unsubscribe' : 'Subscribe',
-                    style: GoogleFonts.overpass(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 );
               },
             ),
