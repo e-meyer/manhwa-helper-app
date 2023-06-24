@@ -74,8 +74,6 @@ class NotificationService extends ChangeNotifier {
 
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
-          print(
-              'listenForNewNotifications: ${docSnapshot.id} => ${docSnapshot.data()}');
         }
         addNotifications(newNotifications);
         await saveNotificationsToCache();
@@ -87,12 +85,11 @@ class NotificationService extends ChangeNotifier {
                       : next)
               .notificationTimestamp;
 
-          print("Highest date in the list: $highestDate");
           latestNotificationTimestamp.value = highestDate.toIso8601String();
 
           await saveLatestNotificationTimestamp(latestNotificationTimestamp);
           notifyListeners();
-          // Call listenForNewNotifications() again to set up a new listener with the updated query
+
           listenForNewNotifications();
         } else {
           await saveLatestNotificationTimestamp(latestNotificationTimestamp);
@@ -130,9 +127,8 @@ class NotificationService extends ChangeNotifier {
 
       for (var docSnapshot in querySnapshot.docs) {
         newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
-        print(
-            'listenForNewNotifications: ${docSnapshot.id} => ${docSnapshot.data()}');
       }
+
       addNotifications(newNotifications);
       await saveNotificationsToCache();
       if (newNotifications.isNotEmpty) {
@@ -143,7 +139,6 @@ class NotificationService extends ChangeNotifier {
                     : next)
             .notificationTimestamp;
 
-        print("Highest date in the list: $highestDate");
         latestNotificationTimestamp.value = highestDate.toIso8601String();
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);
         notifyListeners();
@@ -206,10 +201,6 @@ class NotificationService extends ChangeNotifier {
         timestamp = _sharedPreferences.getString(key)!;
       }
     });
-    final String test =
-        _sharedPreferences.getString('latest_notification_timestamp') ??
-            (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
-    print(test);
     return _sharedPreferences.getString('latest_notification_timestamp') ??
         (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
   }
