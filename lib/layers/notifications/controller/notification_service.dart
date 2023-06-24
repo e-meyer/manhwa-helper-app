@@ -190,7 +190,14 @@ class NotificationService extends ChangeNotifier {
   }
 
   String loadLatestNotificationTimestamp() {
-    return _sharedPreferences.getString('latest_notification_timestamp') ?? '';
+    String timestamp = '';
+    _sharedPreferences.getKeys().forEach((key) {
+      if (key.startsWith('topic_')) {
+        timestamp = _sharedPreferences.getString(key)!;
+      }
+    });
+    return _sharedPreferences.getString('latest_notification_timestamp') ??
+        (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
   }
 
   void getLocalSubscribedTopics() {

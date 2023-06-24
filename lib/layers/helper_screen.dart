@@ -34,6 +34,28 @@ class _HelperScreenState extends State<HelperScreen>
     HomeScreen(),
   ];
 
+  requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User grander provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
@@ -48,6 +70,7 @@ class _HelperScreenState extends State<HelperScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    requestPermission();
     WidgetsFlutterBinding.ensureInitialized();
     service.loadNotificationCount();
 
