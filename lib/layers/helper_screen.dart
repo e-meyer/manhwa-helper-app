@@ -76,11 +76,9 @@ class _HelperScreenState extends State<HelperScreen>
 
     _fcm.getToken().then((token) => print('FCM Token: $token'));
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      setState(() {
-        service.incrementNotificationCount();
-      });
-      service.saveNotificationCount();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      service.incrementNotificationCount();
+      await service.saveNotificationCount();
     });
 
     _fcm.getInitialMessage().then((RemoteMessage? message) {
