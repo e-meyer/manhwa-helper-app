@@ -246,10 +246,10 @@ class _HelperScreenState extends State<HelperScreen>
             inactiveColorPrimary: Colors.grey,
           ),
         ],
-        onItemSelected: (value) {
+        onItemSelected: (value) async {
           if (value == 2) {
             service.resetNotificationCount();
-            service.saveNotificationCount();
+            await service.saveNotificationCount();
           }
         },
         confineInSafeArea: true,
