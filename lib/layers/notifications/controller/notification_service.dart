@@ -224,6 +224,7 @@ class NotificationService extends ChangeNotifier {
         FirebaseMessaging.instance.unsubscribeFromTopic(topic);
       }
     });
+    
     listeners.forEach((key, value) {
       listeners[key]!.cancel();
     });
@@ -245,5 +246,6 @@ class NotificationService extends ChangeNotifier {
     final String formattedTopic = 'topic_$topic';
     await _sharedPreferences.remove(formattedTopic);
     subscribedTopics.value.remove(topic);
+    notifyListeners();
   }
 }

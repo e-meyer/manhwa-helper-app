@@ -10,7 +10,6 @@ class ManhwaAlertDialog extends StatelessWidget {
   final Map<String, String> webtoon;
   final FirebaseMessaging fcm = serviceLocator.get<FirebaseMessaging>();
   final NotificationService service = serviceLocator.get<NotificationService>();
-  final FirebaseFirestore _db = serviceLocator.get<FirebaseFirestore>();
 
   ManhwaAlertDialog({
     super.key,
@@ -26,6 +25,7 @@ class ManhwaAlertDialog extends StatelessWidget {
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
     final String topic = cleanTopic(manhwaTitle);
+    fcm.unsubscribeFromTopic(topic);
     await service.removeSubscribedTopicLocal(topic);
     service.removeAListener(topic);
   }
@@ -92,39 +92,32 @@ class ManhwaAlertDialog extends StatelessWidget {
                   ),
                 ),
               ),
-            ElevatedButton(
-              onPressed: () => _subscribeToTopic(webtoon['title']!),
-              child: Text(
-                'Subscribe',
-                // service.subscribedTopics.value.keys.contains(webtoon['title']!
-                //         .trim()
-                //         .replaceAll('`', '')
-                //         .replaceAll('’', '')
-                //         .replaceAll(',', '')
-                //         .replaceAll('\'', '')
-                //         .replaceAll('!', '')
-                //         .split(' ')
-                //         .join('_')
-                //         .toLowerCase())
-                //     ? 'Unsubscribe'
-                //     : 'Subscribe',
-                style: GoogleFonts.overpass(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => _unsubscribeFromTopic(webtoon['title']!),
-              child: Text(
-                'Unsubscribe',
-                style: GoogleFonts.overpass(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            ValueListenableBuilder(
+              valueListenable: service.subscribedTopics,
+              builder: (BuildContext context, dynamic value, Widget? child) {
+                bool isUserSubscribed = service.subscribedTopics.value.keys
+                    .contains(cleanTopic(webtoon['title']!));
+                return ElevatedButton(
+                  onPressed: () {
+                    print(isUserSubscribed);
+                    _subscribeToTopic(webtoon['title']!);
+
+                    if (isUserSubscribed) {
+                      _unsubscribeFromTopic(webtoon['title']!);
+                    } else {
+                      _subscribeToTopic(webtoon['title']!);
+                    }
+                  },
+                  child: Text(
+                    isUserSubscribed ? 'Unsubscribe' : 'Subscribe',
+                    style: GoogleFonts.overpass(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
