@@ -17,52 +17,15 @@ class ManhwaAlertDialog extends StatelessWidget {
     required this.webtoon,
   });
 
-  // Future<String> saveSubscribedTopicLocal(String topic) async {
-  //   final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
-  //   final String formattedTopic = 'topic_$topic';
-  //   final String timestamp = DateTime.now().toIso8601String();
-  //   if (!sp.containsKey(formattedTopic)) {
-  //     await sp.setString(formattedTopic, DateTime.now().toIso8601String());
-  //     service.subscribedTopics.value[topic] = timestamp;
-  //   }
-  //   return timestamp;
-  // }
-
-  // Future<void> removeSubscribedTopicLocal(String topic) async {
-  //   final SharedPreferences sp = serviceLocator.get<SharedPreferences>();
-  //   final String formattedTopic = 'topic_$topic';
-  //   await sp.remove(formattedTopic);
-  //   service.subscribedTopics.value.remove(topic);
-  // }
-
   void _subscribeToTopic(String manhwaTitle) async {
-    final String topic = manhwaTitle
-        .trim()
-        .replaceAll('`', '')
-        .replaceAll('’', '')
-        .replaceAll(',', '')
-        .replaceAll('\'', '')
-        .replaceAll('!', '')
-        .split(' ')
-        .join('_')
-        .toLowerCase();
+    final String topic = cleanTopic(manhwaTitle);
     fcm.subscribeToTopic(topic);
     await service.saveSubscribedTopicLocal(topic);
     service.addTopicSnapshotListener(topic);
   }
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
-    final String topic = manhwaTitle
-        .trim()
-        .replaceAll('`', '')
-        .replaceAll('’', '')
-        .replaceAll(',', '')
-        .replaceAll('\'', '')
-        .replaceAll('!', '')
-        .split(' ')
-        .join('_')
-        .toLowerCase();
-    fcm.unsubscribeFromTopic(topic);
+    final String topic = cleanTopic(manhwaTitle);
     await service.removeSubscribedTopicLocal(topic);
     service.removeAListener(topic);
   }
@@ -167,5 +130,18 @@ class ManhwaAlertDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String cleanTopic(String topic) {
+    return topic
+        .trim()
+        .replaceAll('`', '')
+        .replaceAll('’', '')
+        .replaceAll(',', '')
+        .replaceAll('\'', '')
+        .replaceAll('!', '')
+        .split(' ')
+        .join('_')
+        .toLowerCase();
   }
 }
