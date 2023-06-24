@@ -14,7 +14,8 @@ class NotificationService extends ChangeNotifier {
   final ValueNotifier<Map<String, String>> subscribedTopics = ValueNotifier({});
   Map<String, StreamSubscription<QuerySnapshot<Map<String, dynamic>>>>
       listeners = {};
-  String latestNotificationTimestamp = '';
+  ValueNotifier<String> latestNotificationTimestamp =
+      ValueNotifier(DateTime.now().toIso8601String());
   DocumentSnapshot? lastDocument;
 
   final FirebaseFirestore _db;
@@ -22,7 +23,7 @@ class NotificationService extends ChangeNotifier {
 
   NotificationService(this._sharedPreferences, this._db) {
     loadCachedNotifications();
-    latestNotificationTimestamp = loadLatestNotificationTimestamp();
+    latestNotificationTimestamp.value = loadLatestNotificationTimestamp();
   }
 
   Future<void> saveNotificationCount() async {
@@ -66,7 +67,7 @@ class NotificationService extends ChangeNotifier {
           .doc(key)
           .collection("notifications")
           .where('notification_timestamp',
-              isGreaterThan: latestNotificationTimestamp)
+              isGreaterThan: latestNotificationTimestamp.value)
           .snapshots()
           .listen((querySnapshot) async {
         List<NotificationModel> newNotifications = [];
@@ -87,9 +88,10 @@ class NotificationService extends ChangeNotifier {
               .notificationTimestamp;
 
           print("Highest date in the list: $highestDate");
-          latestNotificationTimestamp = highestDate.toIso8601String();
-          await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+          latestNotificationTimestamp.value = highestDate.toIso8601String();
 
+          await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+          notifyListeners();
           // Call listenForNewNotifications() again to set up a new listener with the updated query
           listenForNewNotifications();
         } else {
@@ -99,14 +101,23 @@ class NotificationService extends ChangeNotifier {
     }
   }
 
-  Future<void> removeAListener(String key) async {
-    await listeners[key]!.cancel();
+  Future<void> removeAListener(String topic) async {
+    await listeners[topic]!.cancel();
+    listeners.removeWhere((key, value) => key == topic);
+
+    listeners.remove(topic);
   }
 
   void addTopicSnapshotListener(key) {
     if (listeners.containsKey(key)) {
       return;
     }
+
+    if (subscribedTopics.value[key] == null ||
+        subscribedTopics.value[key] == '') {
+      return;
+    }
+
     listeners[key] = _db
         .collection("notifications")
         .doc(key)
@@ -133,10 +144,9 @@ class NotificationService extends ChangeNotifier {
             .notificationTimestamp;
 
         print("Highest date in the list: $highestDate");
-        latestNotificationTimestamp = highestDate.toIso8601String();
+        latestNotificationTimestamp.value = highestDate.toIso8601String();
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);
-
-        // Call listenForNewNotifications() again to set up a new listener with the updated query
+        notifyListeners();
         listenForNewNotifications();
       } else {
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);
@@ -196,8 +206,30 @@ class NotificationService extends ChangeNotifier {
         timestamp = _sharedPreferences.getString(key)!;
       }
     });
+    final String test =
+        _sharedPreferences.getString('latest_notification_timestamp') ??
+            (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
+    print(test);
     return _sharedPreferences.getString('latest_notification_timestamp') ??
         (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
+  }
+
+  Future<void> clearAllNotifications() async {
+    await _sharedPreferences.remove('cached_notifications');
+    await _sharedPreferences.remove('latest_notification_timestamp');
+    _sharedPreferences.getKeys().forEach((key) {
+      if (key.startsWith('topic_')) {
+        String topic = key.substring('topic_'.length);
+        _sharedPreferences.remove(key);
+        FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+      }
+    });
+    listeners.forEach((key, value) {
+      listeners[key]!.cancel();
+    });
+    notifications.value = [];
+    latestNotificationTimestamp.value = DateTime.now().toIso8601String();
+    notifyListeners();
   }
 
   void getLocalSubscribedTopics() {
@@ -214,32 +246,11 @@ class NotificationService extends ChangeNotifier {
     subscribedTopics.value = localTopics;
   }
 
-  Future<void> clearAllNotifications() async {
-    await _sharedPreferences.remove('cached_notifications');
-    await _sharedPreferences.remove('latest_notification_timestamp');
-    _sharedPreferences.getKeys().forEach((key) {
-      if (key.startsWith('topic_')) {
-        String topic = key.substring('topic_'.length);
-        _sharedPreferences.remove(key);
-        FirebaseMessaging.instance.unsubscribeFromTopic(topic);
-      }
-    });
-    
-    listeners.forEach((key, value) {
-      listeners[key]!.cancel();
-    });
-    notifications.value = [];
-    latestNotificationTimestamp = '';
-  }
-
   Future<void> saveSubscribedTopicLocal(String topic) async {
     final String formattedTopic = 'topic_$topic';
     final String timestamp = DateTime.now().toIso8601String();
-    if (!_sharedPreferences.containsKey(formattedTopic)) {
-      await _sharedPreferences.setString(
-          formattedTopic, DateTime.now().toIso8601String());
-      subscribedTopics.value[topic] = timestamp;
-    }
+    await _sharedPreferences.setString(formattedTopic, timestamp);
+    subscribedTopics.value[topic] = timestamp;
   }
 
   Future<void> removeSubscribedTopicLocal(String topic) async {

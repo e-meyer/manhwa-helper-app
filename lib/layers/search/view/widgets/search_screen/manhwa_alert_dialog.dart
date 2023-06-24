@@ -27,7 +27,7 @@ class ManhwaAlertDialog extends StatelessWidget {
     final String topic = cleanTopic(manhwaTitle);
     fcm.unsubscribeFromTopic(topic);
     await service.removeSubscribedTopicLocal(topic);
-    service.removeAListener(topic);
+    await service.removeAListener(topic);
   }
 
   @override
@@ -100,7 +100,6 @@ class ManhwaAlertDialog extends StatelessWidget {
                 return ElevatedButton(
                   onPressed: () {
                     print(isUserSubscribed);
-                    _subscribeToTopic(webtoon['title']!);
 
                     if (isUserSubscribed) {
                       _unsubscribeFromTopic(webtoon['title']!);
