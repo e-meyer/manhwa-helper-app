@@ -396,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
           valueListenable: service.unseenNotificationCount,
           builder: (context, value, child) {
             return Text(
-              'Manhwas ${service.unseenNotificationCount.value}',
+              'Manhwas',
               style: GoogleFonts.overpass(
                 fontWeight: FontWeight.bold,
                 fontSize: 26,
