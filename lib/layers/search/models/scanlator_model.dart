@@ -4,22 +4,16 @@ import 'dart:convert';
 class ScanlatorModel {
   final String name;
   final String logoUrl;
-  final String baseUrl;
-  final String? searchQuery;
 
   ScanlatorModel({
     required this.name,
     required this.logoUrl,
-    required this.baseUrl,
-    required this.searchQuery,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
       'logoUrl': logoUrl,
-      'baseUrl': baseUrl,
-      'searchQuery': searchQuery,
     };
   }
 
@@ -27,9 +21,6 @@ class ScanlatorModel {
     return ScanlatorModel(
       name: map['name'] as String,
       logoUrl: map['logo_url'] as String,
-      baseUrl: map['base_url'] as String,
-      searchQuery:
-          map['search_query'] != null ? map['search_query'] as String : null,
     );
   }
 
