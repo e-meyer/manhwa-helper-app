@@ -26,27 +26,34 @@ class _SearchScreenState extends State<SearchScreen> {
   Timer? _typingTimer;
   String _inputText = '';
   List<Map<String, String>> _webtoons = [];
+  bool _isLoading = false;
+  bool _isTyping = false;
 
   void onTextChanged(String input) {
     _webtoons = [];
     _typingTimer?.cancel();
 
     _typingTimer = Timer(const Duration(milliseconds: 1000), () {
+      _isTyping = false;
       if (_inputText.isEmpty) {
         setState(() {
           _webtoons = [];
+          _isLoading = false;
         });
         return;
       }
+      _isLoading = true;
+
       final website =
           'http://10.0.2.2:5500/scanlator/${widget.scanlator.name.toLowerCase()}?s=$_inputText';
 
-      scrapeWebsite(website).then((webtoons) {
+      getScanlatorQueriedData(website).then((webtoons) {
         setState(() {
           for (var item in webtoons) {
             print(item);
             _webtoons.add(Map<String, String>.from(item));
           }
+          _isLoading = false;
         });
       }).catchError((error) {
         print('Error: $error');
@@ -69,9 +76,11 @@ class _SearchScreenState extends State<SearchScreen> {
         );
       });
     });
+    _isTyping = true;
   }
 
-  Future<List<Map<String, dynamic>>> scrapeWebsite(String website) async {
+  Future<List<Map<String, dynamic>>> getScanlatorQueriedData(
+      String website) async {
     final response = await http.get(Uri.parse(website));
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(json.decode(response.body));
@@ -143,38 +152,49 @@ class _SearchScreenState extends State<SearchScreen> {
               SizedBox(
                 height: 20,
               ),
-              GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: 20.0,
-                mainAxisSpacing: 20.0,
-                shrinkWrap: true,
-                childAspectRatio: (1 / 1.45),
-                children: (_webtoons.isNotEmpty || _inputText == '')
-                    ? List.generate(
-                        _webtoons.length,
-                        (index) {
-                          final webtoon = _webtoons[index];
-                          return ManhwaSearchResultListBuilder(
-                            webtoon: webtoon,
-                          );
-                        },
-                      )
-                    : _inputText != ''
-                        ? List.generate(
-                            6,
-                            (index) {
-                              return Shimmer.fromColors(
-                                baseColor: Color(0xFF292929),
-                                highlightColor: Color(0xFF333333),
-                                child: Container(
-                                  color: Color(0xFF292929),
-                                ),
-                              );
-                            },
-                          )
-                        : [Center(child: Text('Nothing found'))],
-              ),
+              (_webtoons.isEmpty && _inputText == '')
+                  ? Center(
+                      child: Text(
+                      'ASD ASD ASD ASD',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ))
+                  : GridView.count(
+                      physics: NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20.0,
+                      mainAxisSpacing: 20.0,
+                      shrinkWrap: true,
+                      childAspectRatio: (1 / 1.45),
+                      children: _webtoons.isNotEmpty
+                          ? List.generate(
+                              _webtoons.length,
+                              (index) {
+                                final webtoon = _webtoons[index];
+                                return ManhwaSearchResultListBuilder(
+                                  webtoon: webtoon,
+                                );
+                              },
+                            )
+                          : _isLoading || _isTyping
+                              ? List.generate(
+                                  6,
+                                  (index) {
+                                    return Shimmer.fromColors(
+                                      baseColor: Color(0xFF292929),
+                                      highlightColor: Color(0xFF333333),
+                                      child: Container(
+                                        color: Color(0xFF292929),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : !_isTyping && !_isLoading
+                                  ? [Center(child: Text('Nothing found'))]
+                                  : [],
+                    ),
             ],
           ),
         ),
