@@ -49,7 +49,9 @@ class _ManhwaSearchResultListBuilderState
   }
 
   void _loadImage() async {
-    final image = NetworkImage(widget.webtoon['cover']!);
+    final image = NetworkImage(
+      widget.webtoon['smaller_cover_url'] ?? widget.webtoon['cover_url']!,
+    );
     await precacheImage(image, context);
     setState(() {
       isLoading = false;
@@ -79,7 +81,7 @@ class _ManhwaSearchResultListBuilderState
       child: Stack(
         children: [
           Image.network(
-            widget.webtoon['cover']!,
+            widget.webtoon['smaller_cover_url'] ?? widget.webtoon['cover_url']!,
             width: 300,
             height: 300,
             fit: BoxFit.cover,
