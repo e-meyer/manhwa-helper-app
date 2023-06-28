@@ -53,10 +53,12 @@ class _ManhwaSearchResultListBuilderState
       widget.webtoon['smaller_cover_url'] ?? widget.webtoon['cover_url']!,
     );
     await precacheImage(image, context);
-    setState(() {
-      isLoading = false;
-      _animationController.forward();
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        _animationController.forward();
+      });
+    }
   }
 
   void _showManhwaBottomSheet(BuildContext context) {
