@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,55 +31,52 @@ class _SearchScreenState extends State<SearchScreen> {
     _webtoons = [];
     _typingTimer?.cancel();
 
-    _typingTimer = Timer(const Duration(milliseconds: 300), () {
+    _typingTimer = Timer(const Duration(milliseconds: 1000), () {
       if (_inputText.isEmpty) {
         setState(() {
           _webtoons = [];
         });
         return;
       }
-
       final website =
-          '${widget.scanlator.baseUrl}${widget.scanlator.searchQuery}$_inputText';
+          'http://10.0.2.2:5500/scanlator/${widget.scanlator.name.toLowerCase()}?s=$_inputText';
 
       scrapeWebsite(website).then((webtoons) {
         setState(() {
-          _webtoons = webtoons;
+          for (var item in webtoons) {
+            print(item);
+            _webtoons.add(Map<String, String>.from(item));
+          }
         });
       }).catchError((error) {
         print('Error: $error');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('An error occurred: $error'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       });
     });
   }
 
-  Future<List<Map<String, String>>> scrapeWebsite(String website) async {
+  Future<List<Map<String, dynamic>>> scrapeWebsite(String website) async {
     final response = await http.get(Uri.parse(website));
     if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-
-      final covers = document.querySelectorAll('div.limit img');
-      final titles = document.querySelectorAll('div.bigor div.tt');
-      final chapters = document.querySelectorAll('div.epxs');
-
-      final webtoons = <Map<String, String>>[];
-      for (int i = 0; i < covers.length; i++) {
-        final coverUrl = covers[i].attributes['src'];
-        final title = titles[i].text;
-        String? chapterNumber;
-        if (chapters.isNotEmpty) {
-          final text = chapters[i].text;
-          chapterNumber = text.split(' ')[1].replaceAll('-', '');
-        }
-        webtoons.add({
-          'cover': coverUrl!,
-          'title': title,
-          'chapterNumber': chapterNumber ?? '0',
-        });
-      }
-
-      return webtoons;
+      return List<Map<String, dynamic>>.from(json.decode(response.body));
     } else {
-      throw Exception('Failed to scrape website: ${response.statusCode}');
+      throw Exception('Error: ${response.statusCode}');
     }
   }
 
@@ -96,7 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
             fontSize: 18,
           ),
         ),
-        // centerTitle: true,
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -111,6 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 onChanged: (text) {
                   setState(() {
                     _inputText = text;
+                    print(_inputText);
                   });
                   onTextChanged(text);
                 },
@@ -161,18 +160,20 @@ class _SearchScreenState extends State<SearchScreen> {
                           );
                         },
                       )
-                    : List.generate(
-                        6,
-                        (index) {
-                          return Shimmer.fromColors(
-                            baseColor: Color(0xFF292929),
-                            highlightColor: Color(0xFF333333),
-                            child: Container(
-                              color: Color(0xFF292929),
-                            ),
-                          );
-                        },
-                      ),
+                    : _inputText != ''
+                        ? List.generate(
+                            6,
+                            (index) {
+                              return Shimmer.fromColors(
+                                baseColor: Color(0xFF292929),
+                                highlightColor: Color(0xFF333333),
+                                child: Container(
+                                  color: Color(0xFF292929),
+                                ),
+                              );
+                            },
+                          )
+                        : [Center(child: Text('Nothing found'))],
               ),
             ],
           ),
