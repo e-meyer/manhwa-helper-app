@@ -77,7 +77,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                   topRight: Radius.circular(20),
                 ),
                 child: Image.network(
-                  widget.webtoon['cover']!,
+                  widget.webtoon['cover_url']!,
                   height: 400,
                   width: MediaQuery.of(context).size.width * 0.8,
                   fit: BoxFit.cover,
@@ -85,7 +85,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
+              padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               child: Text(
                 widget.webtoon['title']!,
                 style: GoogleFonts.overpass(
@@ -98,11 +98,11 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 textAlign: TextAlign.center,
               ),
             ),
-            if (int.parse(widget.webtoon['chapterNumber']!) > 0)
+            if (int.parse(widget.webtoon['chapters']!) > 0)
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
-                  '${widget.webtoon['chapterNumber']!} chapters',
+                  '${widget.webtoon['chapters']!} chapters',
                   style: GoogleFonts.overpass(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,
