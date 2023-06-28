@@ -115,7 +115,7 @@ class _HelperScreenState extends State<HelperScreen>
             inactiveIcon: SvgPicture.asset(
               'assets/icons/home.svg',
               colorFilter: const ColorFilter.mode(
-                Color(0xFF676767),
+                Color(0xFFFFFFFF),
                 BlendMode.srcIn,
               ),
             ),
@@ -133,7 +133,7 @@ class _HelperScreenState extends State<HelperScreen>
             inactiveIcon: SvgPicture.asset(
               'assets/icons/search.svg',
               colorFilter: const ColorFilter.mode(
-                Color(0xFF676767),
+                Color(0xFFFFFFFF),
                 BlendMode.srcIn,
               ),
             ),
@@ -157,7 +157,7 @@ class _HelperScreenState extends State<HelperScreen>
                       SvgPicture.asset(
                         'assets/icons/notifications-bell.svg',
                         colorFilter: const ColorFilter.mode(
-                          Color(0xFF676767),
+                          Color(0xFFFFFFFF),
                           BlendMode.srcIn,
                         ),
                       ),
@@ -228,7 +228,7 @@ class _HelperScreenState extends State<HelperScreen>
             inactiveIcon: SvgPicture.asset(
               'assets/icons/bookmark.svg',
               colorFilter: const ColorFilter.mode(
-                Color(0xFF676767),
+                Color(0xFFFFFFFF),
                 BlendMode.srcIn,
               ),
             ),
