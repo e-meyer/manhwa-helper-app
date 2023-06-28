@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _isLoading = true;
 
       final website =
-          'http://10.0.2.2:5500/scanlator/${widget.scanlator.name.toLowerCase()}?s=$_inputText';
+          'http://ec2-3-135-188-213.us-east-2.compute.amazonaws.com/scanlator/${widget.scanlator.name.toLowerCase()}?s=$_inputText';
 
       getScanlatorQueriedData(website).then((webtoons) {
         setState(() {
@@ -57,23 +57,6 @@ class _SearchScreenState extends State<SearchScreen> {
         });
       }).catchError((error) {
         print('Error: $error');
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text('An error occurred: $error'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
       });
     });
     _isTyping = true;
