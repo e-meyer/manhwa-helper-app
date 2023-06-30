@@ -16,9 +16,6 @@ class ManhwaListWidget extends StatefulWidget {
 class _ManhwaListWidgetState extends State<ManhwaListWidget> {
   @override
   Widget build(BuildContext context) {
-    final website = widget.data[0]['website'];
-    final manhwaData = widget.data[0]['manhwa_data'];
-
     return SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
       child: ListView.builder(
