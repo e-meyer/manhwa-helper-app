@@ -15,25 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Future<List<Map<String, dynamic>>> fetchData() async {
-  //   final response =
-  //       await http.get(Uri.parse('http://10.0.2.2:5000/thread_scrape'));
-
-  //   List<dynamic> decodedData = jsonDecode(response.body);
-  //   if (decodedData is List<dynamic>) {
-  //     return decodedData.cast<Map<String, dynamic>>();
-  //   }
-  //   return [];
-  // }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-
-  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-  //       overlays: SystemUiOverlay.values); // to re-show bars
-  // }
-
 // {
 //       "website": "Luminous",
 //       "manhwa_data": [
@@ -411,8 +392,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height *
-                  0.36, // Specify a height for the InfiniteCarousel
+              height: MediaQuery.of(context).size.height * 0.36,
               child: InfiniteCarousel(),
             ),
             Container(

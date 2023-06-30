@@ -117,81 +117,91 @@ class _SearchScreenState extends State<SearchScreen>
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                centerTitle: true,
-                leading: Container(),
-                leadingWidth: 0,
-                titleSpacing: 0,
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: TextField(
-                    autofocus: true,
-                    focusNode: myFocusNode,
-                    onChanged: (text) {
-                      setState(() {
-                        _inputText = text;
-                        print(_inputText);
-                      });
-                      onTextChanged(text);
-                    },
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      filled: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      fillColor: Color(0xFF292929),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: 'Search in Asura',
-                      hintStyle: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: Color(0xFF595959),
-                      ),
-                      prefixIcon: myFocusNode.hasFocus
-                          ? null
-                          : InkWell(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: SvgPicture.asset(
-                                  'assets/icons/arrow-back.svg',
-                                  colorFilter: ColorFilter.mode(
-                                      Colors.white, BlendMode.srcIn),
-                                  height: 10,
-                                ),
-                              ),
-                            ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: AnimatedBuilder(
-                          animation: _colorTween,
-                          builder: (context, _) {
-                            return SvgPicture.asset(
-                              'assets/icons/search-solid.svg',
-                              colorFilter: ColorFilter.mode(
-                                _colorTween.value,
-                                BlendMode.srcIn,
-                              ),
-                              height: 10,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFFBCBCBC),
-                      fontSize: 18,
-                    ),
-                    cursorColor: Color(0xFFFF6812),
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              leading: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/arrow-back.svg',
+                    colorFilter:
+                        ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    height: 10,
                   ),
-                ))
+                ),
+              ),
+              leadingWidth: 40,
+              titleSpacing: 0,
+              title: TextField(
+                autofocus: true,
+                focusNode: myFocusNode,
+                onChanged: (text) {
+                  setState(() {
+                    _inputText = text;
+                  });
+                  onTextChanged(text);
+                },
+                autocorrect: false,
+                decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                  fillColor: Color(0xFF292929),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Search in Asura',
+                  hintStyle: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    color: Color(0xFF595959),
+                  ),
+                  // prefixIcon: myFocusNode.hasFocus
+                  //     ? null
+                  //     : InkWell(
+                  //         onTap: () {
+                  //           Navigator.of(context).pop();
+                  //         },
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.all(15.0),
+                  //           child: SvgPicture.asset(
+                  //             'assets/icons/arrow-back.svg',
+                  //             colorFilter: ColorFilter.mode(
+                  //                 Colors.white, BlendMode.srcIn),
+                  //             height: 10,
+                  //           ),
+                  //         ),
+                  //       ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: AnimatedBuilder(
+                      animation: _colorTween,
+                      builder: (context, _) {
+                        return SvgPicture.asset(
+                          'assets/icons/search-solid.svg',
+                          colorFilter: ColorFilter.mode(
+                            _colorTween.value,
+                            BlendMode.srcIn,
+                          ),
+                          height: 10,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFFBCBCBC),
+                  fontSize: 18,
+                ),
+                cursorColor: Color(0xFFFF6812),
+              ),
+            ),
           ];
         },
         body: SingleChildScrollView(
