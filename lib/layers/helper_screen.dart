@@ -112,36 +112,48 @@ class _HelperScreenState extends State<HelperScreen>
         screens: _screens,
         items: [
           PersistentBottomNavBarItem(
-            inactiveIcon: SvgPicture.asset(
-              'assets/icons/home.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            inactiveIcon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/home.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-            icon: SvgPicture.asset(
-              'assets/icons/home-solid.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            icon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/home-solid.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             activeColorPrimary: Colors.white,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            inactiveIcon: SvgPicture.asset(
-              'assets/icons/search.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            inactiveIcon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/search.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-            icon: SvgPicture.asset(
-              'assets/icons/search-solid.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            icon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/search-solid.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             activeColorPrimary: Colors.white,
@@ -149,94 +161,106 @@ class _HelperScreenState extends State<HelperScreen>
           ),
           PersistentBottomNavBarItem(
             inactiveIcon: Center(
-              child: ValueListenableBuilder(
-                valueListenable: service.unseenNotificationCount,
-                builder: (context, value, child) {
-                  return Stack(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/notifications-bell.svg',
-                        colorFilter: const ColorFilter.mode(
-                          Color(0xFFFFFFFF),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      if (value > 0)
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            // child: Center(
-                            //   child: Text(
-                            //     service.unseenNotificationCount.value
-                            //         .toString(),
-                            //     style: GoogleFonts.overpass(
-                            //       color: Colors.white,
-                            //       fontSize: 14,
-                            //       fontWeight: FontWeight.w800,
-                            //     ),
-                            //   ),
-                            // ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ValueListenableBuilder(
+                  valueListenable: service.unseenNotificationCount,
+                  builder: (context, value, child) {
+                    return Stack(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/notifications-bell.svg',
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFFFFFFFF),
+                            BlendMode.srcIn,
                           ),
                         ),
-                    ],
-                  );
-                },
+                        if (value > 0)
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              // child: Center(
+                              //   child: Text(
+                              //     service.unseenNotificationCount.value
+                              //         .toString(),
+                              //     style: GoogleFonts.overpass(
+                              //       color: Colors.white,
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.w800,
+                              //     ),
+                              //   ),
+                              // ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
             icon: Center(
-              child: ValueListenableBuilder(
-                valueListenable: service.unseenNotificationCount,
-                builder: (context, value, child) {
-                  return Stack(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/notifications-bell-solid.svg',
-                        colorFilter: const ColorFilter.mode(
-                          Color(0xFFFFFFFF),
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      if (value > 0)
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.orange,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ValueListenableBuilder(
+                  valueListenable: service.unseenNotificationCount,
+                  builder: (context, value, child) {
+                    return Stack(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/notifications-bell-solid.svg',
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFFFFFFFF),
+                            BlendMode.srcIn,
                           ),
                         ),
-                    ],
-                  );
-                },
+                        if (value > 0)
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
             activeColorPrimary: Colors.white,
             inactiveColorPrimary: Colors.grey,
           ),
           PersistentBottomNavBarItem(
-            inactiveIcon: SvgPicture.asset(
-              'assets/icons/bookmark.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            inactiveIcon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/bookmark.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-            icon: SvgPicture.asset(
-              'assets/icons/bookmark-solid.svg',
-              colorFilter: const ColorFilter.mode(
-                Color(0xFFFFFFFF),
-                BlendMode.srcIn,
+            icon: Padding(
+              padding: const EdgeInsets.all(10),
+              child: SvgPicture.asset(
+                'assets/icons/bookmark-solid.svg',
+                colorFilter: const ColorFilter.mode(
+                  Color(0xFFFFFFFF),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             activeColorPrimary: Colors.white,
@@ -269,7 +293,7 @@ class _HelperScreenState extends State<HelperScreen>
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
-        padding: NavBarPadding.all(0),
+        // padding: NavBarPadding.symmetric(vertical: 17),
         navBarStyle: NavBarStyle.style12,
       ),
     );
