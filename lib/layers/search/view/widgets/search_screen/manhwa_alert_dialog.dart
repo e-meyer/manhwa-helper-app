@@ -85,7 +85,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+              padding: const EdgeInsets.fromLTRB(30, 20, 30, 6),
               child: Text(
                 widget.webtoon['title']!,
                 style: GoogleFonts.overpass(
@@ -98,20 +98,22 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 textAlign: TextAlign.center,
               ),
             ),
-            if (int.parse(widget.webtoon['chapters']!) > 0)
+            if (widget.webtoon['chapters'] != null &&
+                int.parse(widget.webtoon['chapters']!) > 0)
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
                   '${widget.webtoon['chapters']!} chapters',
                   style: GoogleFonts.overpass(
                     fontWeight: FontWeight.w400,
-                    fontSize: 14,
+                    fontSize: 16,
                     color: Colors.grey,
                   ),
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+              padding: EdgeInsets.fromLTRB(
+                  20, widget.webtoon['chapters'] != null ? 0 : 15, 20, 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -188,10 +190,10 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                       },
                       child: Text(
                         'See more',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Color(0xFFFF6812),
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
