@@ -24,6 +24,7 @@ class NotificationService extends ChangeNotifier {
   NotificationService(this._sharedPreferences, this._db) {
     loadCachedNotifications();
     latestNotificationTimestamp.value = loadLatestNotificationTimestamp();
+    getLocalSubscribedTopics();
   }
 
   Future<void> saveNotificationCount() async {
