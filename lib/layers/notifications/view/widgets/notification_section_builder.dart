@@ -70,9 +70,6 @@ class NotificationSectionBuilder extends StatelessWidget {
 
             final timeDifference =
                 currentTime.difference(notification.notificationTimestamp);
-            print(currentTime);
-            print(notification.notificationTimestamp);
-            print(timeDifference);
             final formattedTimeDifference =
                 _formatTimeDifference(timeDifference);
 

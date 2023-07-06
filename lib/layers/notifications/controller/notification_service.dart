@@ -14,8 +14,8 @@ class NotificationService extends ChangeNotifier {
   final ValueNotifier<Map<String, String>> subscribedTopics = ValueNotifier({});
   Map<String, StreamSubscription<QuerySnapshot<Map<String, dynamic>>>>
       listeners = {};
-  ValueNotifier<String> latestNotificationTimestamp =
-      ValueNotifier(DateTime.now().toUtc().toIso8601String());
+  ValueNotifier<String> latestNotificationTimestamp = ValueNotifier(
+      DateTime.now().toUtc().toIso8601String().replaceAll('Z', ''));
   DocumentSnapshot? lastDocument;
 
   final FirebaseFirestore _db;
@@ -49,7 +49,7 @@ class NotificationService extends ChangeNotifier {
     final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
     await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
     await _sharedPreferences.reload();
-    print(_sharedPreferences.getInt('unseenNotificationCount'));
+
     List<NotificationModel> list = [];
     NotificationModel item = NotificationModel.fromMap(message.data);
     list.add(item);
@@ -63,7 +63,6 @@ class NotificationService extends ChangeNotifier {
 
     for (final key in localTopics.keys) {
       String value = localTopics[key]!;
-      print(value);
 
       if (listeners.containsKey(key)) {
         listeners[key]!.cancel();
@@ -78,7 +77,7 @@ class NotificationService extends ChangeNotifier {
           .snapshots()
           .listen((querySnapshot) async {
         List<NotificationModel> newNotifications = [];
-        print('escutou');
+
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
         }
@@ -92,7 +91,8 @@ class NotificationService extends ChangeNotifier {
                       : next)
               .notificationTimestamp;
 
-          latestNotificationTimestamp.value = highestDate.toIso8601String();
+          latestNotificationTimestamp.value =
+              highestDate.toIso8601String().replaceAll('Z', '');
 
           await saveLatestNotificationTimestamp(latestNotificationTimestamp);
           notifyListeners();
@@ -146,7 +146,8 @@ class NotificationService extends ChangeNotifier {
                     : next)
             .notificationTimestamp;
 
-        latestNotificationTimestamp.value = highestDate.toIso8601String();
+        latestNotificationTimestamp.value =
+            highestDate.toIso8601String().replaceAll('Z', '');
 
         await saveLatestNotificationTimestamp(latestNotificationTimestamp);
         notifyListeners();
@@ -187,7 +188,8 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<String> saveLatestNotificationTimestamp(timestamp) async {
-    final String timestamp = DateTime.now().toUtc().toIso8601String();
+    final String timestamp =
+        DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
     await _sharedPreferences.setString(
         'latest_notification_timestamp', timestamp);
     return timestamp;
@@ -213,7 +215,7 @@ class NotificationService extends ChangeNotifier {
     return _sharedPreferences.getString('latest_notification_timestamp') ??
         (timestamp != ''
             ? timestamp
-            : DateTime.now().toUtc().toIso8601String());
+            : DateTime.now().toUtc().toIso8601String().replaceAll('Z', ''));
   }
 
   Future<void> clearAllNotifications() async {
@@ -231,7 +233,7 @@ class NotificationService extends ChangeNotifier {
     });
     notifications.value = [];
     latestNotificationTimestamp.value =
-        DateTime.now().toUtc().toIso8601String();
+        DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
     notifyListeners();
   }
 
@@ -251,7 +253,8 @@ class NotificationService extends ChangeNotifier {
 
   Future<void> saveSubscribedTopicLocal(String topic) async {
     final String formattedTopic = 'topic_$topic';
-    final String timestamp = DateTime.now().toUtc().toIso8601String();
+    final String timestamp =
+        DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
     await _sharedPreferences.setString(formattedTopic, timestamp);
     subscribedTopics.value[topic] = timestamp;
   }

@@ -82,6 +82,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
             child: InkWell(
               onTap: () async {
                 service.clearAllNotifications();
+                // print(service.latestNotificationTimestamp.value);
               },
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',
