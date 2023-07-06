@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_alert_dialog.dart';
 import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_modal_bottom_sheet.dart';
 import 'package:shimmer/shimmer.dart';
@@ -9,8 +10,10 @@ class ManhwaSearchResultListBuilder extends StatefulWidget {
   const ManhwaSearchResultListBuilder({
     super.key,
     required this.webtoon,
+    required this.scanlator,
   });
 
+  final ScanlatorModel scanlator;
   final Map<String, String> webtoon;
 
   @override
@@ -72,7 +75,7 @@ class _ManhwaSearchResultListBuilderState
   void _showManhwaAlertDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) => ManhwaAlertDialog(webtoon: widget.webtoon),
+      builder: (_) => ManhwaAlertDialog(webtoon: widget.webtoon, scanlator: widget.scanlator),
     );
   }
 

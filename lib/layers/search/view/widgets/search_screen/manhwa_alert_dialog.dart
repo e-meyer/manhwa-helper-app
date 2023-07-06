@@ -5,13 +5,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
+import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 
 class ManhwaAlertDialog extends StatefulWidget {
   final Map<String, String> webtoon;
+  final ScanlatorModel scanlator;
 
   const ManhwaAlertDialog({
     super.key,
     required this.webtoon,
+    required this.scanlator,
   });
 
   @override
@@ -25,7 +28,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
 
   void _subscribeToTopic(String manhwaTitle) async {
     _buttonController.add(true);
-    final String topic = cleanTopic(manhwaTitle);
+    final String topic = cleanTopic(widget.scanlator.name, manhwaTitle);
+    print(topic);
     fcm.subscribeToTopic(topic);
     await service.saveSubscribedTopicLocal(topic);
     service.addTopicSnapshotListener(topic);
@@ -35,7 +39,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
 
   void _unsubscribeFromTopic(String manhwaTitle) async {
     _buttonController.add(false);
-    final String topic = cleanTopic(manhwaTitle);
+    final String topic = cleanTopic(widget.scanlator.name, manhwaTitle);
     fcm.unsubscribeFromTopic(topic);
     await service.removeSubscribedTopicLocal(topic);
     await service.removeAListener(topic);
@@ -98,12 +102,12 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 textAlign: TextAlign.center,
               ),
             ),
-            if (widget.webtoon['chapters'] != null &&
-                int.parse(widget.webtoon['chapters']!) > 0)
+            if (widget.webtoon['latest_chapter'] != null &&
+                int.parse(widget.webtoon['latest_chapter']!) > 0)
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
-                  '${widget.webtoon['chapters']!} chapters',
+                  '${widget.webtoon['latest_chapter']!} chapters',
                   style: GoogleFonts.overpass(
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -112,8 +116,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 ),
               ),
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                  20, widget.webtoon['chapters'] != null ? 0 : 15, 20, 15),
+              padding: EdgeInsets.fromLTRB(20,
+                  widget.webtoon['latest_chapter'] != null ? 0 : 15, 20, 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -124,7 +128,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                           (BuildContext context, dynamic value, Widget? child) {
                         bool isUserSubscribed = service
                             .subscribedTopics.value.keys
-                            .contains(cleanTopic(widget.webtoon['title']!));
+                            .contains(cleanTopic(widget.scanlator.name,
+                                widget.webtoon['title']!));
                         return StreamBuilder<bool>(
                           stream: _buttonController.stream,
                           initialData: true,
@@ -207,16 +212,18 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
     );
   }
 
-  String cleanTopic(String topic) {
-    return topic
-        .trim()
-        .replaceAll('`', '')
-        .replaceAll('’', '')
-        .replaceAll(',', '')
-        .replaceAll('\'', '')
-        .replaceAll('!', '')
-        .split(' ')
-        .join('_')
-        .toLowerCase();
+  String cleanTopic(String scanlatorName, String topic) {
+    return scanlatorName.trim().toLowerCase() +
+        '_' +
+        topic
+            .trim()
+            .replaceAll('`', '')
+            .replaceAll('’', '')
+            .replaceAll(',', '')
+            .replaceAll('\'', '')
+            .replaceAll('!', '')
+            .split(' ')
+            .join('_')
+            .toLowerCase();
   }
 }

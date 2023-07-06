@@ -246,6 +246,7 @@ class _SearchScreenState extends State<SearchScreen>
                                   final webtoon = _webtoons[index];
                                   return ManhwaSearchResultListBuilder(
                                     webtoon: webtoon,
+                                    scanlator: widget.scanlator,
                                   );
                                 },
                               )
