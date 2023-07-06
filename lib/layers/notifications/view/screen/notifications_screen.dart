@@ -17,15 +17,13 @@ class NotificationsScreen extends StatefulWidget {
 class NotificationsScreenState extends State<NotificationsScreen>
     with WidgetsBindingObserver {
   final NotificationService service = serviceLocator.get<NotificationService>();
-  final DateTime currentTime = DateTime.now();
+  final DateTime currentTime = DateTime.now().toUtc();
 
   @override
   void initState() {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized();
     service.notifications.addListener(_updateNotifications);
-    service.getLocalSubscribedTopics();
-    service.listenForNewNotifications();
   }
 
   void _updateNotifications() {

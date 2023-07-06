@@ -15,7 +15,7 @@ class NotificationService extends ChangeNotifier {
   Map<String, StreamSubscription<QuerySnapshot<Map<String, dynamic>>>>
       listeners = {};
   ValueNotifier<String> latestNotificationTimestamp =
-      ValueNotifier(DateTime.now().toIso8601String());
+      ValueNotifier(DateTime.now().toUtc().toIso8601String());
   DocumentSnapshot? lastDocument;
 
   final FirebaseFirestore _db;
@@ -63,6 +63,7 @@ class NotificationService extends ChangeNotifier {
 
     for (final key in localTopics.keys) {
       String value = localTopics[key]!;
+      print(value);
 
       if (listeners.containsKey(key)) {
         listeners[key]!.cancel();
@@ -77,7 +78,7 @@ class NotificationService extends ChangeNotifier {
           .snapshots()
           .listen((querySnapshot) async {
         List<NotificationModel> newNotifications = [];
-
+        print('escutou');
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
         }
@@ -186,7 +187,7 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<String> saveLatestNotificationTimestamp(timestamp) async {
-    final String timestamp = DateTime.now().toIso8601String();
+    final String timestamp = DateTime.now().toUtc().toIso8601String();
     await _sharedPreferences.setString(
         'latest_notification_timestamp', timestamp);
     return timestamp;
@@ -210,7 +211,9 @@ class NotificationService extends ChangeNotifier {
       }
     });
     return _sharedPreferences.getString('latest_notification_timestamp') ??
-        (timestamp != '' ? timestamp : DateTime.now().toIso8601String());
+        (timestamp != ''
+            ? timestamp
+            : DateTime.now().toUtc().toIso8601String());
   }
 
   Future<void> clearAllNotifications() async {
@@ -227,7 +230,8 @@ class NotificationService extends ChangeNotifier {
       listeners[key]!.cancel();
     });
     notifications.value = [];
-    latestNotificationTimestamp.value = DateTime.now().toIso8601String();
+    latestNotificationTimestamp.value =
+        DateTime.now().toUtc().toIso8601String();
     notifyListeners();
   }
 
@@ -247,7 +251,7 @@ class NotificationService extends ChangeNotifier {
 
   Future<void> saveSubscribedTopicLocal(String topic) async {
     final String formattedTopic = 'topic_$topic';
-    final String timestamp = DateTime.now().toIso8601String();
+    final String timestamp = DateTime.now().toUtc().toIso8601String();
     await _sharedPreferences.setString(formattedTopic, timestamp);
     subscribedTopics.value[topic] = timestamp;
   }

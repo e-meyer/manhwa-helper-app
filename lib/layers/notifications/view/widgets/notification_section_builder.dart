@@ -18,10 +18,12 @@ class NotificationSectionBuilder extends StatelessWidget {
   });
 
   final NotificationService service = serviceLocator.get<NotificationService>();
-  final DateTime currentTime = DateTime.now();
+  final String timeWithoutZ =
+      DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
 
   @override
   Widget build(BuildContext context) {
+    final DateTime currentTime = DateTime.parse(timeWithoutZ);
     final filteredNotifications = notifications
         .where((notification) => sectionTitle == 'New'
             ? currentTime
@@ -63,9 +65,14 @@ class NotificationSectionBuilder extends StatelessWidget {
             final bool isRead = notification.isRead;
             final Color backgroundColor =
                 isRead ? Colors.transparent : Color(0xFF282828);
+            DateTime gmt03NotificationTime =
+                notification.notificationTimestamp.toUtc();
 
             final timeDifference =
                 currentTime.difference(notification.notificationTimestamp);
+            print(currentTime);
+            print(notification.notificationTimestamp);
+            print(timeDifference);
             final formattedTimeDifference =
                 _formatTimeDifference(timeDifference);
 
