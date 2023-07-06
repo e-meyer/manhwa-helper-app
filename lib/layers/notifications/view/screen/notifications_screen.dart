@@ -81,7 +81,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
               onTap: () async {
-                service.clearAllNotifications();
+                // service.clearAllNotifications();
+                print(service.latestNotificationTimestamp.value);
               },
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',
