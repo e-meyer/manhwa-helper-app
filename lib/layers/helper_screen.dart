@@ -68,6 +68,8 @@ class _HelperScreenState extends State<HelperScreen>
   @override
   void initState() {
     super.initState();
+    service.getLocalSubscribedTopics();
+    service.listenForNewNotifications();
     WidgetsBinding.instance.addObserver(this);
     requestPermission();
     WidgetsFlutterBinding.ensureInitialized();
