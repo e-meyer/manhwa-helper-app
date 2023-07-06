@@ -213,17 +213,10 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
   }
 
   String cleanTopic(String scanlatorName, String topic) {
-    return scanlatorName.trim().toLowerCase() +
-        '_' +
-        topic
-            .trim()
-            .replaceAll('`', '')
-            .replaceAll('’', '')
-            .replaceAll(',', '')
-            .replaceAll('\'', '')
-            .replaceAll('!', '')
-            .split(' ')
-            .join('_')
-            .toLowerCase();
+    String cleanedString = topic.replaceAll(RegExp(r'[^A-Za-z0-9\s]'), '');
+    List<String> words = cleanedString.split(RegExp(r'\s+'));
+    String joinedString = words.join('_');
+    String transformedString = joinedString.toLowerCase();
+    return '${scanlatorName.trim().toLowerCase()}_$transformedString';
   }
 }
