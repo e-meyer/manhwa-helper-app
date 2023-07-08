@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../common/widgets/arc/two_rotating_arc.dart';
 
 class NotificationSectionBuilder extends StatelessWidget {
@@ -77,6 +77,7 @@ class NotificationSectionBuilder extends StatelessWidget {
               onTap: () async {
                 service.markAsRead(notification.chapterUrl);
                 await service.saveNotificationsToCache();
+                await _launchUrl(Uri.parse(notification.chapterUrl));
               },
               child: Container(
                 color: backgroundColor,
@@ -204,6 +205,12 @@ class NotificationSectionBuilder extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   String _formatTimeDifference(Duration timeDifference) {
