@@ -107,7 +107,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
             SizedBox(width: 16),
             Text(
               item.title,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -188,9 +188,9 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 //                                   child: Text(
 //                                     title,
 //                                     overflow: TextOverflow.ellipsis,
-//                                     style: GoogleFonts.overpass(
+//                                     style: GoogleFonts.poppins(
 //                                       fontSize: 15,
-//                                       fontWeight: FontWeight.bold,
+//                                       fontWeight: FontWeight.w600,
 //                                       color: Colors.white,
 //                                     ),
 //                                   ),
@@ -218,7 +218,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 //                                         ),
 //                                         title: Text(
 //                                           chapter,
-//                                           style: GoogleFonts.overpass(
+//                                           style: GoogleFonts.poppins(
 //                                             fontSize: 14,
 //                                             color: Colors.white,
 //                                           ),
@@ -364,9 +364,9 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                   //                         child: Text(
                   //                           title,
                   //                           overflow: TextOverflow.ellipsis,
-                  //                           style: GoogleFonts.overpass(
+                  //                           style: GoogleFonts.poppins(
                   //                             fontSize: 15,
-                  //                             fontWeight: FontWeight.bold,
+                  //                             fontWeight: FontWeight.w600,
                   //                             color: Colors.white,
                   //                           ),
                   //                         ),
@@ -394,7 +394,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
                   //                               ),
                   //                               title: Text(
                   //                                 chapter,
-                  //                                 style: GoogleFonts.overpass(
+                  //                                 style: GoogleFonts.poppins(
                   //                                   fontSize: 14,
                   //                                   color: Colors.white,
                   //                                 ),

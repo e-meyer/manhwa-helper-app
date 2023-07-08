@@ -42,7 +42,7 @@ class ManhwaModalBottomSheet extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   webtoon['title']!,
-                  style: GoogleFonts.overpass(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),

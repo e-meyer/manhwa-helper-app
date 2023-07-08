@@ -98,6 +98,7 @@ class _HelperScreenState extends State<HelperScreen>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) {
         if (settings.name == '/search') {
           final ScanlatorModel scanlator = settings.arguments as ScanlatorModel;
@@ -191,7 +192,7 @@ class _HelperScreenState extends State<HelperScreen>
                               //   child: Text(
                               //     service.unseenNotificationCount.value
                               //         .toString(),
-                              //     style: GoogleFonts.overpass(
+                              //     style: GoogleFonts.poppins(
                               //       color: Colors.white,
                               //       fontSize: 14,
                               //       fontWeight: FontWeight.w800,

@@ -48,9 +48,9 @@ class NotificationSectionBuilder extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   sectionTitle,
-                  style: GoogleFonts.overpass(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                 ),
@@ -157,10 +157,10 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 child: Text(
                                   notification.manhwaTitle,
                                   overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.overpass(
+                                  style: GoogleFonts.poppins(
                                     fontSize: 16,
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                   maxLines: 3,
                                 ),
@@ -172,14 +172,14 @@ class NotificationSectionBuilder extends StatelessWidget {
                               children: [
                                 Text(
                                   notification.chapterNumber,
-                                  style: GoogleFonts.overpass(
+                                  style: GoogleFonts.poppins(
                                     color: Color(0xFFBEBEBE),
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
                                   formattedTimeDifference,
-                                  style: GoogleFonts.overpass(
+                                  style: GoogleFonts.poppins(
                                     color: Color(0xFFFF6812),
                                     fontWeight: FontWeight.w600,
                                   ),

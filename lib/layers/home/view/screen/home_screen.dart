@@ -378,9 +378,9 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, value, child) {
             return Text(
               'Manhwas',
-              style: GoogleFonts.overpass(
-                fontWeight: FontWeight.bold,
-                fontSize: 26,
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
                 color: Colors.white,
               ),
             );

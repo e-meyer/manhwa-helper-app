@@ -77,10 +77,10 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                 ),
                 Text(
                   widget.scanlatorData['name'],
-                  style: GoogleFonts.overpass(
+                  style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],

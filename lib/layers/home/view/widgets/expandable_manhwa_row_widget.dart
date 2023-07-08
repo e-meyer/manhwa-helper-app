@@ -31,10 +31,10 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
           padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             widget.website,
-            style: GoogleFonts.overpass(
+            style: GoogleFonts.poppins(
               fontSize: 20,
               color: Colors.white,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -116,9 +116,9 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                       child: Text(
                                         title,
                                         overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.overpass(
+                                        style: GoogleFonts.poppins(
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -148,7 +148,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                             ),
                                             title: Text(
                                               chapter,
-                                              style: GoogleFonts.overpass(
+                                              style: GoogleFonts.poppins(
                                                 fontSize: 14,
                                                 color: Colors.white,
                                               ),
@@ -207,7 +207,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
               ),
               Text(
                 'Details',
-                style: GoogleFonts.overpass(fontSize: 16),
+                style: GoogleFonts.poppins(fontSize: 16),
               ),
             ],
           ),

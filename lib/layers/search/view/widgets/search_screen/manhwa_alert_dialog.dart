@@ -89,12 +89,12 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30, 20, 30, 6),
+              padding: const EdgeInsets.fromLTRB(40, 20, 40, 6),
               child: Text(
                 widget.webtoon['title']!,
-                style: GoogleFonts.overpass(
+                style: GoogleFonts.oswald(
                   fontWeight: FontWeight.w600,
-                  fontSize: 16,
+                  fontSize: 20,
                   color: Colors.white,
                 ),
                 maxLines: 3,
@@ -108,7 +108,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
                   '${widget.webtoon['latest_chapter']!} chapters',
-                  style: GoogleFonts.overpass(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
                     color: Colors.grey,
@@ -151,7 +151,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                               child: Row(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 3.0),
+                                    padding: const EdgeInsets.only(bottom: 4),
                                     child: SvgPicture.asset(
                                       'assets/icons/notifications-bell.svg',
                                       height: 18,
@@ -170,14 +170,14 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                                     isUserSubscribed
                                         ? 'Unsubscribe'
                                         : 'Subscribe',
-                                    style: GoogleFonts.overpass(
+                                    style: GoogleFonts.poppins(
                                       color: isUserSubscribed
                                           ? Color(0xFF646464)
                                           : Color(0xFFFF6812),
                                       fontSize: 16,
                                       fontWeight: isUserSubscribed
                                           ? FontWeight.w500
-                                          : FontWeight.bold,
+                                          : FontWeight.w600,
                                     ),
                                   ),
                                 ],

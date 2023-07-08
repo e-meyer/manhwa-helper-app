@@ -125,7 +125,7 @@ class _SearchScreenState extends State<SearchScreen>
                   Navigator.of(context).pop();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: SvgPicture.asset(
                     'assets/icons/arrow-back.svg',
                     colorFilter:
@@ -134,72 +134,66 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
                 ),
               ),
-              leadingWidth: 40,
+              leadingWidth: 50,
               titleSpacing: 0,
-              title: TextField(
-                autofocus: true,
-                focusNode: myFocusNode,
-                onChanged: (text) {
-                  setState(() {
-                    _inputText = text;
-                  });
-                  onTextChanged(text);
-                },
-                autocorrect: false,
-                decoration: InputDecoration(
-                  isDense: true,
-                  filled: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  fillColor: Color(0xFF292929),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: 'Search in Asura',
-                  hintStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                    color: Color(0xFF595959),
-                  ),
-                  // prefixIcon: myFocusNode.hasFocus
-                  //     ? null
-                  //     : InkWell(
-                  //         onTap: () {
-                  //           Navigator.of(context).pop();
-                  //         },
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(15.0),
-                  //           child: SvgPicture.asset(
-                  //             'assets/icons/arrow-back.svg',
-                  //             colorFilter: ColorFilter.mode(
-                  //                 Colors.white, BlendMode.srcIn),
-                  //             height: 10,
-                  //           ),
-                  //         ),
-                  //       ),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: AnimatedBuilder(
-                      animation: _colorTween,
-                      builder: (context, _) {
-                        return SvgPicture.asset(
-                          'assets/icons/search-solid.svg',
-                          colorFilter: ColorFilter.mode(
-                            _colorTween.value,
-                            BlendMode.srcIn,
-                          ),
-                          height: 10,
-                        );
-                      },
+              title: Padding(
+                padding: const EdgeInsets.only(right: 14.0),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  autofocus: true,
+                  focusNode: myFocusNode,
+                  onChanged: (text) {
+                    setState(() {
+                      _inputText = text;
+                    });
+                    onTextChanged(text);
+                  },
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                    fillColor: Color(0xFF292929),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Search in Asura',
+                    hintStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Color(0xFF595959),
+                    ),
+                    suffixIconConstraints: const BoxConstraints(
+                      minWidth: 20,
+                      minHeight: 20,
+                    ),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 10),
+                      child: AnimatedBuilder(
+                        animation: _colorTween,
+                        builder: (context, _) {
+                          return SvgPicture.asset(
+                            'assets/icons/search-solid.svg',
+                            colorFilter: ColorFilter.mode(
+                              _colorTween.value,
+                              BlendMode.srcIn,
+                            ),
+                            width: 20,
+                            height: 20,
+                          );
+                        },
+                      ),
                     ),
                   ),
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFFBCBCBC),
+                    fontSize: 16,
+                  ),
+                  cursorColor: Color(0xFFFF6812),
                 ),
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFFBCBCBC),
-                  fontSize: 18,
-                ),
-                cursorColor: Color(0xFFFF6812),
               ),
             ),
           ];
@@ -213,20 +207,6 @@ class _SearchScreenState extends State<SearchScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 10,
-                ),
-                if ((_webtoons.isNotEmpty && _inputText != ''))
-                  Text(
-                    'Results for "${_inputText}"',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
                 (_webtoons.isEmpty && _inputText == '')
                     ? Container()
                     : GridView.count(
@@ -276,154 +256,5 @@ class _SearchScreenState extends State<SearchScreen>
         ),
       ),
     );
-    // return Scaffold(
-    //   backgroundColor: Color(0xFF222222),
-    //   appBar: AppBar(
-    //     elevation: 0,
-    //     backgroundColor: Colors.transparent,
-    //     centerTitle: true,
-    //     leading: Container(),
-    //     leadingWidth: 0,
-    //     titleSpacing: 0,
-    //     title: Padding(
-    //       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-    //       child: TextField(
-    //         autofocus: true,
-    //         focusNode: myFocusNode,
-    //         onChanged: (text) {
-    //           setState(() {
-    //             _inputText = text;
-    //             print(_inputText);
-    //           });
-    //           onTextChanged(text);
-    //         },
-    //         autocorrect: false,
-    //         decoration: InputDecoration(
-    //           isDense: true,
-    //           filled: true,
-    //           contentPadding: EdgeInsets.symmetric(horizontal: 15),
-    //           fillColor: Color(0xFF292929),
-    //           border: OutlineInputBorder(
-    //             borderRadius: BorderRadius.circular(12.0),
-    //             borderSide: BorderSide.none,
-    //           ),
-    //           hintText: 'Search in Asura',
-    //           hintStyle: GoogleFonts.poppins(
-    //             fontWeight: FontWeight.w500,
-    //             fontSize: 18,
-    //             color: Color(0xFF595959),
-    //           ),
-    //           prefixIcon: myFocusNode.hasFocus
-    //               ? null
-    //               : InkWell(
-    //                   onTap: () {
-    //                     Navigator.of(context).pop();
-    //                   },
-    //                   child: Padding(
-    //                     padding: const EdgeInsets.all(15.0),
-    //                     child: SvgPicture.asset(
-    //                       'assets/icons/arrow-back.svg',
-    //                       colorFilter:
-    //                           ColorFilter.mode(Colors.white, BlendMode.srcIn),
-    //                       height: 10,
-    //                     ),
-    //                   ),
-    //                 ),
-    //           suffixIcon: Padding(
-    //             padding: const EdgeInsets.all(14.0),
-    //             child: AnimatedBuilder(
-    //               animation: _colorTween,
-    //               builder: (context, _) {
-    //                 return SvgPicture.asset(
-    //                   'assets/icons/search-solid.svg',
-    //                   colorFilter: ColorFilter.mode(
-    //                     _colorTween.value,
-    //                     BlendMode.srcIn,
-    //                   ),
-    //                   height: 10,
-    //                 );
-    //               },
-    //             ),
-    //           ),
-    //         ),
-    //         style: GoogleFonts.poppins(
-    //           fontWeight: FontWeight.w500,
-    //           color: Color(0xFFBCBCBC),
-    //           fontSize: 18,
-    //         ),
-    //         cursorColor: Color(0xFFFF6812),
-    //       ),
-    //     ),
-    //   ),
-    //   body: SingleChildScrollView(
-    //     physics: BouncingScrollPhysics(),
-    //     child: Padding(
-    //       padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
-    //       child: Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: [
-    //           SizedBox(
-    //             height: 10,
-    //           ),
-    //           if ((_webtoons.isNotEmpty && _inputText != ''))
-    //             Text(
-    //               'Results for "${_inputText}"',
-    //               maxLines: 1,
-    //               overflow: TextOverflow.ellipsis,
-    //               style: GoogleFonts.poppins(
-    //                 color: Colors.white,
-    //                 fontWeight: FontWeight.w600,
-    //                 fontSize: 18,
-    //               ),
-    //             ),
-    //           SizedBox(
-    //             height: 10,
-    //           ),
-    //           (_webtoons.isEmpty && _inputText == '')
-    //               ? Container()
-    //               : GridView.count(
-    //                   physics: NeverScrollableScrollPhysics(),
-    //                   crossAxisCount:
-    //                       (!_isTyping && !_isLoading && _webtoons.isEmpty)
-    //                           ? 1
-    //                           : 2,
-    //                   crossAxisSpacing: 12,
-    //                   mainAxisSpacing: 12,
-    //                   shrinkWrap: true,
-    //                   childAspectRatio: (1 / 1.45),
-    //                   children: _webtoons.isNotEmpty
-    //                       ? List.generate(
-    //                           _webtoons.length,
-    //                           (index) {
-    //                             final webtoon = _webtoons[index];
-    //                             return ManhwaSearchResultListBuilder(
-    //                               webtoon: webtoon,
-    //                             );
-    //                           },
-    //                         )
-    //                       : _isLoading || _isTyping
-    //                           ? List.generate(
-    //                               6,
-    //                               (index) {
-    //                                 return Shimmer.fromColors(
-    //                                   baseColor: Color(0xFF292929),
-    //                                   highlightColor: Color(0xFF333333),
-    //                                   child: Container(
-    //                                     color: Color(0xFF292929),
-    //                                   ),
-    //                                 );
-    //                               },
-    //                             )
-    //                           : !_isTyping && !_isLoading
-    //                               ? [SvgPicture.asset('assets/vectors/404.svg')]
-    //                               : [],
-    //                 ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

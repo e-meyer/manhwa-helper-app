@@ -75,7 +75,8 @@ class _ManhwaSearchResultListBuilderState
   void _showManhwaAlertDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) => ManhwaAlertDialog(webtoon: widget.webtoon, scanlator: widget.scanlator),
+      builder: (_) => ManhwaAlertDialog(
+          webtoon: widget.webtoon, scanlator: widget.scanlator),
     );
   }
 
@@ -138,7 +139,7 @@ class _ManhwaSearchResultListBuilderState
               ),
               child: Text(
                 widget.webtoon['title']!,
-                style: GoogleFonts.overpass(
+                style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,

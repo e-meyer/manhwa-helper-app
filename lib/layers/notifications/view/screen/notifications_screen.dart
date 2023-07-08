@@ -54,8 +54,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
           padding: const EdgeInsets.only(left: 14),
           child: Text(
             'Updates',
-            style: GoogleFonts.overpass(
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
               fontSize: 24,
               color: Colors.white,
             ),

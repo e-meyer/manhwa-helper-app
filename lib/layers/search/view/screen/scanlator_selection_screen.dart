@@ -20,10 +20,10 @@ class ScanlatorSelectionScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Select the scanlator',
-          style: GoogleFonts.overpass(
+          style: GoogleFonts.poppins(
             fontSize: 22,
             color: Colors.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
           ),
         ),
         elevation: 0,
