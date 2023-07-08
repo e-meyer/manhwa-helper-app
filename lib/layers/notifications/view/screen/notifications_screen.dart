@@ -62,27 +62,11 @@ class NotificationsScreenState extends State<NotificationsScreen>
           ),
         ),
         actions: [
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 20.0),
-          //   child: InkWell(
-          //     onTap: () async {
-          //       await service.subscribeToPlayer();
-          //     },
-          //     child: SvgPicture.asset(
-          //       'assets/icons/sync.svg',
-          //       colorFilter: ColorFilter.mode(
-          //         Colors.white,
-          //         BlendMode.srcIn,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
               onTap: () async {
                 service.clearAllNotifications();
-                // print(service.latestNotificationTimestamp.value);
               },
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',

@@ -76,10 +76,14 @@ class NotificationService extends ChangeNotifier {
               isGreaterThan: latestNotificationTimestamp.value)
           .snapshots()
           .listen((querySnapshot) async {
+        // print(latestNotificationTimestamp.value);
+
         List<NotificationModel> newNotifications = [];
 
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
+          print('aq dentro');
+          print(docSnapshot.data());
         }
         addNotifications(newNotifications);
         await saveNotificationsToCache();
@@ -94,12 +98,16 @@ class NotificationService extends ChangeNotifier {
           latestNotificationTimestamp.value =
               highestDate.toIso8601String().replaceAll('Z', '');
 
-          await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+          print("novo latest " + latestNotificationTimestamp.value);
+
+          await saveLatestNotificationTimestamp(
+              latestNotificationTimestamp.value);
           notifyListeners();
 
           listenForNewNotifications();
         } else {
-          await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+          await saveLatestNotificationTimestamp(
+              latestNotificationTimestamp.value);
         }
       });
     }
@@ -149,12 +157,14 @@ class NotificationService extends ChangeNotifier {
         latestNotificationTimestamp.value =
             highestDate.toIso8601String().replaceAll('Z', '');
 
-        await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+        await saveLatestNotificationTimestamp(
+            latestNotificationTimestamp.value);
         notifyListeners();
 
         listenForNewNotifications();
       } else {
-        await saveLatestNotificationTimestamp(latestNotificationTimestamp);
+        await saveLatestNotificationTimestamp(
+            latestNotificationTimestamp.value);
       }
     });
   }
@@ -188,8 +198,6 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<String> saveLatestNotificationTimestamp(timestamp) async {
-    final String timestamp =
-        DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
     await _sharedPreferences.setString(
         'latest_notification_timestamp', timestamp);
     return timestamp;
@@ -231,9 +239,11 @@ class NotificationService extends ChangeNotifier {
     listeners.forEach((key, value) {
       listeners[key]!.cancel();
     });
+    subscribedTopics.value = {};
     notifications.value = [];
     latestNotificationTimestamp.value =
         DateTime.now().toUtc().toIso8601String().replaceAll('Z', '');
+    _sharedPreferences.reload();
     notifyListeners();
   }
 
