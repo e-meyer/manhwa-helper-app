@@ -24,6 +24,7 @@ class NotificationService extends ChangeNotifier {
   NotificationService(this._sharedPreferences, this._db) {
     loadCachedNotifications();
     latestNotificationTimestamp.value = loadLatestNotificationTimestamp();
+    loadNotificationCount();
     getLocalSubscribedTopics();
   }
 
@@ -49,13 +50,7 @@ class NotificationService extends ChangeNotifier {
     final value = _sharedPreferences.getInt('unseenNotificationCount') ?? 0;
     await _sharedPreferences.setInt('unseenNotificationCount', value + 1);
     await _sharedPreferences.reload();
-
-    List<NotificationModel> list = [];
-    NotificationModel item = NotificationModel.fromMap(message.data);
-    list.add(item);
-    addNotifications(list);
     loadNotificationCount();
-    await saveNotificationsToCache();
   }
 
   void listenForNewNotifications() {
@@ -97,8 +92,6 @@ class NotificationService extends ChangeNotifier {
 
           latestNotificationTimestamp.value =
               highestDate.toIso8601String().replaceAll('Z', '');
-
-          print("novo latest " + latestNotificationTimestamp.value);
 
           await saveLatestNotificationTimestamp(
               latestNotificationTimestamp.value);
@@ -164,7 +157,7 @@ class NotificationService extends ChangeNotifier {
         listenForNewNotifications();
       } else {
         await saveLatestNotificationTimestamp(
-            latestNotificationTimestamp.value);
+            DateTime.now().toUtc().toIso8601String().replaceAll('Z', ''));
       }
     });
   }
