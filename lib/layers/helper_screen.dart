@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
 import 'package:manhwa_alert/layers/home/view/screen/home_screen.dart';
 import 'package:manhwa_alert/layers/notifications/view/screen/notifications_screen.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
@@ -104,6 +105,10 @@ class _HelperScreenState extends State<HelperScreen>
           final ScanlatorModel scanlator = settings.arguments as ScanlatorModel;
           return MaterialPageRoute(
             builder: (_) => SearchScreen(scanlator: scanlator),
+          );
+        } else if (settings.name == '/details') {
+          return MaterialPageRoute(
+            builder: (_) => const DetailsScreen(),
           );
         }
         return null;

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
 import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_alert_dialog.dart';
-import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_modal_bottom_sheet.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -64,14 +65,6 @@ class _ManhwaSearchResultListBuilderState
     }
   }
 
-  void _showManhwaBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => ManhwaModalBottomSheet(webtoon: widget.webtoon),
-    );
-  }
-
   void _showManhwaAlertDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -83,7 +76,16 @@ class _ManhwaSearchResultListBuilderState
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showManhwaAlertDialog(context), // Show modal on tap
+      onTap: () {
+        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+          context,
+          settings: RouteSettings(name: '/details'),
+          screen: DetailsScreen(),
+          withNavBar: false,
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        );
+        // _showManhwaAlertDialog(context);
+      },
       child: Stack(
         children: [
           Image.network(
