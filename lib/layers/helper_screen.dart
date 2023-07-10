@@ -188,17 +188,6 @@ class _HelperScreenState extends State<HelperScreen>
                                 color: Colors.orange,
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              // child: Center(
-                              //   child: Text(
-                              //     service.unseenNotificationCount.value
-                              //         .toString(),
-                              //     style: GoogleFonts.poppins(
-                              //       color: Colors.white,
-                              //       fontSize: 14,
-                              //       fontWeight: FontWeight.w800,
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                           ),
                       ],
