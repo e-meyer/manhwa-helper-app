@@ -30,7 +30,7 @@ class ScanlatorSelectionScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
-      backgroundColor: Color(0xFF222222),
+      backgroundColor: Color(0xFF151515),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
