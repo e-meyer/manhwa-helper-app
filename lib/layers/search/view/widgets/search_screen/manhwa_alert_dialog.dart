@@ -63,7 +63,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          color: Color(0xFF222222),
+          color: Color(0xFF151515),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(

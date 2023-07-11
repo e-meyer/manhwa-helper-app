@@ -112,20 +112,19 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF222222),
+      backgroundColor: Color(0xFF151515),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
-              centerTitle: true,
               leading: InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(20),
                   child: SvgPicture.asset(
                     'assets/icons/arrow-back.svg',
                     colorFilter:
@@ -134,12 +133,11 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
                 ),
               ),
-              leadingWidth: 50,
+              leadingWidth: 60,
               titleSpacing: 0,
               title: Padding(
-                padding: const EdgeInsets.only(right: 14.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: TextField(
-                  textAlign: TextAlign.center,
                   autofocus: true,
                   focusNode: myFocusNode,
                   onChanged: (text) {
@@ -153,24 +151,24 @@ class _SearchScreenState extends State<SearchScreen>
                     isDense: true,
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                    fillColor: Color(0xFF292929),
+                    fillColor: Color(0xFF1C1C1C),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide.none,
                     ),
-                    hintText: 'Search in Asura',
+                    hintText: 'Search in ${widget.scanlator.name}',
                     hintStyle: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xFF595959),
                     ),
-                    suffixIconConstraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
+                    prefixIconConstraints: const BoxConstraints(
+                      minWidth: 18,
+                      minHeight: 18,
                     ),
-                    suffixIcon: Padding(
+                    prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 10),
+                          horizontal: 14, vertical: 12),
                       child: AnimatedBuilder(
                         animation: _colorTween,
                         builder: (context, _) {
@@ -180,14 +178,15 @@ class _SearchScreenState extends State<SearchScreen>
                               _colorTween.value,
                               BlendMode.srcIn,
                             ),
-                            width: 20,
-                            height: 20,
+                            width: 17,
+                            height: 17,
                           );
                         },
                       ),
                     ),
                   ),
                   style: GoogleFonts.poppins(
+                    // height: 1.6,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFBCBCBC),
                     fontSize: 16,
