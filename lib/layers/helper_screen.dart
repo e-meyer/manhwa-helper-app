@@ -270,13 +270,13 @@ class _HelperScreenState extends State<HelperScreen>
           }
         },
         confineInSafeArea: true,
-        backgroundColor: Color(0xFF262626),
+        backgroundColor: Color(0xFF151515),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: false,
         decoration: const NavBarDecoration(
-          colorBehindNavBar: Color(0xFF262626),
+          colorBehindNavBar: Color(0xFF151515),
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,

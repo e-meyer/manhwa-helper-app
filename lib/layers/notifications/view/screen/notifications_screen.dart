@@ -49,7 +49,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
       appBar: AppBar(
         titleSpacing: 0,
         shadowColor: Colors.transparent,
-        backgroundColor: Color(0xFF222222),
+        backgroundColor: Color(0xFF151515),
         title: Padding(
           padding: const EdgeInsets.only(left: 14),
           child: Text(
@@ -80,7 +80,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
           ),
         ],
       ),
-      backgroundColor: Color(0xFF222222),
+      backgroundColor: Color(0xFF151515),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: ValueListenableBuilder<List<NotificationModel>>(
