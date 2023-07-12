@@ -369,10 +369,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF151515),
+      backgroundColor: Color(0xFF222222),
       appBar: AppBar(
         shadowColor: Colors.transparent,
-        backgroundColor: Color(0xFF151515),
+        backgroundColor: Color(0xFF222222),
         title: ValueListenableBuilder(
           valueListenable: service.unseenNotificationCount,
           builder: (context, value, child) {
