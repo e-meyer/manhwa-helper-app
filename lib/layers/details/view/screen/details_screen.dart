@@ -181,11 +181,3 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 }
-// Text(
-//                         '${webtoon['chapters_number']} Chapters',
-//                         style: GoogleFonts.poppins(
-//                           fontSize: 16,
-//                           color: Color(0xFF858597),
-//                           fontWeight: FontWeight.w500,
-//                         ),
-//                       ),
