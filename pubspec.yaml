@@ -94,11 +94,11 @@ flutter:
     - family: Poppins
       fonts:
         - asset: fonts/Poppins-Regular.ttf
-        - asset: fonts/Schyler-Light.ttf
+        - asset: fonts/Poppins-Light.ttf
           weight: 300
-        - asset: fonts/Schyler-Bold.ttf
+        - asset: fonts/Poppins-Bold.ttf
           weight: 700
-        - asset: fonts/Schyler-Medium.ttf
+        - asset: fonts/Poppins-Medium.ttf
           weight: 600
 
   #   - family: Trajan Pro

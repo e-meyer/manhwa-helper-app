@@ -48,7 +48,8 @@ class NotificationSectionBuilder extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   sectionTitle,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,

@@ -185,9 +185,9 @@ class _SearchScreenState extends State<SearchScreen>
                       ),
                     ),
                   ),
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     // height: 1.6,
-                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
                     color: Color(0xFFBCBCBC),
                     fontSize: 16,
                   ),

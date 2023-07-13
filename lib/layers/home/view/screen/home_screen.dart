@@ -378,7 +378,8 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, value, child) {
             return Text(
               'Manhwas',
-              style: GoogleFonts.poppins(
+              style: TextStyle(
+                fontFamily: 'Poppins',
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
                 color: Colors.white,

@@ -111,15 +111,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ],
                 ),
-                Column(
-                  children: List.generate(
-                    webtoon["chapters_labels"].length,
-                    (index) {
-                      return ListTile(
-                        title: Text(webtoon["chapters_labels"][index]),
-                        subtitle: Text(webtoon["chapters_release_date"][index]),
-                      );
-                    },
+                Padding(
+                  padding: const EdgeInsets.only(top: 80.0),
+                  child: Column(
+                    children: List.generate(
+                      webtoon["chapters_labels"].length,
+                      (index) {
+                        return ListTile(
+                          title: Text(webtoon["chapters_labels"][index]),
+                          subtitle:
+                              Text(webtoon["chapters_release_date"][index]),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -153,10 +157,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       children: [
                         Text(
                           '${webtoon['chapters_number']} Chapters',
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
                             fontSize: 16,
                             color: Color(0xFF858597),
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(

@@ -31,10 +31,11 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
           padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             widget.website,
-            style: GoogleFonts.poppins(
+            style: TextStyle(
+              fontFamily: 'Poppins',
               fontSize: 20,
               color: Colors.white,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
@@ -116,7 +117,8 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                       child: Text(
                                         title,
                                         overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white,
@@ -148,7 +150,8 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                             ),
                                             title: Text(
                                               chapter,
-                                              style: GoogleFonts.poppins(
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
                                                 fontSize: 14,
                                                 color: Colors.white,
                                               ),
@@ -207,7 +210,10 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
               ),
               Text(
                 'Details',
-                style: GoogleFonts.poppins(fontSize: 16),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 16,
+                ),
               ),
             ],
           ),
