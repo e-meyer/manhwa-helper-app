@@ -75,9 +75,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
       "3 months ago",
     ],
     "synopsis":
-        "Big synopsis very big one. A very big synopsis right here, as you can see. And no one is really caring about how big it is because it's actually kind of small, not that big of a deal. But not that small aswell, just average I'd say.",
+        "Big synopsis very big one. A very big synopsis right here, as you can see. And no one is really caring about how big it is because it's actually kind of small, not that big of a deal. But not that small aswell, just average I'd say. Big synopsis very big one. A very big synopsis right here, as you can see. And no one is really caring about how big it is because it's actually kind of small, not that big of a deal. But not that small aswell, just average I'd say. ",
   };
-
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,6 +173,87 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               )
                             ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Synopsis',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 300),
+                          firstChild: ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Color(0xFF151515).withOpacity(0.95),
+                                Color(0xFF151515).withOpacity(0.4),
+                                Colors.transparent
+                              ],
+                              stops: [
+                                0.1,
+                                0.7,
+                                1.0
+                              ], // adjust the stops to control where the gradient starts and ends
+                            ).createShader(bounds),
+                            blendMode: BlendMode.darken,
+                            child: Text(
+                              webtoon['synopsis'],
+                              maxLines: 3,
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Color(0xFF9393A3),
+                              ),
+                            ),
+                          ),
+                          secondChild: Text(
+                            webtoon['synopsis'],
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF9393A3),
+                            ),
+                          ),
+                          crossFadeState: _isExpanded
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                        ),
+                        SizedBox(height: 10),
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _isExpanded = !_isExpanded;
+                              });
+                            },
+                            child: SvgPicture.asset(
+                              _isExpanded
+                                  ? 'assets/icons/arrow-up.svg'
+                                  : 'assets/icons/arrow-down.svg',
+                              colorFilter: ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                           ),
                         ),
                       ],
