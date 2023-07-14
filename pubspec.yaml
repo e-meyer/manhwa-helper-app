@@ -48,6 +48,7 @@ dependencies:
   firebase_messaging: ^14.6.3
   shared_preferences: ^2.1.2
   tutorial_coach_mark: ^1.2.9
+  cached_network_image: ^3.2.3
   
 
 dev_dependencies:

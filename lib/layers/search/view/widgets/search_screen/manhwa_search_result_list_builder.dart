@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
@@ -24,10 +25,13 @@ class ManhwaSearchResultListBuilder extends StatefulWidget {
 
 class _ManhwaSearchResultListBuilderState
     extends State<ManhwaSearchResultListBuilder>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool isLoading = true;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -80,7 +84,7 @@ class _ManhwaSearchResultListBuilderState
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
           context,
           settings: RouteSettings(name: '/details'),
-          screen: DetailsScreen(),
+          screen: DetailsScreen(webtoon: widget.webtoon),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
@@ -88,48 +92,65 @@ class _ManhwaSearchResultListBuilderState
       },
       child: Stack(
         children: [
+          // CachedNetworkImage(
+          //   imageUrl: widget.webtoon['smaller_cover_url'] ??
+          //       widget.webtoon['cover_url']!,
+          //   width: 300,
+          //   height: 300,
+          //   fit: BoxFit.cover,
+          //   progressIndicatorBuilder: (context, url, downloadProgress) =>
+          //       Shimmer.fromColors(
+          //     baseColor: Color(0xFF292929),
+          //     highlightColor: Color(0xFF333333),
+          //     child: Container(
+          //       color: Color(0xFF292929),
+          //     ),
+          //   ),
+          //   errorWidget: (context, url, error) => Icon(Icons.error),
+          // ),
+
           Image.network(
             widget.webtoon['smaller_cover_url'] ?? widget.webtoon['cover_url']!,
             width: 300,
             height: 300,
             fit: BoxFit.cover,
+            gaplessPlayback: true,
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) {
                 return child;
               }
               return Shimmer.fromColors(
-                baseColor: Color(0xFF292929),
-                highlightColor: Color(0xFF333333),
+                baseColor: Colors.black,
+                highlightColor: Colors.grey,
                 child: Container(
-                  color: Color(0xFF292929),
+                  color: Colors.white,
                 ),
               );
             },
           ),
-          Visibility(
-            visible: !isLoading,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                height: 80,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.8),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
           // Visibility(
           //   visible: !isLoading,
           //   child:
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Color(0xFF151515).withOpacity(0.8),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+              // ),
+            ),
+          ),
+
           Positioned(
             bottom: 0,
             left: 0,
@@ -152,7 +173,6 @@ class _ManhwaSearchResultListBuilderState
                 textAlign: TextAlign.center,
               ),
             ),
-            // ),
           )
         ],
       ),
