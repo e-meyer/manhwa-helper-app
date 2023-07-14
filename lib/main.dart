@@ -18,6 +18,8 @@ void main() async {
 
   FirebaseMessaging.instance.getInitialMessage();
 
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 1000 << 20;
+
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
