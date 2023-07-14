@@ -158,7 +158,8 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 child: Text(
                                   notification.manhwaTitle,
                                   overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
                                     fontSize: 16,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -173,14 +174,16 @@ class NotificationSectionBuilder extends StatelessWidget {
                               children: [
                                 Text(
                                   notification.chapterNumber,
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
                                     color: Color(0xFFBEBEBE),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
                                   formattedTimeDifference,
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
                                     color: Color(0xFFFF6812),
                                     fontWeight: FontWeight.w600,
                                   ),

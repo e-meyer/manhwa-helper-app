@@ -157,7 +157,8 @@ class _SearchScreenState extends State<SearchScreen>
                       borderSide: BorderSide.none,
                     ),
                     hintText: 'Search in ${widget.scanlator.name}',
-                    hintStyle: GoogleFonts.poppins(
+                    hintStyle: TextStyle(
+                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Color(0xFF595959),

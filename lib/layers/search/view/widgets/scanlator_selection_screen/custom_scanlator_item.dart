@@ -77,7 +77,8 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                 ),
                 Text(
                   widget.scanlatorData['name'],
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

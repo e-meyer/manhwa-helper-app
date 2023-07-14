@@ -141,7 +141,8 @@ class _ManhwaSearchResultListBuilderState
               ),
               child: Text(
                 widget.webtoon['title']!,
-                style: GoogleFonts.poppins(
+                style: TextStyle(
+                  fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,

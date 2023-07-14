@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     "chapters_number": "16",
     "status": "Ongoing",
     "chapters_labels": [
+      "Chapter 101",
+      "Chapter 100",
       "Chapter 16",
       "Chapter 15",
       "Chapter 14",
@@ -53,6 +56,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     ],
     "chapters_release_date": [
       "1 day ago",
+      "1 day ago",
+      "1 day ago",
       "1 week ago",
       "2 weeks ago",
       "3 weeks ago",
@@ -77,16 +82,205 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF151515),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.34,
-                      width: double.infinity,
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.34,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(webtoon["cover_url"]),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.34,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              Color(0xFF151515).withOpacity(1.0),
+                              Color(0xFF151515).withOpacity(0.81),
+                              Color(0xFF151515).withOpacity(0.43),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 90),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/notifications-bell.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  Color(0xFF858597),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Subscribe',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Color(0xFF858597),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/web-view.svg',
+                                height: 24,
+                                colorFilter: const ColorFilter.mode(
+                                  Color(0xFF858597),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'View on web',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Color(0xFF858597),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Chapters',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 18,
+                          ),
+                          ListView.separated(
+                            padding: EdgeInsets.all(0),
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: webtoon["chapters_labels"].length,
+                            itemBuilder: (context, index) {
+                              final chapterNumber =
+                                  webtoon["chapters_labels"].length - index;
+                              return Row(
+                                children: [
+                                  Container(
+                                    width:
+                                        webtoon["chapters_labels"].length < 100
+                                            ? 30
+                                            : 50,
+                                    child: Text(
+                                      chapterNumber.toString(),
+                                      style: GoogleFonts.oswald(
+                                        fontSize: 30,
+                                        color: Color(0xFF858597),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          webtoon["chapters_labels"][index],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFFFFFFFF),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          webtoon["chapters_release_date"]
+                                              [index],
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 14,
+                                            color: Color(
+                                              0xFF8A8A8A,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height: 20,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.13,
+              left: 18,
+              right: 0,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      width: 150,
+                      height: 210,
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(webtoon["cover_url"]),
@@ -94,93 +288,40 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.34,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Color(0xFF151515).withOpacity(1.0),
-                            Color(0xFF151515).withOpacity(0.81),
-                            Color(0xFF151515).withOpacity(0.43),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 80.0),
-                  child: Column(
-                    children: List.generate(
-                      webtoon["chapters_labels"].length,
-                      (index) {
-                        return ListTile(
-                          title: Text(webtoon["chapters_labels"][index]),
-                          subtitle:
-                              Text(webtoon["chapters_release_date"][index]),
-                        );
-                      },
-                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.13,
-            left: 18,
-            right: 0,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    width: 150,
-                    height: 210,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(webtoon["cover_url"]),
-                        fit: BoxFit.cover,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${webtoon['chapters_number']} Chapters',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16,
+                              color: Color(0xFF858597),
+                            ),
+                          ),
+                          Text(
+                            webtoon['title'],
+                            style: GoogleFonts.oswald(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${webtoon['chapters_number']} Chapters',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 16,
-                            color: Color(0xFF858597),
-                          ),
-                        ),
-                        Text(
-                          webtoon['title'],
-                          style: GoogleFonts.oswald(
-                            fontSize: 24,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -108,7 +108,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
                   '${widget.webtoon['latest_chapter']!} chapters',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
                     color: Colors.grey,
@@ -170,7 +171,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                                     isUserSubscribed
                                         ? 'Unsubscribe'
                                         : 'Subscribe',
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
                                       color: isUserSubscribed
                                           ? Color(0xFF646464)
                                           : Color(0xFFFF6812),
@@ -195,7 +197,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                       },
                       child: Text(
                         'See more',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
                           color: Color(0xFFFF6812),
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
