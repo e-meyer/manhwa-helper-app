@@ -107,8 +107,10 @@ class _HelperScreenState extends State<HelperScreen>
             builder: (_) => SearchScreen(scanlator: scanlator),
           );
         } else if (settings.name == '/details') {
+          final Map<String, dynamic> webtoon =
+              settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
-            builder: (_) => const DetailsScreen(),
+            builder: (_) => DetailsScreen(webtoon: webtoon),
           );
         }
         return null;

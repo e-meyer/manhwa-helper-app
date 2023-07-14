@@ -1,9 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({super.key});
+  final Map<String, dynamic> webtoon;
+
+  const DetailsScreen({
+    super.key,
+    required this.webtoon,
+  });
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -97,7 +103,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(webtoon["cover_url"]),
+                            image: NetworkImage(widget.webtoon["cover_url"]),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -362,9 +368,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: Container(
                       width: 150,
                       height: 210,
+                      // child: CachedNetworkImage(
+                      //   imageUrl: widget.webtoon['smaller_cover_url'] ??
+                      //       widget.webtoon['cover_url']!,
+                      //   fit: BoxFit.cover,
+                      // ),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(webtoon["cover_url"]),
+                          image: NetworkImage(widget.webtoon["cover_url"]),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -385,7 +396,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ),
                           ),
                           Text(
-                            webtoon['title'],
+                            widget.webtoon['title'],
                             style: GoogleFonts.oswald(
                               fontSize: 24,
                               color: Colors.white,
