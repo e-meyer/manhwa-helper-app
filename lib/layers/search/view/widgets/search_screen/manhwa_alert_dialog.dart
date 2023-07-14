@@ -29,7 +29,6 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
   void _subscribeToTopic(String manhwaTitle) async {
     _buttonController.add(true);
     final String topic = cleanTopic(widget.scanlator.name, manhwaTitle);
-    print(topic);
     fcm.subscribeToTopic(topic);
     await service.saveSubscribedTopicLocal(topic);
     service.addTopicSnapshotListener(topic);
@@ -63,7 +62,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-          color: Color(0xFF151515),
+          color: const Color(0xFF151515),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -108,7 +107,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                 padding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
                 child: Text(
                   '${widget.webtoon['latest_chapter']!} chapters',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -158,15 +157,13 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                                       height: 18,
                                       colorFilter: ColorFilter.mode(
                                         isUserSubscribed
-                                            ? Color(0xFF646464)
-                                            : Color(0xFFFF6812),
+                                            ? const Color(0xFF646464)
+                                            : const Color(0xFFFF6812),
                                         BlendMode.srcIn,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 6,
-                                  ),
+                                  const SizedBox(width: 6),
                                   Text(
                                     isUserSubscribed
                                         ? 'Unsubscribe'
@@ -174,8 +171,8 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: isUserSubscribed
-                                          ? Color(0xFF646464)
-                                          : Color(0xFFFF6812),
+                                          ? const Color(0xFF646464)
+                                          : const Color(0xFFFF6812),
                                       fontSize: 16,
                                       fontWeight: isUserSubscribed
                                           ? FontWeight.w500
@@ -195,7 +192,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
                       onTap: () {
                         // Your onPressed logic for the new button
                       },
-                      child: Text(
+                      child: const Text(
                         'See more',
                         style: TextStyle(
                           fontFamily: 'Poppins',

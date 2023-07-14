@@ -57,8 +57,6 @@ class NotificationService extends ChangeNotifier {
     final Map<String, String> localTopics = subscribedTopics.value;
 
     for (final key in localTopics.keys) {
-      String value = localTopics[key]!;
-
       if (listeners.containsKey(key)) {
         listeners[key]!.cancel();
       }
@@ -71,14 +69,10 @@ class NotificationService extends ChangeNotifier {
               isGreaterThan: latestNotificationTimestamp.value)
           .snapshots()
           .listen((querySnapshot) async {
-        // print(latestNotificationTimestamp.value);
-
         List<NotificationModel> newNotifications = [];
 
         for (var docSnapshot in querySnapshot.docs) {
           newNotifications.add(NotificationModel.fromMap(docSnapshot.data()));
-          print('aq dentro');
-          print(docSnapshot.data());
         }
         addNotifications(newNotifications);
         await saveNotificationsToCache();
@@ -184,9 +178,9 @@ class NotificationService extends ChangeNotifier {
     List<String> cachedNotifications =
         _sharedPreferences.getStringList('cached_notifications') ?? [];
     final List<NotificationModel> notificationsHolder = [];
-    cachedNotifications.forEach((notification) {
+    for (var notification in cachedNotifications) {
       notificationsHolder.add(NotificationModel.fromJson(notification));
-    });
+    }
     notifications.value = notificationsHolder;
   }
 

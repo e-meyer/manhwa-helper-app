@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
 import '../../../../common/widgets/arc/two_rotating_arc.dart';
 import '../../../models/scanlator_model.dart';
 import '../../screen/search_screen.dart';
@@ -24,7 +22,7 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
         final scanlator = ScanlatorModel.fromMap(widget.scanlatorData);
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
           context,
-          settings: RouteSettings(name: '/search'),
+          settings: const RouteSettings(name: '/search'),
           screen: SearchScreen(scanlator: scanlator),
           withNavBar: true,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
@@ -63,7 +61,7 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                         child: SvgPicture.asset(
                           'assets/icons/image-placeholder.svg',
                           height: 150,
-                          colorFilter: ColorFilter.mode(
+                          colorFilter: const ColorFilter.mode(
                             Color(0xFF676767),
                             BlendMode.srcIn,
                           ),
@@ -77,7 +75,7 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                 ),
                 Text(
                   widget.scanlatorData['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 18,
                     color: Colors.white,

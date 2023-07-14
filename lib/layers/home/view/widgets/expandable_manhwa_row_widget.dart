@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExpandableManhwaRowWidget extends StatefulWidget {
@@ -31,7 +30,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
           padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             widget.website,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Poppins',
               fontSize: 20,
               color: Colors.white,
@@ -50,7 +49,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: 4,
                   itemBuilder: (context, manhwaIndex) {
                     final coverLink =
@@ -75,7 +74,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                 padding: const EdgeInsets.only(left: 6.0),
                 child: ListView.separated(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 4,
                   itemBuilder: (context, manhwaIndex) {
                     final title = widget.manhwaData[manhwaIndex]['title'];
@@ -117,7 +116,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                       child: Text(
                                         title,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
@@ -140,17 +139,17 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                                           child: ListTile(
                                             dense: true,
                                             contentPadding:
-                                                EdgeInsets.symmetric(
+                                                const EdgeInsets.symmetric(
                                               horizontal: 0.0,
                                               vertical: 0.0,
                                             ),
-                                            visualDensity: VisualDensity(
+                                            visualDensity: const VisualDensity(
                                               horizontal: 0,
                                               vertical: -4,
                                             ),
                                             title: Text(
                                               chapter,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontFamily: 'Poppins',
                                                 fontSize: 14,
                                                 color: Colors.white,
@@ -170,9 +169,7 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 20,
-                    );
+                    return const SizedBox(height: 20);
                   },
                 ),
               ),
@@ -203,12 +200,12 @@ class _ExpandableManhwaRowWidgetState extends State<ExpandableManhwaRowWidget> {
                 _isExpanded
                     ? 'assets/icons/arrow-up.svg'
                     : 'assets/icons/arrow-down.svg',
-                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
               const SizedBox(
                 width: 10,
               ),
-              Text(
+              const Text(
                 'Details',
                 style: TextStyle(
                   fontFamily: 'Poppins',

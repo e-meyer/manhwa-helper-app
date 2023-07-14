@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/layers/notifications/controller/notification_service.dart';
@@ -48,7 +47,7 @@ class NotificationSectionBuilder extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Text(
                   sectionTitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -59,15 +58,13 @@ class NotificationSectionBuilder extends StatelessWidget {
             : Container(),
         ListView.separated(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: filteredNotifications.length,
           itemBuilder: (context, index) {
             final notification = filteredNotifications[index];
             final bool isRead = notification.isRead;
             final Color backgroundColor =
-                isRead ? Colors.transparent : Color(0xFF282828);
-            DateTime gmt03NotificationTime =
-                notification.notificationTimestamp.toUtc();
+                isRead ? Colors.transparent : const Color(0xFF282828);
 
             final timeDifference =
                 currentTime.difference(notification.notificationTimestamp);
@@ -83,8 +80,8 @@ class NotificationSectionBuilder extends StatelessWidget {
               child: Container(
                 color: backgroundColor,
                 padding: (sectionTitle == 'New' && !isRead)
-                    ? EdgeInsets.fromLTRB(0, 14, 20, 14)
-                    : EdgeInsets.fromLTRB(20, 14, 20, 14),
+                    ? const EdgeInsets.fromLTRB(0, 14, 20, 14)
+                    : const EdgeInsets.fromLTRB(20, 14, 20, 14),
                 child: IntrinsicHeight(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +93,7 @@ class NotificationSectionBuilder extends StatelessWidget {
                             child: Container(
                               width: 6,
                               height: 6,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color(0xFFFF6812),
                                 shape: BoxShape.circle,
                               ),
@@ -116,7 +113,7 @@ class NotificationSectionBuilder extends StatelessWidget {
                             }
                             return const Center(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 20.0,
                                 ),
@@ -134,7 +131,7 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 child: SvgPicture.asset(
                                   'assets/icons/image-placeholder.svg',
                                   height: 40,
-                                  colorFilter: ColorFilter.mode(
+                                  colorFilter: const ColorFilter.mode(
                                     Color(0xFF676767),
                                     BlendMode.srcIn,
                                   ),
@@ -144,21 +141,20 @@ class NotificationSectionBuilder extends StatelessWidget {
                           },
                         ),
                       ),
-                      SizedBox(width: 14.0),
+                      const SizedBox(width: 14.0),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              // color: Colors.red,
+                            SizedBox(
                               height: 40,
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   notification.manhwaTitle,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 16,
                                     color: Colors.white,
@@ -168,13 +164,13 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   notification.chapterNumber,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Poppins',
                                     color: Color(0xFFBEBEBE),
                                     fontWeight: FontWeight.w600,
@@ -182,7 +178,7 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 ),
                                 Text(
                                   formattedTimeDifference,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Poppins',
                                     color: Color(0xFFFF6812),
                                     fontWeight: FontWeight.w600,
@@ -203,7 +199,7 @@ class NotificationSectionBuilder extends StatelessWidget {
             return Container(
               width: MediaQuery.of(context).size.width,
               height: 2,
-              color: Color(0xFF151515),
+              color: const Color(0xFF151515),
             );
           },
         ),

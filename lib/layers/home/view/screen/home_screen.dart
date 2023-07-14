@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/home/view/widgets/infinite_carousel.dart';
@@ -369,14 +367,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF222222),
+      backgroundColor: const Color(0xFF222222),
       appBar: AppBar(
         shadowColor: Colors.transparent,
-        backgroundColor: Color(0xFF222222),
+        backgroundColor: const Color(0xFF222222),
         title: ValueListenableBuilder(
           valueListenable: service.unseenNotificationCount,
           builder: (context, value, child) {
-            return Text(
+            return const Text(
               'Manhwas',
               style: TextStyle(
                 fontFamily: 'Poppins',
@@ -389,18 +387,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.36,
-              child: InfiniteCarousel(),
+              child: const InfiniteCarousel(),
             ),
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 1,
-              color: Color(0xFF464646),
-              margin: EdgeInsets.symmetric(
+              color: const Color(0xFF464646),
+              margin: const EdgeInsets.symmetric(
                 vertical: 8.0,
               ),
             ),

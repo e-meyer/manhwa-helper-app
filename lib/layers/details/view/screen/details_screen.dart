@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -87,13 +86,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF151515),
+      backgroundColor: const Color(0xFF151515),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Stack(
           children: [
             SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Stack(
@@ -116,9 +115,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                             colors: [
-                              Color(0xFF151515).withOpacity(1.0),
-                              Color(0xFF151515).withOpacity(0.81),
-                              Color(0xFF151515).withOpacity(0.43),
+                              const Color(0xFF151515).withOpacity(1.0),
+                              const Color(0xFF151515).withOpacity(0.81),
+                              const Color(0xFF151515).withOpacity(0.43),
                             ],
                           ),
                         ),
@@ -141,14 +140,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   BlendMode.srcIn,
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               Text(
                                 'Subscribe',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
-                                  color: Color(0xFF858597),
+                                  color: const Color(0xFF858597),
                                   fontWeight: FontWeight.w600,
                                 ),
                               )
@@ -167,14 +164,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   BlendMode.srcIn,
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               Text(
                                 'View on web',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
-                                  color: Color(0xFF858597),
+                                  color: const Color(0xFF858597),
                                   fontWeight: FontWeight.w600,
                                 ),
                               )
@@ -184,15 +179,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
+                        const Text(
                           'Synopsis',
                           style: TextStyle(
                             fontFamily: 'Poppins',
@@ -201,9 +194,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        const SizedBox(height: 15),
                         AnimatedCrossFade(
                           duration: const Duration(milliseconds: 300),
                           firstChild: ShaderMask(
@@ -211,11 +202,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,
                               colors: [
-                                Color(0xFF151515).withOpacity(0.95),
-                                Color(0xFF151515).withOpacity(0.4),
+                                const Color(0xFF151515).withOpacity(0.95),
+                                const Color(0xFF151515).withOpacity(0.4),
                                 Colors.transparent
                               ],
-                              stops: [
+                              stops: const [
                                 0.1,
                                 0.7,
                                 1.0
@@ -226,7 +217,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               webtoon['synopsis'],
                               maxLines: 3,
                               overflow: TextOverflow.clip,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 color: Color(0xFF9393A3),
                               ),
@@ -234,7 +225,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ),
                           secondChild: Text(
                             webtoon['synopsis'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Poppins',
                               color: Color(0xFF9393A3),
                             ),
@@ -243,7 +234,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               ? CrossFadeState.showSecond
                               : CrossFadeState.showFirst,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Center(
                           child: InkWell(
                             onTap: () {
@@ -255,7 +246,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               _isExpanded
                                   ? 'assets/icons/arrow-up.svg'
                                   : 'assets/icons/arrow-down.svg',
-                              colorFilter: ColorFilter.mode(
+                              colorFilter: const ColorFilter.mode(
                                 Colors.white,
                                 BlendMode.srcIn,
                               ),
@@ -272,7 +263,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Chapters',
                             style: TextStyle(
                               fontFamily: 'Poppins',
@@ -281,12 +272,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          SizedBox(
-                            height: 18,
-                          ),
+                          const SizedBox(height: 18),
                           ListView.separated(
-                            padding: EdgeInsets.all(0),
-                            physics: NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(0),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: webtoon["chapters_labels"].length,
                             itemBuilder: (context, index) {
@@ -294,7 +283,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   webtoon["chapters_labels"].length - index;
                               return Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width:
                                         webtoon["chapters_labels"].length < 100
                                             ? 30
@@ -303,7 +292,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       chapterNumber.toString(),
                                       style: GoogleFonts.oswald(
                                         fontSize: 30,
-                                        color: Color(0xFF858597),
+                                        color: const Color(0xFF858597),
                                         fontWeight: FontWeight.w600,
                                       ),
                                       textAlign: TextAlign.center,
@@ -317,19 +306,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       children: [
                                         Text(
                                           webtoon["chapters_labels"][index],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             fontFamily: 'Poppins',
                                             color: Color(0xFFFFFFFF),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
+                                        const SizedBox(height: 5),
                                         Text(
                                           webtoon["chapters_release_date"]
                                               [index],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontFamily: 'Poppins',
                                             fontSize: 14,
                                             color: Color(
@@ -344,9 +331,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               );
                             },
                             separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: 20,
-                              );
+                              return const SizedBox(height: 20);
                             },
                           ),
                         ],
@@ -389,7 +374,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         children: [
                           Text(
                             '${webtoon['chapters_number']} Chapters',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 16,
                               color: Color(0xFF858597),

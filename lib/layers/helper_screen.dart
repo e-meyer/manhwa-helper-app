@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
 import 'package:manhwa_alert/layers/home/view/screen/home_screen.dart';
 import 'package:manhwa_alert/layers/notifications/view/screen/notifications_screen.dart';
@@ -29,10 +28,10 @@ class _HelperScreenState extends State<HelperScreen>
       PersistentTabController(initialIndex: 0);
 
   final List<Widget> _screens = [
-    HomeScreen(),
+    const HomeScreen(),
     ScanlatorSelectionScreen(),
-    NotificationsScreen(),
-    HomeScreen(),
+    const NotificationsScreen(),
+    const HomeScreen(),
   ];
 
   requestPermission() async {
@@ -272,7 +271,7 @@ class _HelperScreenState extends State<HelperScreen>
           }
         },
         confineInSafeArea: true,
-        backgroundColor: Color(0xFF151515),
+        backgroundColor: const Color(0xFF151515),
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,

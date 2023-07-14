@@ -53,12 +53,12 @@ class _InfiniteScrollCarouselState extends State<InfiniteScrollCarousel> {
   Widget _buildCarouselItem(int index) {
     final currentItem = carouselItems[index];
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
       color: Colors.blue,
       child: Center(
         child: Text(
           currentItem,
-          style: TextStyle(fontSize: 20.0, color: Colors.white),
+          style: const TextStyle(fontSize: 20.0, color: Colors.white),
         ),
       ),
     );

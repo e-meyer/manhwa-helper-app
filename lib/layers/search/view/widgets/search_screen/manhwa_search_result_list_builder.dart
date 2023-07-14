@@ -1,12 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
 import 'package:manhwa_alert/layers/search/models/scanlator_model.dart';
-import 'package:manhwa_alert/layers/search/view/widgets/search_screen/manhwa_alert_dialog.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:flutter/scheduler.dart';
 
 class ManhwaSearchResultListBuilder extends StatefulWidget {
   const ManhwaSearchResultListBuilder({
@@ -25,23 +21,17 @@ class ManhwaSearchResultListBuilder extends StatefulWidget {
 
 class _ManhwaSearchResultListBuilderState
     extends State<ManhwaSearchResultListBuilder>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin {
   bool isLoading = true;
   late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
-    _fadeAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_animationController);
   }
 
   @override
@@ -69,13 +59,13 @@ class _ManhwaSearchResultListBuilderState
     }
   }
 
-  void _showManhwaAlertDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => ManhwaAlertDialog(
-          webtoon: widget.webtoon, scanlator: widget.scanlator),
-    );
-  }
+  // void _showManhwaAlertDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => ManhwaAlertDialog(
+  //         webtoon: widget.webtoon, scanlator: widget.scanlator),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +73,7 @@ class _ManhwaSearchResultListBuilderState
       onTap: () {
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
           context,
-          settings: RouteSettings(name: '/details'),
+          settings: const RouteSettings(name: '/details'),
           screen: DetailsScreen(webtoon: widget.webtoon),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
@@ -142,7 +132,7 @@ class _ManhwaSearchResultListBuilderState
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Color(0xFF151515).withOpacity(0.8),
+                    const Color(0xFF151515).withOpacity(0.8),
                     Colors.transparent,
                   ],
                 ),
@@ -162,7 +152,7 @@ class _ManhwaSearchResultListBuilderState
               ),
               child: Text(
                 widget.webtoon['title']!,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.white,
                   fontWeight: FontWeight.w600,

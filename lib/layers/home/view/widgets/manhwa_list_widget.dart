@@ -17,11 +17,11 @@ class _ManhwaListWidgetState extends State<ManhwaListWidget> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.data.length,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final website = widget.data[index]['website'];
           final manhwaData = widget.data[index]['manhwa_data'];

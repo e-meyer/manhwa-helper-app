@@ -20,7 +20,7 @@ class ExpandableWidget extends StatefulWidget {
 class _ExpandableWidgetState extends State<ExpandableWidget> {
   bool _isExpanded = false;
 
-  List<CarouselItem> _carouselItems = [
+  final List<CarouselItem> _carouselItems = [
     CarouselItem(
       image:
           'https://www.asurascans.com/wp-content/uploads/2022/12/RelifePlayerCover03.png',
@@ -65,7 +65,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
           crossFadeState: _isExpanded
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
         ),
         ElevatedButton(
           onPressed: () {
@@ -82,7 +82,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   List<Widget> _buildImagesRow() {
     return _carouselItems.map((item) {
       return Padding(
-        padding: EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(4.0),
         child: Image.network(
           item.image,
           height: 200,
@@ -95,7 +95,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   List<Widget> _buildItemsColumn() {
     return _carouselItems.map((item) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
             Image.network(
@@ -104,10 +104,10 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
               height: 100,
               fit: BoxFit.cover,
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Text(
               item.title,
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
           ],
         ),

@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:manhwa_alert/layers/notifications/view/widgets/notification_section_builder.dart';
@@ -49,9 +47,9 @@ class NotificationsScreenState extends State<NotificationsScreen>
       appBar: AppBar(
         titleSpacing: 0,
         shadowColor: Colors.transparent,
-        backgroundColor: Color(0xFF151515),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 14),
+        backgroundColor: const Color(0xFF151515),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 14),
           child: Text(
             'Updates',
             style: TextStyle(
@@ -72,7 +70,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',
                 height: 28,
-                colorFilter: ColorFilter.mode(
+                colorFilter: const ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcIn,
                 ),
@@ -81,9 +79,9 @@ class NotificationsScreenState extends State<NotificationsScreen>
           ),
         ],
       ),
-      backgroundColor: Color(0xFF151515),
+      backgroundColor: const Color(0xFF151515),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: ValueListenableBuilder<List<NotificationModel>>(
           valueListenable: service.notifications,
           builder: (context, value, child) {

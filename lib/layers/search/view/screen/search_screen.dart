@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as htmlParser;
@@ -44,8 +43,8 @@ class _SearchScreenState extends State<SearchScreen>
     );
 
     _colorTween = ColorTween(
-      begin: Color(0xFF3E3E3E),
-      end: Color(0xFFFF6812),
+      begin: const Color(0xFF3E3E3E),
+      end: const Color(0xFFFF6812),
     ).animate(_controller);
 
     myFocusNode.addListener(() {
@@ -112,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF151515),
+      backgroundColor: const Color(0xFF151515),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
@@ -128,7 +127,7 @@ class _SearchScreenState extends State<SearchScreen>
                   child: SvgPicture.asset(
                     'assets/icons/arrow-back.svg',
                     colorFilter:
-                        ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     height: 10,
                   ),
                 ),
@@ -150,14 +149,14 @@ class _SearchScreenState extends State<SearchScreen>
                   decoration: InputDecoration(
                     isDense: true,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                    fillColor: Color(0xFF1C1C1C),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                    fillColor: const Color(0xFF1C1C1C),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide.none,
                     ),
                     hintText: 'Search in ${widget.scanlator.name}',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
@@ -186,20 +185,20 @@ class _SearchScreenState extends State<SearchScreen>
                       ),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     // height: 1.6,
                     fontFamily: 'Poppins',
                     color: Color(0xFFBCBCBC),
                     fontSize: 16,
                   ),
-                  cursorColor: Color(0xFFFF6812),
+                  cursorColor: const Color(0xFFFF6812),
                 ),
               ),
             ),
           ];
         },
         body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
             child: Column(
@@ -210,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen>
                 (_webtoons.isEmpty && _inputText == '')
                     ? Container()
                     : GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         crossAxisCount:
                             (!_isTyping && !_isLoading && _webtoons.isEmpty)
                                 ? 1
@@ -235,10 +234,10 @@ class _SearchScreenState extends State<SearchScreen>
                                     6,
                                     (index) {
                                       return Shimmer.fromColors(
-                                        baseColor: Color(0xFF292929),
-                                        highlightColor: Color(0xFF333333),
+                                        baseColor: const Color(0xFF292929),
+                                        highlightColor: const Color(0xFF333333),
                                         child: Container(
-                                          color: Color(0xFF292929),
+                                          color: const Color(0xFF292929),
                                         ),
                                       );
                                     },
