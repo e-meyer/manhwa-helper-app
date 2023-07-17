@@ -116,6 +116,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             end: Alignment.topCenter,
                             colors: [
                               const Color(0xFF151515).withOpacity(1.0),
+                              const Color(0xFF151515).withOpacity(0.95),
                               const Color(0xFF151515).withOpacity(0.81),
                               const Color(0xFF151515).withOpacity(0.43),
                             ],
@@ -395,6 +396,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Positioned(
+              top: 30,
+              left: 18,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
