@@ -207,11 +207,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 const Color(0xFF151515).withOpacity(0.4),
                                 Colors.transparent
                               ],
-                              stops: const [
-                                0.1,
-                                0.7,
-                                1.0
-                              ], // adjust the stops to control where the gradient starts and ends
+                              stops: const [0.1, 0.7, 1.0],
                             ).createShader(bounds),
                             blendMode: BlendMode.darken,
                             child: Text(
@@ -280,54 +276,28 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             shrinkWrap: true,
                             itemCount: webtoon["chapters_labels"].length,
                             itemBuilder: (context, index) {
-                              final chapterNumber =
-                                  webtoon["chapters_labels"].length - index;
-                              return Row(
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width:
-                                        webtoon["chapters_labels"].length < 100
-                                            ? 30
-                                            : 50,
-                                    child: Text(
-                                      chapterNumber.toString(),
-                                      style: GoogleFonts.oswald(
-                                        fontSize: 30,
-                                        color: const Color(0xFF858597),
-                                        fontWeight: FontWeight.w600,
+                                  Text(
+                                    webtoon["chapters_labels"][index],
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFFFFFFFF),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    webtoon["chapters_release_date"][index],
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      color: Color(
+                                        0xFF8A8A8A,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          webtoon["chapters_labels"][index],
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFFFFFFFF),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          webtoon["chapters_release_date"]
-                                              [index],
-                                          style: const TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 14,
-                                            color: Color(
-                                              0xFF8A8A8A,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                  )
                                 ],
                               );
                             },
