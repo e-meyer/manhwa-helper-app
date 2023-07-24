@@ -233,19 +233,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                         const SizedBox(height: 10),
                         Center(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _isExpanded = !_isExpanded;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              _isExpanded
-                                  ? 'assets/icons/arrow-up.svg'
-                                  : 'assets/icons/arrow-down.svg',
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
+                          child: SizedBox(
+                            height: 40,
+                            width: 40,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isExpanded = !_isExpanded;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  _isExpanded
+                                      ? 'assets/icons/arrow-up.svg'
+                                      : 'assets/icons/arrow-down.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                    Colors.white,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
