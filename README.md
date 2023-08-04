@@ -6,6 +6,8 @@
   <img src="./readme-assets/details.png" width="30%" style="margin: 0 10px;"/>
 </div>
 
+Still thinking about the name.
+
 I've always had a stroke tracking new chapters from multiple scanlators because I read many webtoons from a lot of them.
 
 This app alerts readers of new chapters of their favorite Manhwas.
