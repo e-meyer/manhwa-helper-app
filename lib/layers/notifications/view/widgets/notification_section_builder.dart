@@ -199,7 +199,7 @@ class NotificationSectionBuilder extends StatelessWidget {
             return Container(
               width: MediaQuery.of(context).size.width,
               height: 2,
-              color: const Color(0xFF151515),
+              color: Theme.of(context).scaffoldBackgroundColor,
             );
           },
         ),

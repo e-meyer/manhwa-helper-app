@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:manhwa_alert/core/themes/themes.dart';
 import 'package:manhwa_alert/layers/helper_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:manhwa_alert/core/injector/service_locator.dart';
@@ -47,9 +48,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Infinite Carousel Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: mainDarkTheme,
       home: const HelperScreen(),
     );
   }

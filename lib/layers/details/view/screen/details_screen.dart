@@ -86,7 +86,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF151515),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Stack(
@@ -115,10 +115,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
                             colors: [
-                              const Color(0xFF151515).withOpacity(1.0),
-                              const Color(0xFF151515).withOpacity(0.95),
-                              const Color(0xFF151515).withOpacity(0.81),
-                              const Color(0xFF151515).withOpacity(0.43),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withOpacity(1.0),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withOpacity(0.95),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withOpacity(0.81),
+                              Theme.of(context)
+                                  .scaffoldBackgroundColor
+                                  .withOpacity(0.43),
                             ],
                           ),
                         ),
@@ -203,8 +211,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,
                               colors: [
-                                const Color(0xFF151515).withOpacity(0.95),
-                                const Color(0xFF151515).withOpacity(0.4),
+                                Theme.of(context)
+                                    .scaffoldBackgroundColor
+                                    .withOpacity(0.95),
+                                Theme.of(context)
+                                    .scaffoldBackgroundColor
+                                    .withOpacity(0.4),
                                 Colors.transparent
                               ],
                               stops: const [0.1, 0.7, 1.0],

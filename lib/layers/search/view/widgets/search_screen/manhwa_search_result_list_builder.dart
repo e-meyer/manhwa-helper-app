@@ -132,7 +132,7 @@ class _ManhwaSearchResultListBuilderState
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    const Color(0xFF151515).withOpacity(0.8),
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
                     Colors.transparent,
                   ],
                 ),

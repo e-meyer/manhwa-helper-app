@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:manhwa_alert/core/themes/themes.dart';
 import 'package:manhwa_alert/layers/details/view/screen/details_screen.dart';
 import 'package:manhwa_alert/layers/home/view/screen/home_screen.dart';
 import 'package:manhwa_alert/layers/notifications/view/screen/notifications_screen.dart';
@@ -98,6 +99,7 @@ class _HelperScreenState extends State<HelperScreen>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: mainDarkTheme,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) {
         if (settings.name == '/search') {
@@ -121,21 +123,21 @@ class _HelperScreenState extends State<HelperScreen>
         items: [
           PersistentBottomNavBarItem(
             inactiveIcon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/home.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/home-solid.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
@@ -145,21 +147,21 @@ class _HelperScreenState extends State<HelperScreen>
           ),
           PersistentBottomNavBarItem(
             inactiveIcon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/search.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/search-solid.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
@@ -170,7 +172,7 @@ class _HelperScreenState extends State<HelperScreen>
           PersistentBottomNavBarItem(
             inactiveIcon: Center(
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(0),
                 child: ValueListenableBuilder(
                   valueListenable: service.unseenNotificationCount,
                   builder: (context, value, child) {
@@ -178,8 +180,8 @@ class _HelperScreenState extends State<HelperScreen>
                       children: [
                         SvgPicture.asset(
                           'assets/icons/notifications-bell.svg',
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFFFFFFFF),
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).indicatorColor,
                             BlendMode.srcIn,
                           ),
                         ),
@@ -204,7 +206,7 @@ class _HelperScreenState extends State<HelperScreen>
             ),
             icon: Center(
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(0),
                 child: ValueListenableBuilder(
                   valueListenable: service.unseenNotificationCount,
                   builder: (context, value, child) {
@@ -212,8 +214,8 @@ class _HelperScreenState extends State<HelperScreen>
                       children: [
                         SvgPicture.asset(
                           'assets/icons/notifications-bell-solid.svg',
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFFFFFFFF),
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).indicatorColor,
                             BlendMode.srcIn,
                           ),
                         ),
@@ -241,21 +243,21 @@ class _HelperScreenState extends State<HelperScreen>
           ),
           PersistentBottomNavBarItem(
             inactiveIcon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/bookmark.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
             ),
             icon: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(0),
               child: SvgPicture.asset(
                 'assets/icons/bookmark-solid.svg',
-                colorFilter: const ColorFilter.mode(
-                  Color(0xFFFFFFFF),
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).indicatorColor,
                   BlendMode.srcIn,
                 ),
               ),
@@ -271,13 +273,21 @@ class _HelperScreenState extends State<HelperScreen>
           }
         },
         confineInSafeArea: true,
-        backgroundColor: const Color(0xFF151515),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: false,
-        decoration: const NavBarDecoration(
-          colorBehindNavBar: Color(0xFF151515),
+        decoration: NavBarDecoration(
+          colorBehindNavBar: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).dividerColor, // Choose color of shadow
+              spreadRadius: 0, // Spread radius
+              blurRadius: 0, // Blur radius
+              offset: const Offset(0, -0.4), // Changes position of shadow
+            ),
+          ],
         ),
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
@@ -290,6 +300,7 @@ class _HelperScreenState extends State<HelperScreen>
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
+
         // padding: NavBarPadding.symmetric(vertical: 17),
         navBarStyle: NavBarStyle.style12,
       ),
