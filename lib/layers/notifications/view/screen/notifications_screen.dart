@@ -48,16 +48,11 @@ class NotificationsScreenState extends State<NotificationsScreen>
         titleSpacing: 0,
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Padding(
-          padding: EdgeInsets.only(left: 14),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 14),
           child: Text(
             'Updates',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
         actions: [
@@ -65,7 +60,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
               onTap: () async {
-                service.clearAllNotifications();
+                service.changeTheme();
+                // service.clearAllNotifications();
               },
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',

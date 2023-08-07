@@ -4,10 +4,12 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:manhwa_alert/core/themes/themes.dart';
 import 'package:manhwa_alert/layers/notifications/models/notification_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService extends ChangeNotifier {
+  ValueNotifier<ThemeData> currentTheme = ValueNotifier(mainDarkTheme);
   final ValueNotifier<int> unseenNotificationCount = ValueNotifier(0);
   final ValueNotifier<List<NotificationModel>> notifications =
       ValueNotifier([]);
@@ -20,6 +22,11 @@ class NotificationService extends ChangeNotifier {
 
   final FirebaseFirestore _db;
   final SharedPreferences _sharedPreferences;
+
+  void changeTheme() {
+    currentTheme.value = mainLightTheme;
+    notifyListeners();
+  }
 
   NotificationService(this._sharedPreferences, this._db) {
     loadCachedNotifications();

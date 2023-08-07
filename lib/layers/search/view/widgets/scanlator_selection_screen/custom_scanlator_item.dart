@@ -44,12 +44,12 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                     if (loadingProgress == null) {
                       return child;
                     }
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.symmetric(vertical: 50.0),
                       child: Center(
                         child: TwoRotatingArc(
                           size: 40,
-                          color: Color(0xFFFF6812),
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     );
@@ -75,12 +75,7 @@ class _CustomScanlatorItemState extends State<CustomScanlatorItem> {
                 ),
                 Text(
                   widget.scanlatorData['name'],
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium
                 ),
               ],
             ),

@@ -99,7 +99,7 @@ class _HelperScreenState extends State<HelperScreen>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: mainDarkTheme,
+      theme: service.currentTheme.value,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) {
         if (settings.name == '/search') {

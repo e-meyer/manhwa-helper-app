@@ -45,11 +45,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Infinite Carousel Demo',
-      theme: mainDarkTheme,
-      home: const HelperScreen(),
+    NotificationService service = serviceLocator.get<NotificationService>();
+    return ValueListenableBuilder(
+      valueListenable: service.currentTheme,
+      builder: (context, value, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Infinite Carousel Demo',
+          theme: value,
+          home: const HelperScreen(),
+        );
+      },
     );
   }
 }
