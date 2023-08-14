@@ -11,7 +11,7 @@ Still thinking about the name.
 I've always had a stroke tracking new chapters from multiple scanlators because I read many webtoons from a lot of them.
 
 This app alerts readers of new chapters of their favorite Manhwas.
-Basically, the <a href="https://github.com/e-meyer/manhwa-helper-server">backend</a> just scrape some websites every x minutes to check if a new chapter of a manhwa was released. Then it gets the list of releases from a predetermined set of Scanlators that I like the most like Asura, Luminous, Flame, and Reaper, initially.
+Basically, the <a href="https://github.com/e-meyer/manhwa-helper-server">server</a> just scrape some websites every x minutes to check if a new chapter of a manhwa was released. Then it gets the list of releases from a predetermined set of Scanlators that I like the most like Asura, Luminous, Flame, and Reaper, initially.
 After tapping the notification, or a chapter in the details screen, it redirects the user to the scanlator website chapter page to read the chapter, to also help scanlators growth and not just scrape them.
 
 For now it's just something for me because it's a pain to always be opening new tabs to look for new chapters, opening all pages just to find out that no new chapters of manhwas I like were released. So I just want to know when I need to check that out, or just open the app and click the button.
