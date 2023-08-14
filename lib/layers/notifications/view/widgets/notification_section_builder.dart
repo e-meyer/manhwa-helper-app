@@ -93,8 +93,8 @@ class NotificationSectionBuilder extends StatelessWidget {
                             child: Container(
                               width: 6,
                               height: 6,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFFF6812),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -111,15 +111,15 @@ class NotificationSectionBuilder extends StatelessWidget {
                             if (loadingProgress == null) {
                               return child;
                             }
-                            return const Center(
+                            return Center(
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 20.0,
                                 ),
                                 child: TwoRotatingArc(
                                   size: 40,
-                                  color: Color(0xFFFF6812),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             );
@@ -154,12 +154,8 @@ class NotificationSectionBuilder extends StatelessWidget {
                                 child: Text(
                                   notification.manhwaTitle,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                   maxLines: 3,
                                 ),
                               ),
@@ -170,19 +166,12 @@ class NotificationSectionBuilder extends StatelessWidget {
                               children: [
                                 Text(
                                   notification.chapterNumber,
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Color(0xFFBEBEBE),
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
                                 ),
                                 Text(
                                   formattedTimeDifference,
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Color(0xFFFF6812),
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
                             ),
@@ -199,7 +188,7 @@ class NotificationSectionBuilder extends StatelessWidget {
             return Container(
               width: MediaQuery.of(context).size.width,
               height: 2,
-              color: const Color(0xFF151515),
+              color: Theme.of(context).scaffoldBackgroundColor,
             );
           },
         ),

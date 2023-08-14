@@ -47,17 +47,12 @@ class NotificationsScreenState extends State<NotificationsScreen>
       appBar: AppBar(
         titleSpacing: 0,
         shadowColor: Colors.transparent,
-        backgroundColor: const Color(0xFF151515),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 14),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 14),
           child: Text(
             'Updates',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
         actions: [
@@ -65,7 +60,8 @@ class NotificationsScreenState extends State<NotificationsScreen>
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
               onTap: () async {
-                service.clearAllNotifications();
+                service.changeTheme();
+                // service.clearAllNotifications();
               },
               child: SvgPicture.asset(
                 'assets/icons/settings.svg',
@@ -79,7 +75,7 @@ class NotificationsScreenState extends State<NotificationsScreen>
           ),
         ],
       ),
-      backgroundColor: const Color(0xFF151515),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: ValueListenableBuilder<List<NotificationModel>>(

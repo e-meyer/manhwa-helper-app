@@ -111,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF151515),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
@@ -150,18 +150,13 @@ class _SearchScreenState extends State<SearchScreen>
                     isDense: true,
                     filled: true,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                    fillColor: const Color(0xFF1C1C1C),
+                    fillColor: Theme.of(context).highlightColor,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: BorderSide.none,
                     ),
                     hintText: 'Search in ${widget.scanlator.name}',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Color(0xFF595959),
-                    ),
+                    hintStyle: Theme.of(context).textTheme.bodySmall,
                     prefixIconConstraints: const BoxConstraints(
                       minWidth: 18,
                       minHeight: 18,
@@ -191,7 +186,7 @@ class _SearchScreenState extends State<SearchScreen>
                     color: Color(0xFFBCBCBC),
                     fontSize: 16,
                   ),
-                  cursorColor: const Color(0xFFFF6812),
+                  cursorColor: Theme.of(context).primaryColor,
                 ),
               ),
             ),
