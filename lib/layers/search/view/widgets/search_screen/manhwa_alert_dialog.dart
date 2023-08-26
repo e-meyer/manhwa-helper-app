@@ -91,7 +91,7 @@ class _ManhwaAlertDialogState extends State<ManhwaAlertDialog> {
               padding: const EdgeInsets.fromLTRB(40, 20, 40, 6),
               child: Text(
                 widget.webtoon['title']!,
-                style: GoogleFonts.oswald(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                   color: Colors.white,

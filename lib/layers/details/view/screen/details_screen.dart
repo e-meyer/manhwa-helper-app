@@ -152,7 +152,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               const SizedBox(height: 10),
                               Text(
                                 'Subscribe',
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: const Color(0xFF858597),
                                   fontWeight: FontWeight.w600,
@@ -176,7 +176,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               const SizedBox(height: 10),
                               Text(
                                 'View on web',
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: const Color(0xFF858597),
                                   fontWeight: FontWeight.w600,
@@ -372,7 +372,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           ),
                           Text(
                             widget.webtoon['title'],
-                            style: GoogleFonts.oswald(
+                            style: TextStyle(
                               fontSize: 24,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
