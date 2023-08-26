@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DetailsScreen extends StatefulWidget {
   final Map<String, dynamic> webtoon;
